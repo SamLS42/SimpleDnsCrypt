@@ -1,4 +1,7 @@
 ﻿using Caliburn.Micro;
+using DnsCrypt.Blacklist;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Helper;
 using SimpleDnsCrypt.Models;
@@ -10,249 +13,266 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using DnsCrypt.Blacklist;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 
-namespace SimpleDnsCrypt.ViewModels
+namespace SimpleDnsCrypt.ViewModels;
+
+[Export(typeof(DomainBlockLogViewModel))]
+[method: ImportingConstructor]
+public class DomainBlockLogViewModel() : Screen
 {
-	[Export(typeof(DomainBlockLogViewModel))]
-	public class DomainBlockLogViewModel : Screen
+	private static readonly ILog Log = LogManagerHelper.Factory();
+
+	private ObservableCollection<DomainBlockLogLine> _domainBlockLogLines = [];
+	private string _domainBlockLogFile;
+	private bool _isDomainBlockLogLogging = false;
+	private DomainBlockLogLine _selectedDomainBlockLogLine;
+
+	private void AddLogLine(DomainBlockLogLine domainBlockLogLine)
 	{
-		private static readonly ILog Log = LogManagerHelper.Factory();
-
-		private ObservableCollection<DomainBlockLogLine> _domainBlockLogLines;
-		private string _domainBlockLogFile;
-		private bool _isDomainBlockLogLogging;
-		private DomainBlockLogLine _selectedDomainBlockLogLine;
-
-		[ImportingConstructor]
-		public DomainBlockLogViewModel()
+		Execute.OnUIThread(() =>
 		{
-			_isDomainBlockLogLogging = false;
-			_domainBlockLogLines = new ObservableCollection<DomainBlockLogLine>();
-		}
+			DomainBlockLogLines.Add(domainBlockLogLine);
+		});
+	}
 
-		private void AddLogLine(DomainBlockLogLine domainBlockLogLine)
+	public void ClearDomainBlockLog()
+	{
+		Execute.OnUIThread(DomainBlockLogLines.Clear);
+	}
+
+	public ObservableCollection<DomainBlockLogLine> DomainBlockLogLines
+	{
+		get => _domainBlockLogLines;
+		set
 		{
-			Execute.OnUIThread(() =>
+			if (value.Equals(_domainBlockLogLines))
 			{
-				DomainBlockLogLines.Add(domainBlockLogLine);
-			});
-		}
-
-		public void ClearDomainBlockLog()
-		{
-			Execute.OnUIThread(() => { DomainBlockLogLines.Clear(); });
-		}
-
-		public ObservableCollection<DomainBlockLogLine> DomainBlockLogLines
-		{
-			get => _domainBlockLogLines;
-			set
-			{
-				if (value.Equals(_domainBlockLogLines)) return;
-				_domainBlockLogLines = value;
-				NotifyOfPropertyChange(() => DomainBlockLogLines);
+				return;
 			}
-		}
 
-		public string DomainBlockLogFile
+			_domainBlockLogLines = value;
+			NotifyOfPropertyChange(() => DomainBlockLogLines);
+		}
+	}
+
+	public string DomainBlockLogFile
+	{
+		get => _domainBlockLogFile;
+		set
 		{
-			get => _domainBlockLogFile;
-			set
+			if (value.Equals(_domainBlockLogFile))
 			{
-				if (value.Equals(_domainBlockLogFile)) return;
-				_domainBlockLogFile = value;
-				NotifyOfPropertyChange(() => DomainBlockLogFile);
+				return;
 			}
-		}
 
-		public DomainBlockLogLine SelectedDomainBlockLogLine
+			_domainBlockLogFile = value;
+			NotifyOfPropertyChange(() => DomainBlockLogFile);
+		}
+	}
+
+	public DomainBlockLogLine SelectedDomainBlockLogLine
+	{
+		get => _selectedDomainBlockLogLine;
+		set
 		{
-			get => _selectedDomainBlockLogLine;
-			set
+			_selectedDomainBlockLogLine = value;
+			NotifyOfPropertyChange(() => SelectedDomainBlockLogLine);
+		}
+	}
+
+	public bool IsDomainBlockLogLogging
+	{
+		get => _isDomainBlockLogLogging;
+		set
+		{
+			_isDomainBlockLogLogging = value;
+			DomainBlockLog(DnscryptProxyConfigurationManager.DnscryptProxyConfiguration);
+			NotifyOfPropertyChange(() => IsDomainBlockLogLogging);
+		}
+	}
+
+	public async void UnblockBlockLogEntry()
+	{
+		try
+		{
+			if (_selectedDomainBlockLogLine == null)
 			{
-				_selectedDomainBlockLogLine = value;
-				NotifyOfPropertyChange(() => SelectedDomainBlockLogLine);
+				return;
 			}
-		}
 
-		public bool IsDomainBlockLogLogging
-		{
-			get => _isDomainBlockLogLogging;
-			set
+			if (MainViewModel.Instance.DomainBlacklistViewModel == null)
 			{
-				_isDomainBlockLogLogging = value;
-				DomainBlockLog(DnscryptProxyConfigurationManager.DnscryptProxyConfiguration);
-				NotifyOfPropertyChange(() => IsDomainBlockLogLogging);
+				return;
 			}
-		}
 
-		public async void UnblockBlockLogEntry()
-		{
-			try
+			MetroDialogSettings dialogSettings = new()
 			{
-				if (_selectedDomainBlockLogLine == null) return;
-				if (MainViewModel.Instance.DomainBlacklistViewModel == null) return;
-				var dialogSettings = new MetroDialogSettings
+				DefaultText = _selectedDomainBlockLogLine.Message.ToLower(),
+				AffirmativeButtonText = LocalizationEx.GetUiString("add", Thread.CurrentThread.CurrentCulture),
+				NegativeButtonText = LocalizationEx.GetUiString("cancel", Thread.CurrentThread.CurrentCulture),
+				ColorScheme = MetroDialogColorScheme.Theme
+			};
+
+			MetroWindow metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+			//TODO: translate
+			string dialogResult = await metroWindow.ShowInputAsync(LocalizationEx.GetUiString("message_title_new_whitelist_rule", Thread.CurrentThread.CurrentCulture),
+				"Rule:", dialogSettings);
+
+			if (string.IsNullOrEmpty(dialogResult))
+			{
+				return;
+			}
+
+			string newCustomRule = dialogResult.ToLower().Trim();
+			System.Collections.Generic.IEnumerable<string> parsed = DomainBlacklist.ParseBlacklist(newCustomRule, true);
+			string[] enumerable = parsed as string[] ?? [.. parsed];
+			if (enumerable.Length != 1)
+			{
+				return;
+			}
+
+			MainViewModel.Instance.DomainBlacklistViewModel.DomainWhitelistRules.Add(enumerable[0]);
+			MainViewModel.Instance.DomainBlacklistViewModel.SaveWhitelistRulesToFile();
+		}
+		catch (Exception exception)
+		{
+			Log.Error(exception);
+		}
+	}
+
+	private async void DomainBlockLog(DnscryptProxyConfiguration dnscryptProxyConfiguration)
+	{
+		const string defaultLogFormat = "ltsv";
+		try
+		{
+			if (_isDomainBlockLogLogging)
+			{
+				if (dnscryptProxyConfiguration == null)
 				{
-					DefaultText = _selectedDomainBlockLogLine.Message.ToLower(),
-					AffirmativeButtonText = LocalizationEx.GetUiString("add", Thread.CurrentThread.CurrentCulture),
-					NegativeButtonText = LocalizationEx.GetUiString("cancel", Thread.CurrentThread.CurrentCulture),
-					ColorScheme = MetroDialogColorScheme.Theme
-				};
+					return;
+				}
 
-				var metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-				//TODO: translate
-				var dialogResult = await metroWindow.ShowInputAsync(LocalizationEx.GetUiString("message_title_new_whitelist_rule", Thread.CurrentThread.CurrentCulture),
-					"Rule:", dialogSettings);
-
-				if (string.IsNullOrEmpty(dialogResult)) return;
-				var newCustomRule = dialogResult.ToLower().Trim();
-				var parsed = DomainBlacklist.ParseBlacklist(newCustomRule, true);
-				var enumerable = parsed as string[] ?? parsed.ToArray();
-				if (enumerable.Length != 1) return;
-				MainViewModel.Instance.DomainBlacklistViewModel.DomainWhitelistRules.Add(enumerable[0]);
-				MainViewModel.Instance.DomainBlacklistViewModel.SaveWhitelistRulesToFile();
-			}
-			catch (Exception exception)
-			{
-				Log.Error(exception);
-			}
-		}
-
-		private async void DomainBlockLog(DnscryptProxyConfiguration dnscryptProxyConfiguration)
-		{
-			const string defaultLogFormat = "ltsv";
-			try
-			{
-				if (_isDomainBlockLogLogging)
+				bool saveAndRestartService = false;
+				if (dnscryptProxyConfiguration.blocked_names == null)
 				{
-					if (dnscryptProxyConfiguration == null) return;
-
-					var saveAndRestartService = false;
-					if (dnscryptProxyConfiguration.blocked_names == null)
+					dnscryptProxyConfiguration.blocked_names = new Blacklist
 					{
-						dnscryptProxyConfiguration.blocked_names = new Blacklist
+						log_file = Global.DomainBlockLogFileName,
+						log_format = defaultLogFormat
+					};
+					saveAndRestartService = true;
+				}
+
+				if (string.IsNullOrEmpty(dnscryptProxyConfiguration.blocked_names.log_format) ||
+					!dnscryptProxyConfiguration.blocked_names.log_format.Equals(defaultLogFormat))
+				{
+					dnscryptProxyConfiguration.blocked_names.log_format = defaultLogFormat;
+					saveAndRestartService = true;
+				}
+
+				if (string.IsNullOrEmpty(dnscryptProxyConfiguration.blocked_names.log_file))
+				{
+					dnscryptProxyConfiguration.blocked_names.log_file = Global.DomainBlockLogFileName;
+					saveAndRestartService = true;
+				}
+
+				if (saveAndRestartService)
+				{
+					DnscryptProxyConfigurationManager.DnscryptProxyConfiguration = dnscryptProxyConfiguration;
+					if (DnscryptProxyConfigurationManager.SaveConfiguration())
+					{
+						if (DnsCryptProxyManager.IsDnsCryptProxyInstalled())
 						{
-							log_file = Global.DomainBlockLogFileName,
-							log_format = defaultLogFormat
-						};
-						saveAndRestartService = true;
-					}
-
-					if (string.IsNullOrEmpty(dnscryptProxyConfiguration.blocked_names.log_format) ||
-						!dnscryptProxyConfiguration.blocked_names.log_format.Equals(defaultLogFormat))
-					{
-						dnscryptProxyConfiguration.blocked_names.log_format = defaultLogFormat;
-						saveAndRestartService = true;
-					}
-
-					if (string.IsNullOrEmpty(dnscryptProxyConfiguration.blocked_names.log_file))
-					{
-						dnscryptProxyConfiguration.blocked_names.log_file = Global.DomainBlockLogFileName;
-						saveAndRestartService = true;
-					}
-
-					if (saveAndRestartService)
-					{
-						DnscryptProxyConfigurationManager.DnscryptProxyConfiguration = dnscryptProxyConfiguration;
-						if (DnscryptProxyConfigurationManager.SaveConfiguration())
-						{
-							if (DnsCryptProxyManager.IsDnsCryptProxyInstalled())
+							if (DnsCryptProxyManager.IsDnsCryptProxyRunning())
 							{
-								if (DnsCryptProxyManager.IsDnsCryptProxyRunning())
-								{
-									DnsCryptProxyManager.Restart();
-									await Task.Delay(Global.ServiceRestartTime).ConfigureAwait(false);
-								}
-								else
-								{
-									DnsCryptProxyManager.Start();
-									await Task.Delay(Global.ServiceStartTime).ConfigureAwait(false);
-								}
+								DnsCryptProxyManager.Restart();
+								await Task.Delay(Global.ServiceRestartTime).ConfigureAwait(false);
 							}
 							else
 							{
-								await Task.Run(() => DnsCryptProxyManager.Install()).ConfigureAwait(false);
-								await Task.Delay(Global.ServiceInstallTime).ConfigureAwait(false);
-								if (DnsCryptProxyManager.IsDnsCryptProxyInstalled())
-								{
-									DnsCryptProxyManager.Start();
-									await Task.Delay(Global.ServiceStartTime).ConfigureAwait(false);
-								}
+								DnsCryptProxyManager.Start();
+								await Task.Delay(Global.ServiceStartTime).ConfigureAwait(false);
 							}
 						}
-					}
-
-					DomainBlockLogFile = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder,
-						dnscryptProxyConfiguration.blocked_names.log_file);
-
-					if (!string.IsNullOrEmpty(_domainBlockLogFile))
-					{
-						if (!File.Exists(_domainBlockLogFile))
+						else
 						{
-							File.Create(_domainBlockLogFile).Dispose();
-							await Task.Delay(50);
-						}
-
-						await Task.Run(() =>
-						{
-							using (var reader = new StreamReader(new FileStream(_domainBlockLogFile,
-								FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+							await Task.Run(DnsCryptProxyManager.Install).ConfigureAwait(false);
+							await Task.Delay(Global.ServiceInstallTime).ConfigureAwait(false);
+							if (DnsCryptProxyManager.IsDnsCryptProxyInstalled())
 							{
-								//start at the end of the file
-								var lastMaxOffset = reader.BaseStream.Length;
-
-								while (_isDomainBlockLogLogging)
-								{
-									Thread.Sleep(500);
-									//if the file size has not changed, idle
-									if (reader.BaseStream.Length == lastMaxOffset)
-										continue;
-
-									//seek to the last max offset
-									reader.BaseStream.Seek(lastMaxOffset, SeekOrigin.Begin);
-
-									//read out of the file until the EOF
-									string line;
-									while ((line = reader.ReadLine()) != null)
-									{
-										var blockLogLine = new DomainBlockLogLine(line);
-										AddLogLine(blockLogLine);
-									}
-
-									//update the last max offset
-									lastMaxOffset = reader.BaseStream.Position;
-								}
+								DnsCryptProxyManager.Start();
+								await Task.Delay(Global.ServiceStartTime).ConfigureAwait(false);
 							}
-						}).ConfigureAwait(false);
+						}
 					}
-					else
+				}
+
+				DomainBlockLogFile = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder,
+					dnscryptProxyConfiguration.blocked_names.log_file);
+
+				if (!string.IsNullOrEmpty(_domainBlockLogFile))
+				{
+					if (!File.Exists(_domainBlockLogFile))
 					{
-						IsDomainBlockLogLogging = false;
+						File.Create(_domainBlockLogFile).Dispose();
+						await Task.Delay(50);
 					}
+
+					await Task.Run(() =>
+					{
+						using StreamReader reader = new(new FileStream(_domainBlockLogFile,
+							FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+						//start at the end of the file
+						long lastMaxOffset = reader.BaseStream.Length;
+
+						while (_isDomainBlockLogLogging)
+						{
+							Thread.Sleep(500);
+							//if the file size has not changed, idle
+							if (reader.BaseStream.Length == lastMaxOffset)
+							{
+								continue;
+							}
+
+							//seek to the last max offset
+							reader.BaseStream.Seek(lastMaxOffset, SeekOrigin.Begin);
+
+							//read out of the file until the EOF
+							string line;
+							while ((line = reader.ReadLine()) != null)
+							{
+								DomainBlockLogLine blockLogLine = new(line);
+								AddLogLine(blockLogLine);
+							}
+
+							//update the last max offset
+							lastMaxOffset = reader.BaseStream.Position;
+						}
+					}).ConfigureAwait(false);
 				}
 				else
 				{
-					//disable block log again
-					_isDomainBlockLogLogging = false;
-					dnscryptProxyConfiguration.blocked_names.log_file = null;
-					DnscryptProxyConfigurationManager.DnscryptProxyConfiguration = dnscryptProxyConfiguration;
-					DnscryptProxyConfigurationManager.SaveConfiguration();
-					if (DnsCryptProxyManager.IsDnsCryptProxyRunning())
-					{
-						DnsCryptProxyManager.Restart();
-						await Task.Delay(Global.ServiceRestartTime).ConfigureAwait(false);
-					}
-					Execute.OnUIThread(() => { DomainBlockLogLines.Clear(); });
+					IsDomainBlockLogLogging = false;
 				}
 			}
-			catch (Exception exception)
+			else
 			{
-				Log.Error(exception);
+				//disable block log again
+				_isDomainBlockLogLogging = false;
+				dnscryptProxyConfiguration.blocked_names.log_file = null;
+				DnscryptProxyConfigurationManager.DnscryptProxyConfiguration = dnscryptProxyConfiguration;
+				DnscryptProxyConfigurationManager.SaveConfiguration();
+				if (DnsCryptProxyManager.IsDnsCryptProxyRunning())
+				{
+					DnsCryptProxyManager.Restart();
+					await Task.Delay(Global.ServiceRestartTime).ConfigureAwait(false);
+				}
+				Execute.OnUIThread(DomainBlockLogLines.Clear);
 			}
+		}
+		catch (Exception exception)
+		{
+			Log.Error(exception);
 		}
 	}
 }

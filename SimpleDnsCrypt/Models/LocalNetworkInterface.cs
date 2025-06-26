@@ -2,117 +2,116 @@
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 
-namespace SimpleDnsCrypt.Models
+namespace SimpleDnsCrypt.Models;
+
+public class LocalNetworkInterface : PropertyChangedBase
 {
-	public class LocalNetworkInterface : PropertyChangedBase
+	private string _name;
+	private NetworkInterfaceType _type;
+	private OperationalStatus _operationalStatus;
+	private string _description;
+	private List<DnsServer> _dns;
+	private bool _ipv6Support;
+	private bool _ipv4Support;
+	private bool _useDnsCrypt;
+	private bool _isChangeable;
+
+	public LocalNetworkInterface()
 	{
-		private string _name;
-		private NetworkInterfaceType _type;
-		private OperationalStatus _operationalStatus;
-		private string _description;
-		private List<DnsServer> _dns;
-		private bool _ipv6Support;
-		private bool _ipv4Support;
-		private bool _useDnsCrypt;
-		private bool _isChangeable;
+		Dns = [];
+		_isChangeable = true;
+	}
 
-		public LocalNetworkInterface()
+	public string Name
+	{
+		get => _name;
+		set
 		{
-			Dns = new List<DnsServer>();
-			_isChangeable = true;
+			_name = value;
+			NotifyOfPropertyChange(() => Name);
 		}
+	}
 
-		public string Name
+	/// <summary>
+	/// The status of the network card (up/down)
+	/// </summary>
+	public OperationalStatus OperationalStatus
+	{
+		get => _operationalStatus;
+		set
 		{
-			get => _name;
-			set
-			{
-				_name = value;
-				NotifyOfPropertyChange(() => Name);
-			}
+			_operationalStatus = value;
+			NotifyOfPropertyChange(() => OperationalStatus);
 		}
+	}
 
-		/// <summary>
-		/// The status of the network card (up/down)
-		/// </summary>
-		public OperationalStatus OperationalStatus
+	public string Description
+	{
+		get => _description;
+		set
 		{
-			get => _operationalStatus;
-			set
-			{
-				_operationalStatus = value;
-				NotifyOfPropertyChange(() => OperationalStatus);
-			}
+			_description = value;
+			NotifyOfPropertyChange(() => Description);
 		}
+	}
 
-		public string Description
+	public NetworkInterfaceType Type
+	{
+		get => _type;
+		set
 		{
-			get => _description;
-			set
-			{
-				_description = value;
-				NotifyOfPropertyChange(() => Description);
-			}
+			_type = value;
+			NotifyOfPropertyChange(() => Type);
 		}
+	}
 
-		public NetworkInterfaceType Type
+	public List<DnsServer> Dns
+	{
+		get => _dns;
+		set
 		{
-			get => _type;
-			set
-			{
-				_type = value;
-				NotifyOfPropertyChange(() => Type);
-			}
+			_dns = value;
+			NotifyOfPropertyChange(() => Dns);
 		}
+	}
 
-		public List<DnsServer> Dns
+	public bool Ipv6Support
+	{
+		get => _ipv6Support;
+		set
 		{
-			get => _dns;
-			set
-			{
-				_dns = value;
-				NotifyOfPropertyChange(() => Dns);
-			}
+			_ipv6Support = value;
+			NotifyOfPropertyChange(() => Ipv6Support);
 		}
+	}
 
-		public bool Ipv6Support
+	public bool Ipv4Support
+	{
+		get => _ipv4Support;
+		set
 		{
-			get => _ipv6Support;
-			set
-			{
-				_ipv6Support = value;
-				NotifyOfPropertyChange(() => Ipv6Support);
-			}
+			_ipv4Support = value;
+			NotifyOfPropertyChange(() => Ipv4Support);
 		}
+	}
 
-		public bool Ipv4Support
+	public bool IsChangeable
+	{
+		get => _isChangeable;
+		set
 		{
-			get => _ipv4Support;
-			set
-			{
-				_ipv4Support = value;
-				NotifyOfPropertyChange(() => Ipv4Support);
-			}
+			_isChangeable = value;
+			NotifyOfPropertyChange(() => IsChangeable);
 		}
+	}
 
-		public bool IsChangeable
+	public bool UseDnsCrypt
+	{
+		get => _useDnsCrypt;
+		set
 		{
-			get => _isChangeable;
-			set
-			{
-				_isChangeable = value;
-				NotifyOfPropertyChange(() => IsChangeable);
-			}
-		}
-
-		public bool UseDnsCrypt
-		{
-			get => _useDnsCrypt;
-			set
-			{
-				_useDnsCrypt = value;
-				NotifyOfPropertyChange(() => UseDnsCrypt);
-			}
+			_useDnsCrypt = value;
+			NotifyOfPropertyChange(() => UseDnsCrypt);
 		}
 	}
 }

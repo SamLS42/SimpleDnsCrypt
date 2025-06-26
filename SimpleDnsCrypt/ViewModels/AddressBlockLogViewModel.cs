@@ -4,88 +4,89 @@ using SimpleDnsCrypt.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 
-namespace SimpleDnsCrypt.ViewModels
+namespace SimpleDnsCrypt.ViewModels;
+
+[Export(typeof(AddressBlockLogViewModel))]
+public class AddressBlockLogViewModel : Screen
 {
-	[Export(typeof(AddressBlockLogViewModel))]
-	public class AddressBlockLogViewModel : Screen
+	private readonly IWindowManager _windowManager;
+	private readonly IEventAggregator _events;
+
+	private ObservableCollection<AddressBlockLogLine> _addressBlockLogLines;
+	private string _addressBlockLogFile;
+	private bool _isAddressBlockLogLogging;
+	private AddressBlockLogLine _selectedAddressBlockLogLine;
+
+	[ImportingConstructor]
+	public AddressBlockLogViewModel(IWindowManager windowManager, IEventAggregator events)
 	{
-		private readonly IWindowManager _windowManager;
-		private readonly IEventAggregator _events;
+		_windowManager = windowManager;
+		_events = events;
+		_events.Subscribe(this);
+		_isAddressBlockLogLogging = false;
+		_addressBlockLogLines = [];
+	}
 
-		private ObservableCollection<AddressBlockLogLine> _addressBlockLogLines;
-		private string _addressBlockLogFile;
-		private bool _isAddressBlockLogLogging;
-		private AddressBlockLogLine _selectedAddressBlockLogLine;
-
-		[ImportingConstructor]
-		public AddressBlockLogViewModel(IWindowManager windowManager, IEventAggregator events)
+	private void AddLogLine(AddressBlockLogLine addressBlockLogLine)
+	{
+		Execute.OnUIThread(() =>
 		{
-			_windowManager = windowManager;
-			_events = events;
-			_events.Subscribe(this);
-			_isAddressBlockLogLogging = false;
-			_addressBlockLogLines = new ObservableCollection<AddressBlockLogLine>();
-		}
+			AddressBlockLogLines.Add(addressBlockLogLine);
+		});
+	}
 
-		private void AddLogLine(AddressBlockLogLine addressBlockLogLine)
+	public void ClearAddressBlockLog()
+	{
+		Execute.OnUIThread(AddressBlockLogLines.Clear);
+	}
+
+	public ObservableCollection<AddressBlockLogLine> AddressBlockLogLines
+	{
+		get => _addressBlockLogLines;
+		set
 		{
-			Execute.OnUIThread(() =>
+			if (value.Equals(_addressBlockLogLines))
 			{
-				AddressBlockLogLines.Add(addressBlockLogLine);
-			});
-		}
-
-		public void ClearAddressBlockLog()
-		{
-			Execute.OnUIThread(() => { AddressBlockLogLines.Clear(); });
-		}
-
-		public ObservableCollection<AddressBlockLogLine> AddressBlockLogLines
-		{
-			get => _addressBlockLogLines;
-			set
-			{
-				if (value.Equals(_addressBlockLogLines)) return;
-				_addressBlockLogLines = value;
-				NotifyOfPropertyChange(() => AddressBlockLogLines);
+				return;
 			}
-		}
 
-		public string AddressBlockLogFile
+			_addressBlockLogLines = value;
+			NotifyOfPropertyChange(() => AddressBlockLogLines);
+		}
+	}
+
+	public string AddressBlockLogFile
+	{
+		get => _addressBlockLogFile;
+		set
 		{
-			get => _addressBlockLogFile;
-			set
+			if (value.Equals(_addressBlockLogFile))
 			{
-				if (value.Equals(_addressBlockLogFile)) return;
-				_addressBlockLogFile = value;
-				NotifyOfPropertyChange(() => AddressBlockLogFile);
+				return;
 			}
-		}
 
-		public AddressBlockLogLine SelectedAddressBlockLogLine
-		{
-			get => _selectedAddressBlockLogLine;
-			set
-			{
-				_selectedAddressBlockLogLine = value;
-				NotifyOfPropertyChange(() => SelectedAddressBlockLogLine);
-			}
+			_addressBlockLogFile = value;
+			NotifyOfPropertyChange(() => AddressBlockLogFile);
 		}
+	}
 
-		public bool IsAddressBlockLogLogging
+	public AddressBlockLogLine SelectedAddressBlockLogLine
+	{
+		get => _selectedAddressBlockLogLine;
+		set
 		{
-			get => _isAddressBlockLogLogging;
-			set
-			{
-				_isAddressBlockLogLogging = value;
-				AddressBlockLog(DnscryptProxyConfigurationManager.DnscryptProxyConfiguration);
-				NotifyOfPropertyChange(() => IsAddressBlockLogLogging);
-			}
+			_selectedAddressBlockLogLine = value;
+			NotifyOfPropertyChange(() => SelectedAddressBlockLogLine);
 		}
+	}
 
-		private void AddressBlockLog(DnscryptProxyConfiguration dnscryptProxyConfiguration)
+	public bool IsAddressBlockLogLogging
+	{
+		get => _isAddressBlockLogLogging;
+		set
 		{
-			
+			_isAddressBlockLogLogging = value;
+			NotifyOfPropertyChange(() => IsAddressBlockLogLogging);
 		}
 	}
 }

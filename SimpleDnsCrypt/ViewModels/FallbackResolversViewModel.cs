@@ -4,87 +4,100 @@ using SimpleDnsCrypt.Helper;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 
-namespace SimpleDnsCrypt.ViewModels
+namespace SimpleDnsCrypt.ViewModels;
+
+[Export(typeof(FallbackResolversViewModel))]
+[method: ImportingConstructor]
+public class FallbackResolversViewModel() : Screen
 {
-	[Export(typeof(FallbackResolversViewModel))]
-	public class FallbackResolversViewModel : Screen
+	private string _windowTitle;
+	private ObservableCollection<string> _fallbackResolvers = [];
+	private string _selectedFallbackResolver;
+	private string _addressInput;
+
+	/// <summary>
+	///     The title of the window.
+	/// </summary>
+	public string WindowTitle
 	{
-		private string _windowTitle;
-		private ObservableCollection<string> _fallbackResolvers;
-		private string _selectedFallbackResolver;
-		private string _addressInput;
-
-
-		[ImportingConstructor]
-		public FallbackResolversViewModel()
+		get => _windowTitle;
+		set
 		{
-			_fallbackResolvers = new ObservableCollection<string>();
+			_windowTitle = value;
+			NotifyOfPropertyChange(() => WindowTitle);
+		}
+	}
+
+	public ObservableCollection<string> FallbackResolvers
+	{
+		get => _fallbackResolvers;
+		set
+		{
+			_fallbackResolvers = value;
+			NotifyOfPropertyChange(() => FallbackResolvers);
+		}
+	}
+
+	public string SelectedFallbackResolver
+	{
+		get => _selectedFallbackResolver;
+		set
+		{
+			_selectedFallbackResolver = value;
+			NotifyOfPropertyChange(() => SelectedFallbackResolver);
+		}
+	}
+
+	public string AddressInput
+	{
+		get => _addressInput;
+		set
+		{
+			_addressInput = value;
+			NotifyOfPropertyChange(() => AddressInput);
+		}
+	}
+
+	public void AddAddress()
+	{
+		if (string.IsNullOrEmpty(_addressInput))
+		{
+			return;
 		}
 
-		/// <summary>
-		///     The title of the window.
-		/// </summary>
-		public string WindowTitle
+		string validatedAddress = ValidationHelper.ValidateIpEndpoint(_addressInput);
+		if (string.IsNullOrEmpty(validatedAddress))
 		{
-			get => _windowTitle;
-			set
-			{
-				_windowTitle = value;
-				NotifyOfPropertyChange(() => WindowTitle);
-			}
+			return;
 		}
 
-		public ObservableCollection<string> FallbackResolvers
+		if (FallbackResolvers.Contains(validatedAddress))
 		{
-			get => _fallbackResolvers;
-			set
-			{
-				_fallbackResolvers = value;
-				NotifyOfPropertyChange(() => FallbackResolvers);
-			}
+			return;
 		}
 
-		public string SelectedFallbackResolver
+		FallbackResolvers.Add(validatedAddress);
+		AddressInput = string.Empty;
+	}
+
+	public void RemoveAddress()
+	{
+		if (string.IsNullOrEmpty(_selectedFallbackResolver))
 		{
-			get => _selectedFallbackResolver;
-			set
-			{
-				_selectedFallbackResolver = value;
-				NotifyOfPropertyChange(() => SelectedFallbackResolver);
-			}
+			return;
 		}
 
-		public string AddressInput
+		if (_fallbackResolvers.Count == 1)
 		{
-			get => _addressInput;
-			set
-			{
-				_addressInput = value;
-				NotifyOfPropertyChange(() => AddressInput);
-			}
+			return;
 		}
 
-		public void AddAddress()
-		{
-			if (string.IsNullOrEmpty(_addressInput)) return;
-			var validatedAddress = ValidationHelper.ValidateIpEndpoint(_addressInput);
-			if (string.IsNullOrEmpty(validatedAddress)) return;
-			if (FallbackResolvers.Contains(validatedAddress)) return;
-			FallbackResolvers.Add(validatedAddress);
-			AddressInput = string.Empty;
-		}
+		_fallbackResolvers.Remove(_selectedFallbackResolver);
+	}
 
-		public void RemoveAddress()
-		{
-			if (string.IsNullOrEmpty(_selectedFallbackResolver)) return;
-			if (_fallbackResolvers.Count == 1) return;
-			_fallbackResolvers.Remove(_selectedFallbackResolver);
-		}
-
-		public void RestoreDefault()
-		{
-			FallbackResolvers.Clear();
-			FallbackResolvers = new ObservableCollection<string>(Global.DefaultFallbackResolvers);
-		}
+	public void RestoreDefault()
+	{
+		FallbackResolvers.Clear();
+		FallbackResolvers = new ObservableCollection<string>(Global.DefaultFallbackResolvers);
 	}
 }

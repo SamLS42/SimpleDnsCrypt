@@ -3,149 +3,168 @@ using SimpleDnsCrypt.Models;
 using System.ComponentModel.Composition;
 using System.Windows;
 
-namespace SimpleDnsCrypt.ViewModels
+namespace SimpleDnsCrypt.ViewModels;
+
+[Export(typeof(MetroMessageBoxViewModel))]
+public class MetroMessageBoxViewModel : Screen
 {
-	[Export(typeof(MetroMessageBoxViewModel))]
-	public class MetroMessageBoxViewModel : Screen
+	private MessageBoxButton _buttons = MessageBoxButton.OK;
+	private string _message;
+	private BoxType _messageBoxType;
+	private string _title;
+
+	/// <summary>
+	///     MetroMessageBoxViewModel constructor.
+	/// </summary>
+	/// <param name="message">The message to show.</param>
+	/// <param name="title">The title of the box.</param>
+	/// <param name="buttons">Buttons to show up.</param>
+	/// <param name="messageBoxType">The type of the box.</param>
+	public MetroMessageBoxViewModel(string message, string title, MessageBoxButton buttons,
+		BoxType messageBoxType)
 	{
-		private MessageBoxButton _buttons = MessageBoxButton.OK;
-		private string _message;
-		private BoxType _messageBoxType;
-		private string _title;
-
-		/// <summary>
-		///     MetroMessageBoxViewModel constructor.
-		/// </summary>
-		/// <param name="message">The message to show.</param>
-		/// <param name="title">The title of the box.</param>
-		/// <param name="buttons">Buttons to show up.</param>
-		/// <param name="messageBoxType">The type of the box.</param>
-		public MetroMessageBoxViewModel(string message, string title, MessageBoxButton buttons,
-			BoxType messageBoxType)
+		if (title != null)
 		{
-			if (title != null) Title = title;
-			if (message != null) Message = message;
-			MessageBoxType = messageBoxType;
-			Buttons = buttons;
+			Title = title;
 		}
 
-		/// <summary>
-		///     The MessageBox title.
-		/// </summary>
-		public string Title
+		if (message != null)
 		{
-			get => _title;
-			set
+			Message = message;
+		}
+
+		MessageBoxType = messageBoxType;
+		Buttons = buttons;
+	}
+
+	/// <summary>
+	///     The MessageBox title.
+	/// </summary>
+	public string Title
+	{
+		get => _title;
+		set
+		{
+			if (value.Equals(_title))
 			{
-				if (value.Equals(_title)) return;
-				_title = value;
-				NotifyOfPropertyChange(() => Title);
+				return;
 			}
-		}
 
-		/// <summary>
-		///     The MessageBox type.
-		/// </summary>
-		public BoxType MessageBoxType
+			_title = value;
+			NotifyOfPropertyChange(() => Title);
+		}
+	}
+
+	/// <summary>
+	///     The MessageBox type.
+	/// </summary>
+	public BoxType MessageBoxType
+	{
+		get => _messageBoxType;
+		set
 		{
-			get => _messageBoxType;
-			set
+			if (value.Equals(_messageBoxType))
 			{
-				if (value.Equals(_messageBoxType)) return;
-				_messageBoxType = value;
-				NotifyOfPropertyChange(() => MessageBoxType);
+				return;
 			}
+
+			_messageBoxType = value;
+			NotifyOfPropertyChange(() => MessageBoxType);
 		}
+	}
 
-		/// <summary>
-		///     Show the No button.
-		/// </summary>
-		public bool IsNoButtonVisible => _buttons == MessageBoxButton.YesNo || _buttons == MessageBoxButton.YesNoCancel;
+	/// <summary>
+	///     Show the No button.
+	/// </summary>
+	public bool IsNoButtonVisible => _buttons is MessageBoxButton.YesNo or MessageBoxButton.YesNoCancel;
 
-		/// <summary>
-		///     Show the Yes button.
-		/// </summary>
-		public bool IsYesButtonVisible => _buttons == MessageBoxButton.YesNo || _buttons == MessageBoxButton.YesNoCancel;
+	/// <summary>
+	///     Show the Yes button.
+	/// </summary>
+	public bool IsYesButtonVisible => _buttons is MessageBoxButton.YesNo or MessageBoxButton.YesNoCancel;
 
-		/// <summary>
-		///     Show the Cancel button.
-		/// </summary>
-		public bool IsCancelButtonVisible => _buttons == MessageBoxButton.OKCancel || _buttons == MessageBoxButton.YesNoCancel;
+	/// <summary>
+	///     Show the Cancel button.
+	/// </summary>
+	public bool IsCancelButtonVisible => _buttons is MessageBoxButton.OKCancel or MessageBoxButton.YesNoCancel;
 
-		/// <summary>
-		///     Show the Ok button.
-		/// </summary>
-		public bool IsOkButtonVisible => _buttons == MessageBoxButton.OK || _buttons == MessageBoxButton.OKCancel;
+	/// <summary>
+	///     Show the Ok button.
+	/// </summary>
+	public bool IsOkButtonVisible => _buttons is MessageBoxButton.OK or MessageBoxButton.OKCancel;
 
-		/// <summary>
-		///     The MessageBox message.
-		/// </summary>
-		public string Message
+	/// <summary>
+	///     The MessageBox message.
+	/// </summary>
+	public string Message
+	{
+		get => _message;
+		set
 		{
-			get => _message;
-			set
+			if (value.Equals(_message))
 			{
-				if (value.Equals(_message)) return;
-				_message = value;
-				NotifyOfPropertyChange(() => Message);
+				return;
 			}
-		}
 
-		/// <summary>
-		///     The MessageBox available buttons.
-		/// </summary>
-		public MessageBoxButton Buttons
+			_message = value;
+			NotifyOfPropertyChange(() => Message);
+		}
+	}
+
+	/// <summary>
+	///     The MessageBox available buttons.
+	/// </summary>
+	public MessageBoxButton Buttons
+	{
+		get => _buttons;
+		set
 		{
-			get => _buttons;
-			set
-			{
-				_buttons = value;
-				NotifyOfPropertyChange(() => IsNoButtonVisible);
-				NotifyOfPropertyChange(() => IsYesButtonVisible);
-				NotifyOfPropertyChange(() => IsCancelButtonVisible);
-				NotifyOfPropertyChange(() => IsOkButtonVisible);
-			}
+			_buttons = value;
+			NotifyOfPropertyChange(() => IsNoButtonVisible);
+			NotifyOfPropertyChange(() => IsYesButtonVisible);
+			NotifyOfPropertyChange(() => IsCancelButtonVisible);
+			NotifyOfPropertyChange(() => IsOkButtonVisible);
 		}
+	}
 
-		/// <summary>
-		///     Return value of the MessageBox.
-		/// </summary>
-		public MessageBoxResult Result { get; private set; }
+	/// <summary>
+	///     Return value of the MessageBox.
+	/// </summary>
+	public MessageBoxResult Result { get; private set; }
 
-		/// <summary>
-		///     Manage click of No button.
-		/// </summary>
-		public void No()
-		{
-			Result = MessageBoxResult.No;
-			TryClose(false);
-		}
+	/// <summary>
+	///     Manage click of No button.
+	/// </summary>
+	public void No()
+	{
+		Result = MessageBoxResult.No;
+		TryClose(false);
+	}
 
-		/// <summary>
-		///     Manage click of Yes button.
-		/// </summary>
-		public void Yes()
-		{
-			Result = MessageBoxResult.Yes;
-			TryClose(true);
-		}
+	/// <summary>
+	///     Manage click of Yes button.
+	/// </summary>
+	public void Yes()
+	{
+		Result = MessageBoxResult.Yes;
+		TryClose(true);
+	}
 
-		/// <summary>
-		///     Manage click of Cancel button.
-		/// </summary>
-		public void Cancel()
-		{
-			Result = MessageBoxResult.Cancel;
-			TryClose(false);
-		}
+	/// <summary>
+	///     Manage click of Cancel button.
+	/// </summary>
+	public void Cancel()
+	{
+		Result = MessageBoxResult.Cancel;
+		TryClose(false);
+	}
 
-		/// <summary>
-		///     Manage click of Ok button.
-		/// </summary>
-		public void Ok()
-		{
-			Result = MessageBoxResult.OK;
-			TryClose(true);
-		}
+	/// <summary>
+	///     Manage click of Ok button.
+	/// </summary>
+	public void Ok()
+	{
+		Result = MessageBoxResult.OK;
+		TryClose(true);
 	}
 }

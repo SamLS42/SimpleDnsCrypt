@@ -11,123 +11,105 @@ using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace SimpleDnsCrypt.Helper
+namespace SimpleDnsCrypt.Helper;
+
+public static class ApplicationUpdater
 {
-	public static class ApplicationUpdater
+	private static readonly ILog Log = LogManagerHelper.Factory();
+
+	/// <summary>
+	/// Check for a new version on the remote server (github.com).
+	/// </summary>
+	/// <param name="minUpdateType"></param>
+	/// <returns></returns>
+	public static async Task<RemoteUpdate> CheckForRemoteUpdateAsync(UpdateType minUpdateType = UpdateType.Stable)
 	{
-		private static readonly ILog Log = LogManagerHelper.Factory();
-
-		/// <summary>
-		/// Check for a new version on the remote server (github.com).
-		/// </summary>
-		/// <param name="minUpdateType"></param>
-		/// <returns></returns>
-		public static async Task<RemoteUpdate> CheckForRemoteUpdateAsync(UpdateType minUpdateType = UpdateType.Stable)
+		RemoteUpdate remoteUpdate = new();
+		try
 		{
-			var remoteUpdate = new RemoteUpdate();
-			try
+			System.Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+			remoteUpdate.CanUpdate = false;
+			string remoteUpdateFile = Environment.Is64BitProcess ? Global.ApplicationUpdateUri64 : Global.ApplicationUpdateUri;
+			byte[] remoteUpdateData = await DownloadRemoteUpdateFileAsync(remoteUpdateFile).ConfigureAwait(false);
+
+			if (remoteUpdateData != null)
 			{
-				var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+				using MemoryStream remoteUpdateDataStream = new(remoteUpdateData);
+				using StreamReader remoteUpdateDataStreamReader = new(remoteUpdateDataStream);
+				IDeserializer deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
+				remoteUpdate = deserializer.Deserialize<RemoteUpdate>(remoteUpdateDataStreamReader);
+			}
 
-				remoteUpdate.CanUpdate = false;
-				var remoteUpdateFile = Environment.Is64BitProcess ? Global.ApplicationUpdateUri64 : Global.ApplicationUpdateUri;
-				var remoteUpdateData = await DownloadRemoteUpdateFileAsync(remoteUpdateFile).ConfigureAwait(false);
-
-				if (remoteUpdateData != null)
+			if (remoteUpdate != null)
+			{
+				int status = remoteUpdate.Update.Version.CompareTo(currentVersion);
+				// The local version is newer as the remote version
+				if (status < 0)
 				{
-					using (var remoteUpdateDataStream = new MemoryStream(remoteUpdateData))
-					{
-						using (var remoteUpdateDataStreamReader = new StreamReader(remoteUpdateDataStream))
-						{
-							var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
-							remoteUpdate = deserializer.Deserialize<RemoteUpdate>(remoteUpdateDataStreamReader);
-						}
-					}
+					remoteUpdate.CanUpdate = false;
 				}
-
-				if (remoteUpdate != null)
+				//The local version is the same as the remote version
+				else if (status == 0)
 				{
-					var status = remoteUpdate.Update.Version.CompareTo(currentVersion);
-					// The local version is newer as the remote version
-					if (status < 0)
-					{
-						remoteUpdate.CanUpdate = false;
-					}
-					//The local version is the same as the remote version
-					else if (status == 0)
-					{
-						remoteUpdate.CanUpdate = false;
-					}
-					else
-					{
-						// the remote version is newer as the local version
-						if ((int)minUpdateType >= (int)remoteUpdate.Update.Type)
-						{
-							remoteUpdate.CanUpdate = true;
-						}
-						else
-						{
-							remoteUpdate.CanUpdate = false;
-						}
-					}
+					remoteUpdate.CanUpdate = false;
+				}
+				else
+				{
+					// the remote version is newer as the local version
+					remoteUpdate.CanUpdate = (int)minUpdateType >= (int)remoteUpdate.Update.Type;
 				}
 			}
-			catch (Exception exception)
-			{
-				Log.Error(exception);
-				remoteUpdate.CanUpdate = false;
-			}
-
-			return remoteUpdate;
 		}
-
-		private static async Task<byte[]> DownloadRemoteUpdateFileAsync(string remoteUpdateFile)
+		catch (Exception exception)
 		{
-			using (var client = new HttpClient())
-			{
-				var getDataTask = client.GetByteArrayAsync(remoteUpdateFile);
-				return await getDataTask.ConfigureAwait(false);
-			}
+			Log.Error(exception);
+			remoteUpdate.CanUpdate = false;
 		}
 
-		public static async Task<byte[]> DownloadRemoteInstallerAsync(Uri uri)
-		{
-			using (var client = new HttpClient())
-			{
-				var getDataTask = client.GetByteArrayAsync(uri);
-				return await getDataTask.ConfigureAwait(false);
-			}
-		}
-
-		public static async Task<string> DownloadRemoteSignatureAsync(Uri uri)
-		{
-			using (var client = new HttpClient())
-			{
-				var getDataTask = client.GetStringAsync(uri);
-				var resolverList = await getDataTask.ConfigureAwait(false);
-				return resolverList;
-			}
-		}
+		return remoteUpdate;
 	}
 
-	internal sealed class UriYamlTypeConverter : IYamlTypeConverter
+	private static async Task<byte[]> DownloadRemoteUpdateFileAsync(string remoteUpdateFile)
 	{
-		public bool Accepts(Type type)
-		{
-			return type == typeof(Uri);
-		}
+		using HttpClient client = new();
+		Task<byte[]> getDataTask = client.GetByteArrayAsync(remoteUpdateFile);
+		return await getDataTask.ConfigureAwait(false);
+	}
 
-		public object ReadYaml(IParser parser, Type type)
-		{
-			var value = ((Scalar)parser.Current).Value;
-			parser.MoveNext();
-			return new Uri(value);
-		}
+	public static async Task<byte[]> DownloadRemoteInstallerAsync(Uri uri)
+	{
+		using HttpClient client = new();
+		Task<byte[]> getDataTask = client.GetByteArrayAsync(uri);
+		return await getDataTask.ConfigureAwait(false);
+	}
 
-		public void WriteYaml(IEmitter emitter, object value, Type type)
-		{
-			var uri = (Uri)value;
-			emitter.Emit(new Scalar(null, null, uri.ToString(), ScalarStyle.Any, true, false));
-		}
+	public static async Task<string> DownloadRemoteSignatureAsync(Uri uri)
+	{
+		using HttpClient client = new();
+		Task<string> getDataTask = client.GetStringAsync(uri);
+		string resolverList = await getDataTask.ConfigureAwait(false);
+		return resolverList;
+	}
+}
+
+internal sealed class UriYamlTypeConverter : IYamlTypeConverter
+{
+	public bool Accepts(Type type)
+	{
+		return type == typeof(Uri);
+	}
+
+	public object ReadYaml(IParser parser, Type type)
+	{
+		string value = ((Scalar)parser.Current).Value;
+		parser.MoveNext();
+		return new Uri(value);
+	}
+
+	public void WriteYaml(IEmitter emitter, object value, Type type)
+	{
+		Uri uri = (Uri)value;
+		emitter.Emit(new Scalar(null, null, uri.ToString(), ScalarStyle.Any, true, false));
 	}
 }

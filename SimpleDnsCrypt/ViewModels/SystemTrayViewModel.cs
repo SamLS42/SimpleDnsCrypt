@@ -1,54 +1,42 @@
 ﻿using Caliburn.Micro;
 using System.Windows;
 
-namespace SimpleDnsCrypt.ViewModels
+namespace SimpleDnsCrypt.ViewModels;
+
+public class SystemTrayViewModel(IWindowManager windowManager, MainViewModel mainViewModel) : Screen
 {
-	public class SystemTrayViewModel : Screen
+	protected override void OnActivate()
 	{
-		private readonly IWindowManager _windowManager;
-		private readonly MainViewModel _mainViewModel;
-		private readonly IEventAggregator _events;
+		base.OnActivate();
 
-		public SystemTrayViewModel(IWindowManager windowManager, IEventAggregator events, MainViewModel mainViewModel)
+		NotifyOfPropertyChange(() => CanShowWindow);
+		NotifyOfPropertyChange(() => CanHideWindow);
+	}
+
+	public void ShowWindow()
+	{
+		if (!mainViewModel.IsActive)
 		{
-			_windowManager = windowManager;
-			_events = events;
-			_mainViewModel = mainViewModel;
+			windowManager.ShowWindow(mainViewModel);
 		}
+		NotifyOfPropertyChange(() => CanShowWindow);
+		NotifyOfPropertyChange(() => CanHideWindow);
+	}
 
-		protected override void OnActivate()
-		{
-			base.OnActivate();
+	public bool CanShowWindow => !mainViewModel.IsActive;
 
-			NotifyOfPropertyChange(() => CanShowWindow);
-			NotifyOfPropertyChange(() => CanHideWindow);
-		}
+	public void HideWindow()
+	{
+		mainViewModel.TryClose();
 
-		public void ShowWindow()
-		{
-			if (!_mainViewModel.IsActive)
-			{
-				_windowManager.ShowWindow(_mainViewModel);
-			}
-			NotifyOfPropertyChange(() => CanShowWindow);
-			NotifyOfPropertyChange(() => CanHideWindow);
-		}
+		NotifyOfPropertyChange(() => CanShowWindow);
+		NotifyOfPropertyChange(() => CanHideWindow);
+	}
 
-		public bool CanShowWindow => !_mainViewModel.IsActive;
+	public bool CanHideWindow => mainViewModel.IsActive;
 
-		public void HideWindow()
-		{
-			_mainViewModel.TryClose();
-
-			NotifyOfPropertyChange(() => CanShowWindow);
-			NotifyOfPropertyChange(() => CanHideWindow);
-		}
-
-		public bool CanHideWindow => _mainViewModel.IsActive;
-
-		public void ExitApplication()
-		{
-			Application.Current.Shutdown();
-		}
+	public void ExitApplication()
+	{
+		Application.Current.Shutdown();
 	}
 }

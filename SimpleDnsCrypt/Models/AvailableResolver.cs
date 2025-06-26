@@ -1,175 +1,164 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Newtonsoft.Json;
 using SimpleDnsCrypt.Helper;
+using System.Collections.Generic;
+using System.Threading;
 
-namespace SimpleDnsCrypt.Models
+namespace SimpleDnsCrypt.Models;
+
+public enum RouteState
 {
-	public enum RouteState
+	Empty = 0,
+	Invalid = 1,
+	Valid = 2
+}
+
+public class AvailableResolver : PropertyChangedBase
+{
+	private bool _isInServerList;
+	private string _name;
+	private string _protocol;
+	private bool _dnsSec;
+	private bool _noLog;
+	private bool _noFilter;
+	private string _description;
+	private bool _ipv6;
+	private List<int> _ports;
+	private Route _route;
+	private RouteState _routeState;
+
+	[JsonIgnore]
+	public string ToolTip => $"Ports: {string.Join(",", _ports.ToArray())}";
+	[JsonIgnore]
+	public string DisplayName => $"{_name} ({_protocol})";
+
+	[JsonIgnore]
+	public bool IsInServerList
 	{
-		Empty = 0,
-		Invalid = 1,
-		Valid = 2
+		get => _isInServerList;
+		set
+		{
+			_isInServerList = value;
+			NotifyOfPropertyChange(() => IsInServerList);
+		}
 	}
 
-	public class AvailableResolver : PropertyChangedBase
+	[JsonIgnore]
+	public RouteState RouteState
 	{
-		private bool _isInServerList;
-		private string _name;
-		private string _protocol;
-		private bool _dnsSec;
-		private bool _noLog;
-		private bool _noFilter;
-		private string _description;
-		private bool _ipv6;
-		private List<int> _ports;
-		private Route _route;
-		private RouteState _routeState;
-
-		[JsonIgnore]
-		public string ToolTip => $"Ports: {string.Join(",", _ports.ToArray())}";
-		[JsonIgnore]
-		public string DisplayName => $"{_name} ({_protocol})";
-
-		[JsonIgnore]
-		public bool IsInServerList
+		get => _routeState;
+		set
 		{
-			get => _isInServerList;
-			set
-			{
-				_isInServerList = value;
-				NotifyOfPropertyChange(() => IsInServerList);
-			}
+			_routeState = value;
+			NotifyOfPropertyChange(() => RouteState);
 		}
+	}
 
-		[JsonIgnore]
-		public RouteState RouteState
+	[JsonIgnore]
+	public string RouteStateText => RouteState switch
+	{
+		RouteState.Empty => LocalizationEx.GetUiString("configure_routes_add", Thread.CurrentThread.CurrentCulture),
+		RouteState.Invalid => LocalizationEx.GetUiString("configure_routes_invalid", Thread.CurrentThread.CurrentCulture),
+		RouteState.Valid => LocalizationEx.GetUiString("configure_routes_change", Thread.CurrentThread.CurrentCulture),
+		_ => LocalizationEx.GetUiString("configure_routes_unknown", Thread.CurrentThread.CurrentCulture),
+	};
+
+	[JsonIgnore]
+	public Route Route
+	{
+		get => _route;
+		set
 		{
-			get => _routeState;
-			set
-			{
-				_routeState = value;
-				NotifyOfPropertyChange(() => RouteState);
-			}
+			_route = value;
+			NotifyOfPropertyChange(() => Route);
 		}
+	}
 
-		[JsonIgnore]
-		public string RouteStateText
+	[JsonProperty("name")]
+	public string Name
+	{
+		get => _name;
+		set
 		{
-			get
-			{
-				switch (RouteState)
-				{
-					case RouteState.Empty:
-						return LocalizationEx.GetUiString("configure_routes_add", Thread.CurrentThread.CurrentCulture);
-					case RouteState.Invalid:
-						return LocalizationEx.GetUiString("configure_routes_invalid", Thread.CurrentThread.CurrentCulture);
-					case RouteState.Valid:
-						return LocalizationEx.GetUiString("configure_routes_change", Thread.CurrentThread.CurrentCulture);
-					default:
-						return LocalizationEx.GetUiString("configure_routes_unknown", Thread.CurrentThread.CurrentCulture);
-				}
-			}
+			_name = value;
+			NotifyOfPropertyChange(() => Name);
 		}
+	}
 
-		[JsonIgnore]
-		public Route Route
+	[JsonProperty("proto")]
+	public string Protocol
+	{
+		get => _protocol;
+		set
 		{
-			get => _route;
-			set
-			{
-				_route = value;
-				NotifyOfPropertyChange(() => Route);
-			}
+			_protocol = value;
+			NotifyOfPropertyChange(() => Protocol);
 		}
+	}
 
-		[JsonProperty("name")]
-		public string Name
+	[JsonProperty("ports")]
+	public List<int> Ports
+	{
+		get => _ports;
+		set
 		{
-			get => _name;
-			set
-			{
-				_name = value;
-				NotifyOfPropertyChange(() => Name);
-			}
+			_ports = value;
+			NotifyOfPropertyChange(() => Ports);
 		}
+	}
 
-		[JsonProperty("proto")]
-		public string Protocol
+	[JsonProperty("ipv6")]
+	public bool Ipv6
+	{
+		get => _ipv6;
+		set
 		{
-			get => _protocol;
-			set
-			{
-				_protocol = value;
-				NotifyOfPropertyChange(() => Protocol);
-			}
+			_ipv6 = value;
+			NotifyOfPropertyChange(() => Ipv6);
 		}
+	}
 
-		[JsonProperty("ports")]
-		public List<int> Ports
+	[JsonProperty("dnssec")]
+	public bool DnsSec
+	{
+		get => _dnsSec;
+		set
 		{
-			get => _ports;
-			set
-			{
-				_ports = value;
-				NotifyOfPropertyChange(() => Ports);
-			}
+			_dnsSec = value;
+			NotifyOfPropertyChange(() => DnsSec);
 		}
+	}
 
-		[JsonProperty("ipv6")]
-		public bool Ipv6
+	[JsonProperty("nolog")]
+	public bool NoLog
+	{
+		get => _noLog;
+		set
 		{
-			get => _ipv6;
-			set
-			{
-				_ipv6 = value;
-				NotifyOfPropertyChange(() => Ipv6);
-			}
+			_noLog = value;
+			NotifyOfPropertyChange(() => NoLog);
 		}
+	}
 
-		[JsonProperty("dnssec")]
-		public bool DnsSec
+	[JsonProperty("nofilter")]
+	public bool NoFilter
+	{
+		get => _noFilter;
+		set
 		{
-			get => _dnsSec;
-			set
-			{
-				_dnsSec = value;
-				NotifyOfPropertyChange(() => DnsSec);
-			}
+			_noFilter = value;
+			NotifyOfPropertyChange(() => NoFilter);
 		}
+	}
 
-		[JsonProperty("nolog")]
-		public bool NoLog
+	[JsonProperty("description")]
+	public string Description
+	{
+		get => _description;
+		set
 		{
-			get => _noLog;
-			set
-			{
-				_noLog = value;
-				NotifyOfPropertyChange(() => NoLog);
-			}
-		}
-
-		[JsonProperty("nofilter")]
-		public bool NoFilter
-		{
-			get => _noFilter;
-			set
-			{
-				_noFilter = value;
-				NotifyOfPropertyChange(() => NoFilter);
-			}
-		}
-
-		[JsonProperty("description")]
-		public string Description
-		{
-			get => _description;
-			set
-			{
-				_description = value;
-				NotifyOfPropertyChange(() => Description);
-			}
+			_description = value;
+			NotifyOfPropertyChange(() => Description);
 		}
 	}
 }

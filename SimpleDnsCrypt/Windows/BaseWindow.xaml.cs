@@ -1,10 +1,9 @@
-﻿namespace SimpleDnsCrypt.Windows
+﻿namespace SimpleDnsCrypt.Windows;
+
+public partial class BaseWindow
 {
-	public partial class BaseWindow
+	public BaseWindow()
 	{
-		public BaseWindow()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
 	}
 }

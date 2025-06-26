@@ -5,26 +5,26 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 
-namespace SimpleDnsCrypt.Helper
+namespace SimpleDnsCrypt.Helper;
+
+public static class EnumHelper
 {
-	public static class EnumHelper
+	public static string Description(this Enum eValue)
 	{
-		public static string Description(this Enum eValue)
+		object[] nAttributes = eValue.GetType().GetField(eValue.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
+		if (nAttributes.Any())
 		{
-			var nAttributes = eValue.GetType().GetField(eValue.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
-			if (nAttributes.Any())
-				return (nAttributes.First() as DescriptionAttribute).Description;
-
-			var oTi = CultureInfo.CurrentCulture.TextInfo;
-			return oTi.ToTitleCase(oTi.ToLower(eValue.ToString()));
+			return (nAttributes.First() as DescriptionAttribute).Description;
 		}
 
-		public static IEnumerable<ValueDescription> GetAllValuesAndDescriptions(Type t)
-		{
-			if (!t.IsEnum)
-				throw new ArgumentException("t must be an enum type");
+		TextInfo oTi = CultureInfo.CurrentCulture.TextInfo;
+		return oTi.ToTitleCase(oTi.ToLower(eValue.ToString()));
+	}
 
-			return Enum.GetValues(t).Cast<Enum>().Select((e) => new ValueDescription() { Value = e, Description = e.Description() }).ToList();
-		}
+	public static IEnumerable<ValueDescription> GetAllValuesAndDescriptions(Type t)
+	{
+		return !t.IsEnum
+			? throw new ArgumentException("t must be an enum type")
+			: (IEnumerable<ValueDescription>)[.. Enum.GetValues(t).Cast<Enum>().Select((e) => new ValueDescription() { Value = e, Description = e.Description() })];
 	}
 }

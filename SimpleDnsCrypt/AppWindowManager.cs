@@ -3,86 +3,68 @@ using SimpleDnsCrypt.ViewModels;
 using SimpleDnsCrypt.Windows;
 using System.Windows;
 
-namespace SimpleDnsCrypt
+namespace SimpleDnsCrypt;
+
+/// <summary>
+/// Provides a window manager for the application
+/// </summary>
+public class AppWindowManager : WindowManager
 {
 	/// <summary>
-	/// Provides a window manager for the application
+	/// Selects a base window depending on the view, model and dialog options
 	/// </summary>
-	public class AppWindowManager : WindowManager
+	/// <param name="model">The model</param>
+	/// <param name="view">The view</param>
+	/// <param name="isDialog">Whether it's a dialog</param>
+	/// <returns>The proper window</returns>
+	protected override Window EnsureWindow(object model, object view, bool isDialog)
 	{
-		/// <summary>
-		/// Selects a base window depending on the view, model and dialog options
-		/// </summary>
-		/// <param name="model">The model</param>
-		/// <param name="view">The view</param>
-		/// <param name="isDialog">Whether it's a dialog</param>
-		/// <returns>The proper window</returns>
-		protected override Window EnsureWindow(object model, object view, bool isDialog)
+		Window window = view as BaseWindow;
+
+		if (window == null)
 		{
-			Window window = view as BaseWindow;
-
-			if (window == null)
-			{
-				if (isDialog)
-				{
-					if (model.GetType() == typeof(LoaderViewModel))
+			window = isDialog
+				? model.GetType() == typeof(LoaderViewModel)
+					? new SplashDialogWindow
 					{
-						window = new SplashDialogWindow
+						Content = view,
+						SizeToContent = SizeToContent.WidthAndHeight
+					}
+					: model.GetType() == typeof(MetroMessageBoxViewModel)
+						? new BaseMessageDialogWindow
 						{
 							Content = view,
 							SizeToContent = SizeToContent.WidthAndHeight
-						};
-					}
-					else if (model.GetType() == typeof(MetroMessageBoxViewModel))
-					{
-						window = new BaseMessageDialogWindow
+						}
+						: new BaseDialogWindow
 						{
 							Content = view,
 							SizeToContent = SizeToContent.WidthAndHeight
-						};
-					}
-					else
+						}
+				: model.GetType() == typeof(SystemTrayViewModel)
+					? new BaseTrayWindow
 					{
-						window = new BaseDialogWindow
-						{
-							Content = view,
-							SizeToContent = SizeToContent.WidthAndHeight
-						};
+						Content = view,
+						ResizeMode = ResizeMode.NoResize,
+						SizeToContent = SizeToContent.Manual
 					}
-				}
-				else
-				{
-					if (model.GetType() == typeof(SystemTrayViewModel))
+					: new BaseWindow
 					{
-						window = new BaseTrayWindow
-						{
-							Content = view,
-							ResizeMode = ResizeMode.NoResize,
-							SizeToContent = SizeToContent.Manual
-						};
-					}
-					else
-					{
-						window = new BaseWindow
-						{
-							Content = view,
-							ResizeMode = ResizeMode.CanResizeWithGrip,
-							SizeToContent = SizeToContent.Manual
-						};
-					}
-				}
-				window.SetValue(View.IsGeneratedProperty, true);
-			}
-			else
-			{
-				Window owner = InferOwnerOf(window);
-				if (owner != null && isDialog)
-				{
-					window.Owner = owner;
-				}
-			}
-
-			return window;
+						Content = view,
+						ResizeMode = ResizeMode.CanResizeWithGrip,
+						SizeToContent = SizeToContent.Manual
+					};
+			window.SetValue(View.IsGeneratedProperty, true);
 		}
+		else
+		{
+			Window owner = InferOwnerOf(window);
+			if (owner != null && isDialog)
+			{
+				window.Owner = owner;
+			}
+		}
+
+		return window;
 	}
 }

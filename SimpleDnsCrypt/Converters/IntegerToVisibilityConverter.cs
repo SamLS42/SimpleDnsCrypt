@@ -3,25 +3,24 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SimpleDnsCrypt.Converters
-{
-	public class IntegerToVisibilityConverter : IValueConverter
-	{
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			try
-			{
-				return (int)value > 0 ? Visibility.Collapsed : Visibility.Visible;
-			}
-			catch
-			{
-				return Visibility.Collapsed;
-			}
-		}
+namespace SimpleDnsCrypt.Converters;
 
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+public class IntegerToVisibilityConverter : IValueConverter
+{
+	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		try
 		{
-			throw new NotImplementedException();
+			return (int)value > 0 ? Visibility.Collapsed : Visibility.Visible;
 		}
+		catch
+		{
+			return Visibility.Collapsed;
+		}
+	}
+
+	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		throw new NotImplementedException();
 	}
 }

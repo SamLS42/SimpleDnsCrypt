@@ -3,35 +3,27 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SimpleDnsCrypt.Converters
-{
-	/// <summary>
-	///     Enum to color converter.
-	/// </summary>
-	[ValueConversion(typeof(BoxType), typeof(string))]
-	public class MessageBoxTypeToColor : IValueConverter
-	{
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			switch ((BoxType)value)
-			{
-				case BoxType.Error:
-					//red
-					return "#CCC1170F";
-				case BoxType.Warning:
-					//orange
-					return "#CCEA6A12";
-				case BoxType.Default:
-					//green
-					return "#CC60A917";
-				default:
-					return null;
-			}
-		}
+namespace SimpleDnsCrypt.Converters;
 
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+/// <summary>
+///     Enum to color converter.
+/// </summary>
+[ValueConversion(typeof(BoxType), typeof(string))]
+public class MessageBoxTypeToColor : IValueConverter
+{
+	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		return (BoxType)value switch
 		{
-			throw new NotImplementedException();
-		}
+			BoxType.Error => "#CCC1170F",//red
+			BoxType.Warning => "#CCEA6A12",//orange
+			BoxType.Default => "#CC60A917",//green
+			_ => null,
+		};
+	}
+
+	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+	{
+		throw new NotImplementedException();
 	}
 }
