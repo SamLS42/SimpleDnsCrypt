@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Web;
 
 namespace SimpleDnsCrypt.Extensions
 {
@@ -13,30 +12,18 @@ namespace SimpleDnsCrypt.Extensions
 		/// <returns></returns>
 		public static string ToBase64Url(this string str)
 		{
-			if (str == null)
-				throw new ArgumentNullException(nameof(str));
-			var customBase64 = HttpServerUtility.UrlTokenEncode(Encoding.UTF8.GetBytes(str));
-			return customBase64.Length == 0 ? customBase64 : customBase64.Substring(0, customBase64.Length - 1);
+			return str == null ? throw new ArgumentNullException(nameof(str)) : Base64UrlEncoder.Encode(Encoding.UTF8.GetBytes(str));
 		}
 
-		public static string FromBase64UrlToString(this string rfc4648)
+		public static string FromBase64UrlToString(this string base64Url)
 		{
-			if (rfc4648.Length % 4 != 0)
-				rfc4648 += (4 - rfc4648.Length % 4);
-			else
-				rfc4648 += 0;
-
-			return Encoding.UTF8.GetString(HttpServerUtility.UrlTokenDecode(rfc4648) ?? throw new InvalidOperationException());
+			byte[] bytes = Base64UrlEncoder.DecodeBytes(base64Url);
+			return Encoding.UTF8.GetString(bytes);
 		}
 
-		public static byte[] FromBase64Url(this string rfc4648)
+		public static byte[] FromBase64Url(this string base64Url)
 		{
-			if (rfc4648.Length % 4 != 0)
-				rfc4648 += (4 - rfc4648.Length % 4);
-			else
-				rfc4648 += 0;
-
-			return HttpServerUtility.UrlTokenDecode(rfc4648) ?? throw new InvalidOperationException();
+			return Base64UrlEncoder.DecodeBytes(base64Url);
 		}
 	}
 }

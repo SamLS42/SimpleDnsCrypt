@@ -2,18 +2,14 @@
 using DnsCrypt.Blacklist;
 using MahApps.Metro.Controls;
 using MahApps.Metro.SimpleChildWindow;
+using Microsoft.Win32;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Helper;
 using SimpleDnsCrypt.Models;
 using SimpleDnsCrypt.Windows;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Application = System.Windows.Application;
 using Screen = Caliburn.Micro.Screen;
 
@@ -30,9 +26,6 @@ namespace SimpleDnsCrypt.ViewModels
 
 		private bool _isCloakingEnabled;
 		private bool _isForwardingEnabled;
-		private Rule _selectedCloakingEntry;
-		private Rule _selectedForwardingEntry;
-
 		private string _cloakingRulesFile;
 		private string _forwardingRulesFile;
 
@@ -47,8 +40,8 @@ namespace SimpleDnsCrypt.ViewModels
 			_windowManager = windowManager;
 			_events = events;
 			_events.Subscribe(this);
-			_cloakingRules = new BindableCollection<Rule>();
-			_forwardingRules = new BindableCollection<Rule>();
+			_cloakingRules = [];
+			_forwardingRules = [];
 
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.CloakingRulesFile))
 			{
@@ -85,7 +78,7 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var file = _forwardingRulesFile;
+				string file = _forwardingRulesFile;
 				if (!string.IsNullOrEmpty(readFromPath))
 				{
 					file = readFromPath;
@@ -94,18 +87,18 @@ namespace SimpleDnsCrypt.ViewModels
 				if (string.IsNullOrEmpty(file)) return;
 
 				if (!File.Exists(file)) return;
-				var lines = await DomainBlacklist.ReadAllLinesAsync(file);
+				string[] lines = await DomainBlacklist.ReadAllLinesAsync(file);
 				if (lines.Length > 0)
 				{
-					var tmpRules = new List<Rule>();
-					foreach (var line in lines)
+					List<Rule> tmpRules = [];
+					foreach (string? line in lines)
 					{
 						if (line.StartsWith("#")) continue;
-						var tmp = line.ToLower().Trim();
+						string tmp = line.ToLower().Trim();
 						if (string.IsNullOrEmpty(tmp)) continue;
-						var lineParts = tmp.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+						string[] lineParts = tmp.Split([' '], StringSplitOptions.RemoveEmptyEntries);
 						if (lineParts.Length != 2) continue;
-						var rule = new Rule
+						Rule rule = new()
 						{
 							Key = lineParts[0].Trim(),
 							Value = lineParts[1].Trim()
@@ -115,7 +108,7 @@ namespace SimpleDnsCrypt.ViewModels
 					}
 
 					ForwardingRules.Clear();
-					var orderedTmpRules = tmpRules.OrderBy(r => r.Key);
+					IOrderedEnumerable<Rule> orderedTmpRules = tmpRules.OrderBy(r => r.Key);
 					ForwardingRules = new BindableCollection<Rule>(orderedTmpRules);
 				}
 			}
@@ -138,10 +131,10 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public Rule SelectedForwardingEntry
 		{
-			get => _selectedForwardingEntry;
+			get;
 			set
 			{
-				_selectedForwardingEntry = value;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedForwardingEntry);
 			}
 		}
@@ -178,7 +171,7 @@ namespace SimpleDnsCrypt.ViewModels
 				{
 					if (dnscryptProxyConfiguration == null) return;
 
-					var saveAndRestartService = false;
+					bool saveAndRestartService = false;
 
 					if (dnscryptProxyConfiguration.forwarding_rules == null)
 					{
@@ -247,8 +240,8 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				if (_selectedForwardingEntry == null) return;
-				ForwardingRules.Remove(_selectedForwardingEntry);
+				if (SelectedForwardingEntry == null) return;
+				ForwardingRules.Remove(SelectedForwardingEntry);
 				SaveForwardingRulesToFile();
 			}
 			catch (Exception exception)
@@ -261,20 +254,20 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-				var addRuleWindow = new AddRuleWindow(RuleWindowType.Forwarding);
-				var addRuleWindowResult = await metroWindow.ShowChildWindowAsync<AddRuleWindowResult>(addRuleWindow);
+				MetroWindow? metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+				AddRuleWindow addRuleWindow = new(RuleWindowType.Forwarding);
+				AddRuleWindowResult addRuleWindowResult = await metroWindow.ShowChildWindowAsync<AddRuleWindowResult>(addRuleWindow);
 
 				if (!addRuleWindowResult.Result) return;
 				if (string.IsNullOrEmpty(addRuleWindowResult.RuleKey) ||
 					string.IsNullOrEmpty(addRuleWindowResult.RuleValue)) return;
-				var tmp = new Rule
+				Rule tmp = new()
 				{
 					Key = addRuleWindowResult.RuleKey,
 					Value = addRuleWindowResult.RuleValue
 				};
 				_forwardingRules.Add(tmp);
-				var orderedTmpRules = _forwardingRules.OrderBy(r => r.Key);
+				IOrderedEnumerable<Rule> orderedTmpRules = _forwardingRules.OrderBy(r => r.Key);
 				ForwardingRules = new BindableCollection<Rule>(orderedTmpRules);
 				SaveForwardingRulesToFile();
 			}
@@ -288,14 +281,14 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var saveForwardingFileDialog = new SaveFileDialog
+				SaveFileDialog saveForwardingFileDialog = new()
 				{
 					RestoreDirectory = true,
 					AddExtension = true,
 					DefaultExt = ".txt"
 				};
-				var result = saveForwardingFileDialog.ShowDialog();
-				if (result != DialogResult.OK) return;
+				bool? result = saveForwardingFileDialog.ShowDialog();
+				if (result != true) return;
 				SaveForwardingRulesToFile(saveForwardingFileDialog.FileName);
 			}
 			catch (Exception exception)
@@ -308,13 +301,13 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var openForwardingFileDialog = new OpenFileDialog
+				OpenFileDialog openForwardingFileDialog = new()
 				{
 					Multiselect = false,
 					RestoreDirectory = true
 				};
-				var result = openForwardingFileDialog.ShowDialog();
-				if (result != DialogResult.OK) return;
+				bool? result = openForwardingFileDialog.ShowDialog();
+				if (result != true) return;
 				await ReadForwardingRulesFromFile(openForwardingFileDialog.FileName);
 				SaveForwardingRulesToFile();
 			}
@@ -326,28 +319,28 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public void ChangeForwardingRulesFile()
 		{
-			try
-			{
-				var forwardingFolderDialog = new FolderBrowserDialog
-				{
-					ShowNewFolderButton = true
-				};
-				if (!string.IsNullOrEmpty(_forwardingRulesFile))
-				{
-					forwardingFolderDialog.SelectedPath = Path.GetDirectoryName(_forwardingRulesFile);
-				}
+			//try
+			//{
+			//	var forwardingFolderDialog = new FolderBrowserDialog
+			//	{
+			//		ShowNewFolderButton = true
+			//	};
+			//	if (!string.IsNullOrEmpty(_forwardingRulesFile))
+			//	{
+			//		forwardingFolderDialog.SelectedPath = Path.GetDirectoryName(_forwardingRulesFile);
+			//	}
 
-				var result = forwardingFolderDialog.ShowDialog();
-				if (result == DialogResult.OK)
-				{
-					ForwardingRulesFile = Path.Combine(forwardingFolderDialog.SelectedPath, Global.ForwardingRulesFileName);
-					SaveForwardingRulesToFile();
-				}
-			}
-			catch (Exception exception)
-			{
-				Log.Error(exception);
-			}
+			//	var result = forwardingFolderDialog.ShowDialog();
+			//	if (result == true)
+			//	{
+			//		ForwardingRulesFile = Path.Combine(forwardingFolderDialog.SelectedPath, Global.ForwardingRulesFileName);
+			//		SaveForwardingRulesToFile();
+			//	}
+			//}
+			//catch (Exception exception)
+			//{
+			//	Log.Error(exception);
+			//}
 		}
 
 		private int LongestForwardingKey => this._forwardingRules.Max(z => z.Key.Length);
@@ -356,7 +349,7 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var file = _forwardingRulesFile;
+				string file = _forwardingRulesFile;
 				if (!string.IsNullOrEmpty(saveToPath))
 				{
 					file = saveToPath;
@@ -364,18 +357,18 @@ namespace SimpleDnsCrypt.ViewModels
 
 				if (string.IsNullOrEmpty(file)) return;
 				const int extraSpace = 1;
-				var lines = new List<string>();
-				foreach (var rule in _forwardingRules)
+				List<string> lines = [];
+				foreach (Rule rule in _forwardingRules)
 				{
-					var spaceCount = LongestForwardingKey - rule.Key.Length;
-					var sb = new StringBuilder();
+					int spaceCount = LongestForwardingKey - rule.Key.Length;
+					StringBuilder sb = new();
 					sb.Append(rule.Key);
 					sb.Append(' ', spaceCount + extraSpace);
 					sb.Append(rule.Value);
 					lines.Add(sb.ToString());
 				}
 
-				var orderedTmpRules = lines.OrderBy(r => r);
+				IOrderedEnumerable<string> orderedTmpRules = lines.OrderBy(r => r);
 				File.WriteAllLines(file, orderedTmpRules, Encoding.UTF8);
 			}
 			catch (Exception exception)
@@ -392,7 +385,7 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var file = _cloakingRulesFile;
+				string file = _cloakingRulesFile;
 				if (!string.IsNullOrEmpty(readFromPath))
 				{
 					file = readFromPath;
@@ -401,18 +394,18 @@ namespace SimpleDnsCrypt.ViewModels
 				if (string.IsNullOrEmpty(file)) return;
 
 				if (!File.Exists(file)) return;
-				var lines = await DomainBlacklist.ReadAllLinesAsync(file);
+				string[] lines = await DomainBlacklist.ReadAllLinesAsync(file);
 				if (lines.Length > 0)
 				{
-					var tmpRules = new List<Rule>();
-					foreach (var line in lines)
+					List<Rule> tmpRules = [];
+					foreach (string? line in lines)
 					{
 						if (line.StartsWith("#")) continue;
-						var tmp = line.ToLower().Trim();
+						string tmp = line.ToLower().Trim();
 						if (string.IsNullOrEmpty(tmp)) continue;
-						var lineParts = tmp.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+						string[] lineParts = tmp.Split([' '], StringSplitOptions.RemoveEmptyEntries);
 						if (lineParts.Length != 2) continue;
-						var rule = new Rule
+						Rule rule = new()
 						{
 							Key = lineParts[0].Trim(),
 							Value = lineParts[1].Trim()
@@ -422,7 +415,7 @@ namespace SimpleDnsCrypt.ViewModels
 					}
 
 					CloakingRules.Clear();
-					var orderedTmpRules = tmpRules.OrderBy(r => r.Key);
+					IOrderedEnumerable<Rule> orderedTmpRules = tmpRules.OrderBy(r => r.Key);
 					CloakingRules = new BindableCollection<Rule>(orderedTmpRules);
 				}
 			}
@@ -438,7 +431,7 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var file = _cloakingRulesFile;
+				string file = _cloakingRulesFile;
 				if (!string.IsNullOrEmpty(saveToPath))
 				{
 					file = saveToPath;
@@ -446,18 +439,18 @@ namespace SimpleDnsCrypt.ViewModels
 
 				if (string.IsNullOrEmpty(file)) return;
 				const int extraSpace = 1;
-				var lines = new List<string>();
-				foreach (var rule in _cloakingRules)
+				List<string> lines = [];
+				foreach (Rule rule in _cloakingRules)
 				{
-					var spaceCount = LongestCloakingKey - rule.Key.Length;
-					var sb = new StringBuilder();
+					int spaceCount = LongestCloakingKey - rule.Key.Length;
+					StringBuilder sb = new();
 					sb.Append(rule.Key);
 					sb.Append(' ', spaceCount + extraSpace);
 					sb.Append(rule.Value);
 					lines.Add(sb.ToString());
 				}
 
-				var orderedTmpRules = lines.OrderBy(r => r);
+				IOrderedEnumerable<string> orderedTmpRules = lines.OrderBy(r => r);
 				File.WriteAllLines(file, orderedTmpRules, Encoding.UTF8);
 			}
 			catch (Exception exception)
@@ -503,36 +496,36 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public void ChangeCloakingRulesFile()
 		{
-			try
-			{
-				var cloakingFolderDialog = new FolderBrowserDialog
-				{
-					ShowNewFolderButton = true
-				};
-				if (!string.IsNullOrEmpty(_cloakingRulesFile))
-				{
-					cloakingFolderDialog.SelectedPath = Path.GetDirectoryName(_cloakingRulesFile);
-				}
+			//try
+			//{
+			//	var cloakingFolderDialog = new FolderBrowserDialog
+			//	{
+			//		ShowNewFolderButton = true
+			//	};
+			//	if (!string.IsNullOrEmpty(_cloakingRulesFile))
+			//	{
+			//		cloakingFolderDialog.SelectedPath = Path.GetDirectoryName(_cloakingRulesFile);
+			//	}
 
-				var result = cloakingFolderDialog.ShowDialog();
-				if (result == DialogResult.OK)
-				{
-					CloakingRulesFile = Path.Combine(cloakingFolderDialog.SelectedPath, Global.CloakingRulesFileName);
-					SaveCloakingRulesToFile();
-				}
-			}
-			catch (Exception exception)
-			{
-				Log.Error(exception);
-			}
+			//	var result = cloakingFolderDialog.ShowDialog();
+			//	if (result == true)
+			//	{
+			//		CloakingRulesFile = Path.Combine(cloakingFolderDialog.SelectedPath, Global.CloakingRulesFileName);
+			//		SaveCloakingRulesToFile();
+			//	}
+			//}
+			//catch (Exception exception)
+			//{
+			//	Log.Error(exception);
+			//}
 		}
 
 		public Rule SelectedCloakingEntry
 		{
-			get => _selectedCloakingEntry;
+			get;
 			set
 			{
-				_selectedCloakingEntry = value;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedCloakingEntry);
 			}
 		}
@@ -541,8 +534,8 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				if (_selectedCloakingEntry == null) return;
-				CloakingRules.Remove(_selectedCloakingEntry);
+				if (SelectedCloakingEntry == null) return;
+				CloakingRules.Remove(SelectedCloakingEntry);
 				SaveCloakingRulesToFile();
 			}
 			catch (Exception exception)
@@ -555,20 +548,20 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-				var addRuleWindow = new AddRuleWindow(RuleWindowType.Cloaking);
-				var addRuleWindowResult = await metroWindow.ShowChildWindowAsync<AddRuleWindowResult>(addRuleWindow);
+				MetroWindow? metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+				AddRuleWindow addRuleWindow = new(RuleWindowType.Cloaking);
+				AddRuleWindowResult addRuleWindowResult = await metroWindow.ShowChildWindowAsync<AddRuleWindowResult>(addRuleWindow);
 
 				if (!addRuleWindowResult.Result) return;
 				if (string.IsNullOrEmpty(addRuleWindowResult.RuleKey) ||
-				    string.IsNullOrEmpty(addRuleWindowResult.RuleValue)) return;
-				var tmp = new Rule
+					string.IsNullOrEmpty(addRuleWindowResult.RuleValue)) return;
+				Rule tmp = new()
 				{
 					Key = addRuleWindowResult.RuleKey,
 					Value = addRuleWindowResult.RuleValue
 				};
 				_cloakingRules.Add(tmp);
-				var orderedTmpRules = _cloakingRules.OrderBy(r => r.Key);
+				IOrderedEnumerable<Rule> orderedTmpRules = _cloakingRules.OrderBy(r => r.Key);
 				CloakingRules = new BindableCollection<Rule>(orderedTmpRules);
 				SaveCloakingRulesToFile();
 			}
@@ -582,14 +575,14 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var saveCloakingFileDialog = new SaveFileDialog
+				SaveFileDialog saveCloakingFileDialog = new()
 				{
 					RestoreDirectory = true,
 					AddExtension = true,
 					DefaultExt = ".txt"
 				};
-				var result = saveCloakingFileDialog.ShowDialog();
-				if (result != DialogResult.OK) return;
+				bool? result = saveCloakingFileDialog.ShowDialog();
+				if (result != true) return;
 				SaveCloakingRulesToFile(saveCloakingFileDialog.FileName);
 			}
 			catch (Exception exception)
@@ -602,13 +595,13 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var openCloakingFileDialog = new OpenFileDialog
+				OpenFileDialog openCloakingFileDialog = new()
 				{
 					Multiselect = false,
 					RestoreDirectory = true
 				};
-				var result = openCloakingFileDialog.ShowDialog();
-				if (result != DialogResult.OK) return;
+				bool? result = openCloakingFileDialog.ShowDialog();
+				if (result != true) return;
 				await ReadCloakingRulesFromFile(openCloakingFileDialog.FileName);
 				SaveCloakingRulesToFile();
 			}
@@ -627,7 +620,7 @@ namespace SimpleDnsCrypt.ViewModels
 				{
 					if (dnscryptProxyConfiguration == null) return;
 
-					var saveAndRestartService = false;
+					bool saveAndRestartService = false;
 
 					if (dnscryptProxyConfiguration.cloaking_rules == null)
 					{

@@ -1,21 +1,18 @@
-using System.Windows.Threading;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Threading;
-using System.Windows;
 using Caliburn.Micro;
 using SimpleDnsCrypt.Helper;
 using SimpleDnsCrypt.Logger;
 using SimpleDnsCrypt.ViewModels;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace SimpleDnsCrypt
 {
+
 	public class AppBootstrapper : BootstrapperBase
 	{
 		private CompositionContainer _container;
@@ -32,11 +29,12 @@ namespace SimpleDnsCrypt
 		{
 			try
 			{
+				List<Assembly> distinctAssemblies = [.. AssemblySource.Instance.Distinct()];
 				_container = new CompositionContainer(
-					new AggregateCatalog(AssemblySource.Instance.Select(x => new AssemblyCatalog(x))
+					new AggregateCatalog(distinctAssemblies.Select(x => new AssemblyCatalog(x))
 						.OfType<ComposablePartCatalog>())
 				);
-				var batch = new CompositionBatch();
+				CompositionBatch batch = new();
 				batch.AddExportedValue<IWindowManager>(new AppWindowManager());
 				batch.AddExportedValue<IEventAggregator>(new EventAggregator());
 				batch.AddExportedValue(_container);
@@ -50,8 +48,8 @@ namespace SimpleDnsCrypt
 
 		protected override object GetInstance(Type service, string key)
 		{
-			var contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(service) : key;
-			var exports = _container.GetExportedValues<object>(contract);
+			string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(service) : key;
+			IEnumerable<object> exports = _container.GetExportedValues<object>(contract);
 
 			if (exports.Any())
 			{
@@ -70,7 +68,7 @@ namespace SimpleDnsCrypt
 			_container.SatisfyImportsOnce(instance);
 		}
 
-		protected override void OnStartup(object sender, StartupEventArgs e)
+		protected override async void OnStartup(object sender, StartupEventArgs e)
 		{
 			try
 			{
@@ -79,23 +77,21 @@ namespace SimpleDnsCrypt
 
 				// prevent multiple instances
 				const string appName = "SimpleDnsCrypt";
-				_mutex = new Mutex(true, appName, out var createdNew);
+				_mutex = new Mutex(true, appName, out bool createdNew);
 
 				if (!createdNew)
 				{
 					Application.Current.Shutdown();
+					return;
 				}
 
-				if (e.Args.Length == 1)
+				if (e.Args.Length == 1 && e.Args[0].Equals("-debug"))
 				{
-					if (e.Args[0].Equals("-debug"))
-					{
-						LogMode.Debug = true;
-					}
+					LogMode.Debug = true;
 				}
 
-				var loader = _container.GetExportedValue<LoaderViewModel>();
-				var windowManager = IoC.Get<IWindowManager>();
+				LoaderViewModel loader = _container.GetExportedValue<LoaderViewModel>();
+				IWindowManager windowManager = IoC.Get<IWindowManager>();
 				windowManager.ShowDialog(loader);
 			}
 			catch (Exception exception)

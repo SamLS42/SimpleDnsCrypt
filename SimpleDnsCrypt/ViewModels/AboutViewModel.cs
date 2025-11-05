@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Caliburn.Micro;
+using SimpleDnsCrypt.Helper;
+using SimpleDnsCrypt.Models;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using SimpleDnsCrypt.Helper;
-using SimpleDnsCrypt.Models;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
 	[Export(typeof(AboutViewModel))]
 	public class AboutViewModel : Screen
 	{
-		private string _windowTitle;
-
 		private BindableCollection<License> _licenses;
-		private License _selectedLicense;
 
 		[ImportingConstructor]
 		public AboutViewModel()
@@ -59,8 +52,8 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				var tmpList = new List<License>
-				{
+				List<License> tmpList =
+				[
 					new License
 					{
 						LicenseHeaderText = "Simple DNSCrypt",
@@ -296,8 +289,8 @@ namespace SimpleDnsCrypt.ViewModels
 							LinkUri = new Uri("https://github.com/punker76/gong-wpf-dragdrop")
 						}
 					}
-				};
-				var orderedList = tmpList.OrderBy(l => l.LicenseHeaderText);
+				];
+				IOrderedEnumerable<License> orderedList = tmpList.OrderBy(l => l.LicenseHeaderText);
 				_licenses = new BindableCollection<License>(orderedList);
 			}
 			catch (Exception)
@@ -324,11 +317,11 @@ namespace SimpleDnsCrypt.ViewModels
 		/// </summary>
 		public License SelectedLicense
 		{
-			get => _selectedLicense;
+			get;
 			set
 			{
-				if (value.Equals(_selectedLicense)) return;
-				_selectedLicense = value;
+				if (value.Equals(field)) return;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedLicense);
 			}
 		}
@@ -338,10 +331,10 @@ namespace SimpleDnsCrypt.ViewModels
 		/// </summary>
 		public string WindowTitle
 		{
-			get => _windowTitle;
+			get;
 			set
 			{
-				_windowTitle = value;
+				field = value;
 				NotifyOfPropertyChange(() => WindowTitle);
 			}
 		}
@@ -356,11 +349,11 @@ namespace SimpleDnsCrypt.ViewModels
 			Stream stream = null;
 			try
 			{
-				var assembly = Assembly.GetExecutingAssembly();
+				Assembly assembly = Assembly.GetExecutingAssembly();
 				var resourceName = "SimpleDnsCrypt.Resources.Licenses." + licenseFileName;
 				stream = assembly.GetManifestResourceStream(resourceName);
 				if (stream != null)
-					using (var reader = new StreamReader(stream))
+					using (StreamReader reader = new(stream))
 					{
 						return await reader.ReadToEndAsync().ConfigureAwait(false);
 					}

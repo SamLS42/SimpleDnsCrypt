@@ -12,7 +12,7 @@ namespace SimpleDnsCrypt.Helper
 		public static string Description(this Enum eValue)
 		{
 			var nAttributes = eValue.GetType().GetField(eValue.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
-			if (nAttributes.Any())
+			if (nAttributes.Length != 0)
 				return (nAttributes.First() as DescriptionAttribute).Description;
 
 			var oTi = CultureInfo.CurrentCulture.TextInfo;

@@ -72,19 +72,19 @@ namespace SimpleDnsCrypt.Models
 				if (parts.Length != 8) return;
 				if (parts[0].StartsWith("time:"))
 				{
-					Date = UnixTimeStampToDateTime(Convert.ToDouble(parts[0].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1]));
+					Date = UnixTimeStampToDateTime(Convert.ToDouble(parts[0].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1]));
 				}
 				if (parts[1].StartsWith("host:"))
 				{
-					Address = parts[1].Split(new[] {':'}, 2)[1];
+					Address = parts[1].Split([':'], 2)[1];
 				}
 				if (parts[2].StartsWith("message:"))
 				{
-					Remote = parts[2].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
+					Remote = parts[2].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim();
 				}
 				if (parts[3].StartsWith("type:"))
 				{
-					if (Enum.TryParse(parts[3].Split(new[] {":"}, StringSplitOptions.RemoveEmptyEntries)[1].Trim(),
+					if (Enum.TryParse(parts[3].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim(),
 						out QueryLogLineType queryLogLineType))
 					{
 						Type = queryLogLineType;
@@ -92,7 +92,7 @@ namespace SimpleDnsCrypt.Models
 				}
 				if (parts[4].StartsWith("return:"))
 				{
-					if (Enum.TryParse(parts[4].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim(),
+					if (Enum.TryParse(parts[4].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim(),
 						out QueryLogReturnCode queryLogReturnCode))
 					{
 						ReturnCode = queryLogReturnCode;
@@ -104,15 +104,15 @@ namespace SimpleDnsCrypt.Models
 				}
 				if (parts[5].StartsWith("cached:"))
 				{
-					Cached = Convert.ToBoolean(Convert.ToInt16(parts[5].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim()));
+					Cached = Convert.ToBoolean(Convert.ToInt16(parts[5].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim()));
 				}
 				if (parts[6].StartsWith("duration:"))
 				{
-					Duration = Convert.ToInt64(parts[6].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim());
+					Duration = Convert.ToInt64(parts[6].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim());
 				}
 				if (parts[7].StartsWith("server:"))
 				{
-					Server = parts[7].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
+					Server = parts[7].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim();
 				}
 			}
 			catch (Exception exception)

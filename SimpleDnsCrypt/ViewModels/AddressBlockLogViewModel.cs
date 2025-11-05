@@ -3,6 +3,7 @@ using SimpleDnsCrypt.Helper;
 using SimpleDnsCrypt.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
@@ -13,9 +14,7 @@ namespace SimpleDnsCrypt.ViewModels
 		private readonly IEventAggregator _events;
 
 		private ObservableCollection<AddressBlockLogLine> _addressBlockLogLines;
-		private string _addressBlockLogFile;
 		private bool _isAddressBlockLogLogging;
-		private AddressBlockLogLine _selectedAddressBlockLogLine;
 
 		[ImportingConstructor]
 		public AddressBlockLogViewModel(IWindowManager windowManager, IEventAggregator events)
@@ -24,7 +23,7 @@ namespace SimpleDnsCrypt.ViewModels
 			_events = events;
 			_events.Subscribe(this);
 			_isAddressBlockLogLogging = false;
-			_addressBlockLogLines = new ObservableCollection<AddressBlockLogLine>();
+			_addressBlockLogLines = [];
 		}
 
 		private void AddLogLine(AddressBlockLogLine addressBlockLogLine)
@@ -53,21 +52,21 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public string AddressBlockLogFile
 		{
-			get => _addressBlockLogFile;
+			get;
 			set
 			{
-				if (value.Equals(_addressBlockLogFile)) return;
-				_addressBlockLogFile = value;
+				if (value.Equals(field)) return;
+				field = value;
 				NotifyOfPropertyChange(() => AddressBlockLogFile);
 			}
 		}
 
 		public AddressBlockLogLine SelectedAddressBlockLogLine
 		{
-			get => _selectedAddressBlockLogLine;
+			get;
 			set
 			{
-				_selectedAddressBlockLogLine = value;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedAddressBlockLogLine);
 			}
 		}
@@ -85,7 +84,7 @@ namespace SimpleDnsCrypt.ViewModels
 
 		private void AddressBlockLog(DnscryptProxyConfiguration dnscryptProxyConfiguration)
 		{
-			
+
 		}
 	}
 }

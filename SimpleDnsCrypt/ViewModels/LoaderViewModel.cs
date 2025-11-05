@@ -1,20 +1,18 @@
 ﻿using Caliburn.Micro;
 using minisign;
+using minisign.Models;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Helper;
 using SimpleDnsCrypt.Models;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using WPFLocalizeExtension.Engine;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
@@ -26,8 +24,6 @@ namespace SimpleDnsCrypt.ViewModels
 		private static readonly ILog Log = LogManagerHelper.Factory();
 		private readonly MainViewModel _mainViewModel;
 		private readonly SystemTrayViewModel _systemTrayViewModel;
-
-		private string _progressText;
 		private string _titleText;
 
 		public LoaderViewModel()
@@ -81,15 +77,15 @@ namespace SimpleDnsCrypt.ViewModels
 					//TODO: remove in future version (for now we only have one channel)
 					Properties.Settings.Default.MinUpdateType = 2;
 					Properties.Settings.Default.Save();
-					var minUpdateType = (UpdateType)Properties.Settings.Default.MinUpdateType;
-					var update = await ApplicationUpdater.CheckForRemoteUpdateAsync(minUpdateType).ConfigureAwait(false);
+					UpdateType minUpdateType = (UpdateType)Properties.Settings.Default.MinUpdateType;
+					RemoteUpdate update = await ApplicationUpdater.CheckForRemoteUpdateAsync(minUpdateType).ConfigureAwait(false);
 					if (update.CanUpdate)
 					{
 						ProgressText =
 							string.Format(LocalizationEx.GetUiString("loader_new_version_found", Thread.CurrentThread.CurrentCulture),
 								update.Update.Version);
 						await Task.Delay(200).ConfigureAwait(false);
-						var installer = await StartRemoteUpdateDownload(update).ConfigureAwait(false);
+						string installer = await StartRemoteUpdateDownload(update).ConfigureAwait(false);
 						if (!string.IsNullOrEmpty(installer) && File.Exists(installer))
 						{
 							ProgressText = LocalizationEx.GetUiString("loader_starting_update", Thread.CurrentThread.CurrentCulture);
@@ -98,7 +94,7 @@ namespace SimpleDnsCrypt.ViewModels
 							{
 								// auto install
 								const string arguments = "/qb /passive /norestart";
-								var startInfo = new ProcessStartInfo(installer)
+								ProcessStartInfo startInfo = new(installer)
 								{
 									Arguments = arguments,
 									UseShellExecute = true
@@ -130,15 +126,15 @@ namespace SimpleDnsCrypt.ViewModels
 				ProgressText =
 					string.Format(LocalizationEx.GetUiString("loader_validate_folder", Thread.CurrentThread.CurrentCulture),
 						Global.DnsCryptProxyFolder);
-				var validatedFolder = ValidateDnsCryptProxyFolder();
+				Dictionary<string, string> validatedFolder = ValidateDnsCryptProxyFolder();
 				if (validatedFolder.Count == 0)
 				{
 					ProgressText = LocalizationEx.GetUiString("loader_all_files_available", Thread.CurrentThread.CurrentCulture);
 				}
 				else
 				{
-					var fileErrors = "";
-					foreach (var pair in validatedFolder)
+					string fileErrors = "";
+					foreach (KeyValuePair<string, string> pair in validatedFolder)
 					{
 						fileErrors += $"{pair.Key}: {pair.Value}\n";
 					}
@@ -153,12 +149,12 @@ namespace SimpleDnsCrypt.ViewModels
 
 				if (Properties.Settings.Default.BackupAndRestoreConfigOnUpdate)
 				{
-					var tmpConfigPath = Path.Combine(Path.GetTempPath(), Global.DnsCryptConfigurationFile + ".bak");
+					string tmpConfigPath = Path.Combine(Path.GetTempPath(), Global.DnsCryptConfigurationFile + ".bak");
 					if (File.Exists(tmpConfigPath))
 					{
 						ProgressText = string.Format(LocalizationEx.GetUiString("loader_restore_config", Thread.CurrentThread.CurrentCulture),
 							Global.DnsCryptConfigurationFile);
-						var configFile = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptConfigurationFile);
+						string configFile = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptConfigurationFile);
 						if (File.Exists(configFile))
 						{
 							if (File.Exists(configFile + ".bak"))
@@ -199,24 +195,23 @@ namespace SimpleDnsCrypt.ViewModels
 				List<LocalNetworkInterface> localNetworkInterfaces;
 				if (DnscryptProxyConfigurationManager.DnscryptProxyConfiguration.listen_addresses.Contains(Global.GlobalResolver))
 				{
-					var dnsServer = new List<string>
-					{
+					List<string> dnsServer =
+					[
 						Global.DefaultResolverIpv4,
 						Global.DefaultResolverIpv6
-					};
+					];
 					localNetworkInterfaces = LocalNetworkInterfaceManager.GetLocalNetworkInterfaces(dnsServer);
 				}
 				else
 				{
 					localNetworkInterfaces = LocalNetworkInterfaceManager.GetLocalNetworkInterfaces(
-						DnscryptProxyConfigurationManager.DnscryptProxyConfiguration.listen_addresses.ToList());
+						[.. DnscryptProxyConfigurationManager.DnscryptProxyConfiguration.listen_addresses]);
 				}
-				_mainViewModel.LocalNetworkInterfaces = new BindableCollection<LocalNetworkInterface>();
-				_mainViewModel.LocalNetworkInterfaces.AddRange(localNetworkInterfaces);
+				_mainViewModel.LocalNetworkInterfaces = [.. localNetworkInterfaces];
 				_mainViewModel.Initialize();
 				ProgressText = LocalizationEx.GetUiString("loader_starting", Thread.CurrentThread.CurrentCulture);
 
-				if(Properties.Settings.Default.TrayMode)
+				if (Properties.Settings.Default.TrayMode)
 				{
 					Execute.OnUIThread(() => _windowManager.ShowWindow(_systemTrayViewModel));
 					if (Properties.Settings.Default.StartInTray)
@@ -256,16 +251,16 @@ namespace SimpleDnsCrypt.ViewModels
 			_events.Subscribe(this);
 			_titleText = $"{Global.ApplicationName} {VersionHelper.PublishVersion} {VersionHelper.PublishBuild}";
 			LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
-			var languages = LocalizationEx.GetSupportedLanguages();
+			ObservableCollection<Language> languages = LocalizationEx.GetSupportedLanguages();
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.PreferredLanguage))
 			{
 				Log.Info($"Preferred language: {Properties.Settings.Default.PreferredLanguage}");
-				var preferredLanguage = languages.FirstOrDefault(l => l.ShortCode.Equals(Properties.Settings.Default.PreferredLanguage));
+				Language? preferredLanguage = languages.FirstOrDefault(l => l.ShortCode.Equals(Properties.Settings.Default.PreferredLanguage));
 				LocalizeDictionary.Instance.Culture = preferredLanguage != null ? new CultureInfo(preferredLanguage.CultureCode) : Thread.CurrentThread.CurrentCulture;
 			}
 			else
 			{
-				var language = languages.FirstOrDefault(l =>
+				Language? language = languages.FirstOrDefault(l =>
 					l.ShortCode.Equals(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName));
 				if (language != null)
 				{
@@ -279,10 +274,10 @@ namespace SimpleDnsCrypt.ViewModels
 				}
 			}
 
-			var selectedLanguage = languages.SingleOrDefault(l => l.ShortCode.Equals(LocalizeDictionary.Instance.Culture.TwoLetterISOLanguageName)) ??
-			                       languages.SingleOrDefault(l => l.ShortCode.Equals(LocalizeDictionary.Instance.Culture.Name));
+			Language? selectedLanguage = languages.SingleOrDefault(l => l.ShortCode.Equals(LocalizeDictionary.Instance.Culture.TwoLetterISOLanguageName)) ??
+								   languages.SingleOrDefault(l => l.ShortCode.Equals(LocalizeDictionary.Instance.Culture.Name));
 
-			
+
 			_mainViewModel = new MainViewModel(_windowManager, _events)
 			{
 				Languages = languages,
@@ -292,7 +287,7 @@ namespace SimpleDnsCrypt.ViewModels
 
 			InitializeApplication();
 		}
-		
+
 		public string TitleText
 		{
 			get => _titleText;
@@ -305,36 +300,36 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public string ProgressText
 		{
-			get => _progressText;
+			get;
 			set
 			{
-				_progressText = value;
+				field = value;
 				NotifyOfPropertyChange(() => ProgressText);
 			}
 		}
 
 		private async Task<string> StartRemoteUpdateDownload(RemoteUpdate remoteUpdate)
 		{
-			var installerPath = string.Empty;
+			string installerPath = string.Empty;
 			try
 			{
 				ProgressText = LocalizationEx.GetUiString("loader_downloading_signature", Thread.CurrentThread.CurrentCulture);
-				var signature = await ApplicationUpdater.DownloadRemoteSignatureAsync(remoteUpdate.Update.Signature.Uri).ConfigureAwait(false);
+				string signature = await ApplicationUpdater.DownloadRemoteSignatureAsync(remoteUpdate.Update.Signature.Uri).ConfigureAwait(false);
 				ProgressText = LocalizationEx.GetUiString("loader_downloading_installer", Thread.CurrentThread.CurrentCulture);
-				var installer = await ApplicationUpdater.DownloadRemoteInstallerAsync(remoteUpdate.Update.Installer.Uri).ConfigureAwait(false);
+				byte[] installer = await ApplicationUpdater.DownloadRemoteInstallerAsync(remoteUpdate.Update.Installer.Uri).ConfigureAwait(false);
 				if (!string.IsNullOrEmpty(signature) && installer != null)
 				{
-					var s = signature.Split('\n');
-					var trimmedComment = s[2].Replace("trusted comment: ", "").Trim();
-					var trustedCommentBinary = Encoding.UTF8.GetBytes(trimmedComment);
-					var loadedSignature = Minisign.LoadSignature(Convert.FromBase64String(s[1]), trustedCommentBinary,
+					string[] s = signature.Split('\n');
+					string trimmedComment = s[2].Replace("trusted comment: ", "").Trim();
+					byte[] trustedCommentBinary = Encoding.UTF8.GetBytes(trimmedComment);
+					MinisignSignature loadedSignature = Minisign.LoadSignature(Convert.FromBase64String(s[1]), trustedCommentBinary,
 						Convert.FromBase64String(s[3]));
-					var publicKey = Minisign.LoadPublicKeyFromString(Global.ApplicationUpdatePublicKey);
-					var valid = Minisign.ValidateSignature(installer, loadedSignature, publicKey);
+					MinisignPublicKey publicKey = Minisign.LoadPublicKeyFromString(Global.ApplicationUpdatePublicKey);
+					bool valid = Minisign.ValidateSignature(installer, loadedSignature, publicKey);
 
 					if (valid)
 					{
-						var path = Path.Combine(Path.GetTempPath(), remoteUpdate.Update.Installer.Name);
+						string path = Path.Combine(Path.GetTempPath(), remoteUpdate.Update.Installer.Name);
 						File.WriteAllBytes(path, installer);
 						if (File.Exists(path))
 						{
@@ -373,16 +368,16 @@ namespace SimpleDnsCrypt.ViewModels
 		/// <returns><c>true</c> if all files are available, otherwise <c>false</c></returns>
 		private static Dictionary<string, string> ValidateDnsCryptProxyFolder()
 		{
-			var report = new Dictionary<string, string>();
-			foreach (var proxyFile in Global.DnsCryptProxyFiles)
+			Dictionary<string, string> report = [];
+			foreach (string proxyFile in Global.DnsCryptProxyFiles)
 			{
-				var proxyFilePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, proxyFile);
+				string proxyFilePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, proxyFile);
 				if (!File.Exists(proxyFilePath))
 				{
 					report[proxyFile] = LocalizationEx.GetUiString("loader_missing", Thread.CurrentThread.CurrentCulture);
 				}
 				// exclude this check on dev folders
-				
+
 				if (proxyFilePath.Contains("bin\\Debug") || proxyFilePath.Contains("bin\\Release") || proxyFilePath.Contains("bin\\x64")) continue;
 				// dnscrypt-resolvers.* files are signed with minisign
 				//TODO: re-enable

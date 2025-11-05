@@ -23,11 +23,11 @@ namespace SimpleDnsCrypt.Extensions
 			MessageBoxButton buttons, BoxType messageBoxType = BoxType.Default)
 		{
 			MessageBoxResult retval;
-			var shellViewModel = IoC.Get<MainViewModel>();
+			MainViewModel shellViewModel = IoC.Get<MainViewModel>();
 
 			try
 			{
-				var model = new MetroMessageBoxViewModel(message, title, buttons, messageBoxType);
+				MetroMessageBoxViewModel model = new(message, title, buttons, messageBoxType);
 				Execute.OnUIThread(() => @this.ShowDialog(model));
 				retval = model.Result;
 			}

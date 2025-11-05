@@ -3,14 +3,9 @@ using System;
 
 namespace SimpleDnsCrypt.Logger
 {
-	public class NLogLogger : ILog
+	public class NLogLogger(Type type) : ILog
 	{
-		private readonly NLog.Logger _nLogLogger;
-
-		public NLogLogger(Type type)
-		{
-			_nLogLogger = NLog.LogManager.GetLogger(type.Name);
-		}
+		private readonly NLog.Logger _nLogLogger = NLog.LogManager.GetLogger(type.Name);
 
 		public void Error(Exception exception)
 		{

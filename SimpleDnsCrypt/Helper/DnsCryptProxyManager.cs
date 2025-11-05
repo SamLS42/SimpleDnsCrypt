@@ -1,16 +1,12 @@
 ﻿using Caliburn.Micro;
 using Microsoft.Win32;
-using Nett;
 using Newtonsoft.Json;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Security.AccessControl;
 using System.ServiceProcess;
-using System.Threading;
 
 namespace SimpleDnsCrypt.Helper
 {
@@ -31,8 +27,8 @@ namespace SimpleDnsCrypt.Helper
 		{
 			try
 			{
-				var dnscryptService = new ServiceController { ServiceName = DnsCryptProxyServiceName };
-				var proxyStatus = dnscryptService.Status;
+				ServiceController dnscryptService = new() { ServiceName = DnsCryptProxyServiceName };
+				ServiceControllerStatus proxyStatus = dnscryptService.Status;
 				return true;
 			}
 			catch (InvalidOperationException)
@@ -49,23 +45,15 @@ namespace SimpleDnsCrypt.Helper
 		{
 			try
 			{
-				var dnscryptService = new ServiceController { ServiceName = DnsCryptProxyServiceName };
+				ServiceController dnscryptService = new() { ServiceName = DnsCryptProxyServiceName };
 
-				var proxyStatus = dnscryptService.Status;
-				switch (proxyStatus)
+				ServiceControllerStatus proxyStatus = dnscryptService.Status;
+				return proxyStatus switch
 				{
-					case ServiceControllerStatus.Running:
-						return true;
-					case ServiceControllerStatus.Stopped:
-					case ServiceControllerStatus.ContinuePending:
-					case ServiceControllerStatus.Paused:
-					case ServiceControllerStatus.PausePending:
-					case ServiceControllerStatus.StartPending:
-					case ServiceControllerStatus.StopPending:
-						return false;
-					default:
-						return false;
-				}
+					ServiceControllerStatus.Running => true,
+					ServiceControllerStatus.Stopped or ServiceControllerStatus.ContinuePending or ServiceControllerStatus.Paused or ServiceControllerStatus.PausePending or ServiceControllerStatus.StartPending or ServiceControllerStatus.StopPending => false,
+					_ => false,
+				};
 			}
 			catch (InvalidOperationException)
 			{
@@ -86,7 +74,7 @@ namespace SimpleDnsCrypt.Helper
 		{
 			try
 			{
-				var dnscryptService = new ServiceController { ServiceName = DnsCryptProxyServiceName };
+				ServiceController dnscryptService = new() { ServiceName = DnsCryptProxyServiceName };
 				dnscryptService.Stop();
 				Thread.Sleep(1000);
 				dnscryptService.Start();
@@ -107,8 +95,8 @@ namespace SimpleDnsCrypt.Helper
 		{
 			try
 			{
-				var dnscryptService = new ServiceController { ServiceName = DnsCryptProxyServiceName };
-				var proxyStatus = dnscryptService.Status;
+				ServiceController dnscryptService = new() { ServiceName = DnsCryptProxyServiceName };
+				ServiceControllerStatus proxyStatus = dnscryptService.Status;
 				switch (proxyStatus)
 				{
 					case ServiceControllerStatus.ContinuePending:
@@ -136,9 +124,9 @@ namespace SimpleDnsCrypt.Helper
 		{
 			try
 			{
-				var dnscryptService = new ServiceController { ServiceName = DnsCryptProxyServiceName };
+				ServiceController dnscryptService = new() { ServiceName = DnsCryptProxyServiceName };
 
-				var proxyStatus = dnscryptService.Status;
+				ServiceControllerStatus proxyStatus = dnscryptService.Status;
 				switch (proxyStatus)
 				{
 					case ServiceControllerStatus.ContinuePending:
@@ -165,7 +153,7 @@ namespace SimpleDnsCrypt.Helper
 		public static string GetVersion()
 		{
 			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
-			var result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-version");
+			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-version");
 			return result.Success ? result.StandardOutput.Replace(Environment.NewLine, "") : string.Empty;
 		}
 
@@ -178,7 +166,7 @@ namespace SimpleDnsCrypt.Helper
 			try
 			{
 				var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
-				var result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-check");
+				ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-check");
 				return result.Success;
 			}
 			catch (Exception exception)
@@ -194,14 +182,14 @@ namespace SimpleDnsCrypt.Helper
 		/// <returns></returns>
 		public static List<AvailableResolver> GetAvailableResolvers()
 		{
-			var resolvers = new List<AvailableResolver>();
+			List<AvailableResolver> resolvers = [];
 			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
-			var result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-list -json");
+			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-list -json");
 			if (!result.Success) return resolvers;
 			if (string.IsNullOrEmpty(result.StandardOutput)) return resolvers;
 			try
 			{
-				var res = JsonConvert.DeserializeObject<List<AvailableResolver>>(result.StandardOutput);
+				List<AvailableResolver> res = JsonConvert.DeserializeObject<List<AvailableResolver>>(result.StandardOutput);
 				if (res.Count > 0)
 				{
 					resolvers = res;
@@ -220,14 +208,14 @@ namespace SimpleDnsCrypt.Helper
 		/// <returns></returns>
 		public static List<AvailableResolver> GetAllResolversWithoutFilters()
 		{
-			var resolvers = new List<AvailableResolver>();
+			List<AvailableResolver> resolvers = [];
 			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
-			var result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-list-all -json");
+			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-list-all -json");
 			if (!result.Success) return resolvers;
 			if (string.IsNullOrEmpty(result.StandardOutput)) return resolvers;
 			try
 			{
-				var res = JsonConvert.DeserializeObject<List<AvailableResolver>>(result.StandardOutput);
+				List<AvailableResolver> res = JsonConvert.DeserializeObject<List<AvailableResolver>>(result.StandardOutput);
 				if (res.Count > 0)
 				{
 					resolvers = res;
@@ -247,7 +235,7 @@ namespace SimpleDnsCrypt.Helper
 		public static bool Install()
 		{
 			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
-			var result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-service install");
+			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-service install");
 			if (result.Success)
 			{
 				return true;
@@ -278,10 +266,10 @@ namespace SimpleDnsCrypt.Helper
 		public static bool Uninstall()
 		{
 			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
-			var result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-service uninstall");
+			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-service uninstall");
 			try
 			{
-				var eventLogKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\EventLog\Application\dnscrypt-proxy",
+				RegistryKey? eventLogKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\EventLog\Application\dnscrypt-proxy",
 					RegistryRights.ReadKey);
 				var eventLogKeyValue = eventLogKey?.GetValue("CustomSource");
 				if (eventLogKeyValue != null)

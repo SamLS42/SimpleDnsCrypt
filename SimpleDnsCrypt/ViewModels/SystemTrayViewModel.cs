@@ -1,25 +1,17 @@
 ﻿using Caliburn.Micro;
-using System.Windows;
+using Application = System.Windows.Application;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
-	public class SystemTrayViewModel : Screen
+	public class SystemTrayViewModel(IWindowManager windowManager, IEventAggregator events, MainViewModel mainViewModel) : Screen
 	{
-		private readonly IWindowManager _windowManager;
-		private readonly MainViewModel _mainViewModel;
-		private readonly IEventAggregator _events;
-
-		public SystemTrayViewModel(IWindowManager windowManager, IEventAggregator events, MainViewModel mainViewModel)
-		{
-			_windowManager = windowManager;
-			_events = events;
-			_mainViewModel = mainViewModel;
-		}
+		private readonly IWindowManager _windowManager = windowManager;
+		private readonly MainViewModel _mainViewModel = mainViewModel;
+		private readonly IEventAggregator _events = events;
 
 		protected override void OnActivate()
 		{
-			base.OnActivate();
-
 			NotifyOfPropertyChange(() => CanShowWindow);
 			NotifyOfPropertyChange(() => CanHideWindow);
 		}

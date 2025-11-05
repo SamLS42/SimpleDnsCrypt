@@ -1,73 +1,63 @@
-﻿using Caliburn.Micro;
-using SimpleDnsCrypt.Config;
+﻿using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Helper;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
 	[Export(typeof(FallbackResolversViewModel))]
-	public class FallbackResolversViewModel : Screen
+	[method: ImportingConstructor]
+	public class FallbackResolversViewModel() : Screen
 	{
-		private string _windowTitle;
-		private ObservableCollection<string> _fallbackResolvers;
-		private string _selectedFallbackResolver;
-		private string _addressInput;
-
-
-		[ImportingConstructor]
-		public FallbackResolversViewModel()
-		{
-			_fallbackResolvers = new ObservableCollection<string>();
-		}
 
 		/// <summary>
 		///     The title of the window.
 		/// </summary>
 		public string WindowTitle
 		{
-			get => _windowTitle;
+			get;
 			set
 			{
-				_windowTitle = value;
+				field = value;
 				NotifyOfPropertyChange(() => WindowTitle);
 			}
 		}
 
 		public ObservableCollection<string> FallbackResolvers
 		{
-			get => _fallbackResolvers;
+			get;
 			set
 			{
-				_fallbackResolvers = value;
+				field = value;
 				NotifyOfPropertyChange(() => FallbackResolvers);
 			}
-		}
+		} = [];
 
 		public string SelectedFallbackResolver
 		{
-			get => _selectedFallbackResolver;
+			get;
 			set
 			{
-				_selectedFallbackResolver = value;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedFallbackResolver);
 			}
 		}
 
 		public string AddressInput
 		{
-			get => _addressInput;
+			get;
 			set
 			{
-				_addressInput = value;
+				field = value;
 				NotifyOfPropertyChange(() => AddressInput);
 			}
 		}
 
 		public void AddAddress()
 		{
-			if (string.IsNullOrEmpty(_addressInput)) return;
-			var validatedAddress = ValidationHelper.ValidateIpEndpoint(_addressInput);
+			if (string.IsNullOrEmpty(AddressInput)) return;
+			string validatedAddress = ValidationHelper.ValidateIpEndpoint(AddressInput);
 			if (string.IsNullOrEmpty(validatedAddress)) return;
 			if (FallbackResolvers.Contains(validatedAddress)) return;
 			FallbackResolvers.Add(validatedAddress);
@@ -76,9 +66,9 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public void RemoveAddress()
 		{
-			if (string.IsNullOrEmpty(_selectedFallbackResolver)) return;
-			if (_fallbackResolvers.Count == 1) return;
-			_fallbackResolvers.Remove(_selectedFallbackResolver);
+			if (string.IsNullOrEmpty(SelectedFallbackResolver)) return;
+			if (FallbackResolvers.Count == 1) return;
+			FallbackResolvers.Remove(SelectedFallbackResolver);
 		}
 
 		public void RestoreDefault()

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
+using ListView = System.Windows.Controls.ListView;
 
 namespace SimpleDnsCrypt.Controls
 {
@@ -88,7 +87,7 @@ namespace SimpleDnsCrypt.Controls
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
-				var count = Items.Count;
+				int count = Items.Count;
 				ScrollIntoView(Items[count - 1]);
 			}
 		}

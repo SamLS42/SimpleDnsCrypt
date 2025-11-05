@@ -1,8 +1,6 @@
 ﻿using Caliburn.Micro;
-using SimpleDnsCrypt.Models;
-using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
@@ -14,7 +12,6 @@ namespace SimpleDnsCrypt.ViewModels
 		private readonly IEventAggregator _events;
 
 		private BindableCollection<string> _addressBlacklist;
-		private string _selectedAddressBlacklistEntry;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AddressBlacklistViewModel"/> class
@@ -27,17 +24,17 @@ namespace SimpleDnsCrypt.ViewModels
 			_windowManager = windowManager;
 			_events = events;
 			_events.Subscribe(this);
-			_addressBlacklist = new BindableCollection<string>();
+			_addressBlacklist = [];
 			LoadAddressBlacklist();
 		}
 
 		public string SelectedAddressBlacklistEntry
 		{
-			get => _selectedAddressBlacklistEntry;
+			get;
 			set
 			{
-				if (value.Equals(_selectedAddressBlacklistEntry)) return;
-				_selectedAddressBlacklistEntry = value;
+				if (value.Equals(field)) return;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedAddressBlacklistEntry);
 			}
 		}

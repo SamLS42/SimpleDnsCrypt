@@ -1,4 +1,4 @@
-﻿using Caliburn.Micro;
+using Caliburn.Micro;
 using System.Diagnostics;
 
 namespace SimpleDnsCrypt.Helper
@@ -7,7 +7,7 @@ namespace SimpleDnsCrypt.Helper
 	{
 		public static ILog Factory()
 		{
-			var callerFrame = new StackFrame(1);
+			StackFrame callerFrame = new(1);
 			return LogManager.GetLog(callerFrame.GetMethod().ReflectedType);
 		}
 	}

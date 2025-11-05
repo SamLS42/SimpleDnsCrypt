@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using DnsCrypt.Blacklist;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Helper;
 using SimpleDnsCrypt.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.IO;
 using Application = System.Windows.Application;
 using Screen = Caliburn.Micro.Screen;
 
@@ -28,7 +23,6 @@ namespace SimpleDnsCrypt.ViewModels
 		private ObservableCollection<QueryLogLine> _queryLogLines;
 		private string _queryLogFile;
 		private bool _isQueryLogLogging;
-		private QueryLogLine _selectedQueryLogLine;
 
 		[ImportingConstructor]
 		public QueryLogViewModel(IWindowManager windowManager, IEventAggregator events)
@@ -37,7 +31,7 @@ namespace SimpleDnsCrypt.ViewModels
 			_events = events;
 			_events.Subscribe(this);
 			_isQueryLogLogging = false;
-			_queryLogLines = new ObservableCollection<QueryLogLine>();
+			_queryLogLines = [];
 
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.QueryLogFile))
 			{
@@ -64,25 +58,25 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				if (_selectedQueryLogLine == null) return;
+				if (SelectedQueryLogLine == null) return;
 				if (MainViewModel.Instance.DomainBlacklistViewModel == null) return;
-				var dialogSettings = new MetroDialogSettings
+				MetroDialogSettings dialogSettings = new()
 				{
-					DefaultText = _selectedQueryLogLine.Remote.ToLower(),
+					DefaultText = SelectedQueryLogLine.Remote.ToLower(),
 					AffirmativeButtonText = LocalizationEx.GetUiString("add", Thread.CurrentThread.CurrentCulture),
 					NegativeButtonText = LocalizationEx.GetUiString("cancel", Thread.CurrentThread.CurrentCulture),
 					ColorScheme = MetroDialogColorScheme.Theme
 				};
 
-				var metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+				MetroWindow? metroWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
 				//TODO: translate
-				var dialogResult = await metroWindow.ShowInputAsync(LocalizationEx.GetUiString("message_title_new_blacklist_rule", Thread.CurrentThread.CurrentCulture),
+				string dialogResult = await metroWindow.ShowInputAsync(LocalizationEx.GetUiString("message_title_new_blacklist_rule", Thread.CurrentThread.CurrentCulture),
 					"Rule:", dialogSettings);
 
 				if (string.IsNullOrEmpty(dialogResult)) return;
-				var newCustomRule = dialogResult.ToLower().Trim();
-				var parsed = DomainBlacklist.ParseBlacklist(newCustomRule, true);
-				var enumerable = parsed as string[] ?? parsed.ToArray();
+				string newCustomRule = dialogResult.ToLower().Trim();
+				IEnumerable<string> parsed = DomainBlacklist.ParseBlacklist(newCustomRule, true);
+				string[] enumerable = parsed as string[] ?? [.. parsed];
 				if (enumerable.Length != 1) return;
 				MainViewModel.Instance.DomainBlacklistViewModel.DomainBlacklistRules.Add(enumerable[0]);
 				MainViewModel.Instance.DomainBlacklistViewModel.SaveBlacklistRulesToFile();
@@ -122,10 +116,10 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public QueryLogLine SelectedQueryLogLine
 		{
-			get => _selectedQueryLogLine;
+			get;
 			set
 			{
-				_selectedQueryLogLine = value;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedQueryLogLine);
 			}
 		}
@@ -143,28 +137,28 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public void ChangeQueryLogFilePath()
 		{
-			try
-			{
-				var queryLogFolderDialog = new FolderBrowserDialog
-				{
-					ShowNewFolderButton = true
-				};
-				if (!string.IsNullOrEmpty(_queryLogFile))
-				{
-					queryLogFolderDialog.SelectedPath = Path.GetDirectoryName(_queryLogFile);
-				}
-				var result = queryLogFolderDialog.ShowDialog();
-				if (result == DialogResult.OK)
-				{
-					QueryLogFile = Path.Combine(queryLogFolderDialog.SelectedPath, Global.QueryLogFileName);
-					Properties.Settings.Default.QueryLogFile = _queryLogFile;
-					Properties.Settings.Default.Save();
-				}
-			}
-			catch (Exception exception)
-			{
-				Log.Error(exception);
-			}
+			//try
+			//{
+			//	var queryLogFolderDialog = new FolderBrowserDialog
+			//	{
+			//		ShowNewFolderButton = true
+			//	};
+			//	if (!string.IsNullOrEmpty(_queryLogFile))
+			//	{
+			//		queryLogFolderDialog.SelectedPath = Path.GetDirectoryName(_queryLogFile);
+			//	}
+			//	var result = queryLogFolderDialog.ShowDialog();
+			//	if (result == true)
+			//	{
+			//		QueryLogFile = Path.Combine(queryLogFolderDialog.SelectedPath, Global.QueryLogFileName);
+			//		Properties.Settings.Default.QueryLogFile = _queryLogFile;
+			//		Properties.Settings.Default.Save();
+			//	}
+			//}
+			//catch (Exception exception)
+			//{
+			//	Log.Error(exception);
+			//}
 		}
 
 		private async void QueryLog(DnscryptProxyConfiguration dnscryptProxyConfiguration)
@@ -176,7 +170,7 @@ namespace SimpleDnsCrypt.ViewModels
 				{
 					if (dnscryptProxyConfiguration == null) return;
 
-					var saveAndRestartService = false;
+					bool saveAndRestartService = false;
 					if (dnscryptProxyConfiguration.query_log == null)
 					{
 						dnscryptProxyConfiguration.query_log = new QueryLog
@@ -188,7 +182,7 @@ namespace SimpleDnsCrypt.ViewModels
 					}
 
 					if (string.IsNullOrEmpty(dnscryptProxyConfiguration.query_log.format) ||
-					    !dnscryptProxyConfiguration.query_log.format.Equals(defaultLogFormat))
+						!dnscryptProxyConfiguration.query_log.format.Equals(defaultLogFormat))
 					{
 						dnscryptProxyConfiguration.query_log.format = defaultLogFormat;
 						saveAndRestartService = true;
@@ -236,11 +230,11 @@ namespace SimpleDnsCrypt.ViewModels
 						{
 							await Task.Run(() =>
 							{
-								using (var reader = new StreamReader(new FileStream(_queryLogFile,
+								using (StreamReader reader = new(new FileStream(_queryLogFile,
 									FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
 								{
 									//start at the end of the file
-									var lastMaxOffset = reader.BaseStream.Length;
+									long lastMaxOffset = reader.BaseStream.Length;
 
 									while (_isQueryLogLogging)
 									{
@@ -256,7 +250,7 @@ namespace SimpleDnsCrypt.ViewModels
 										string line;
 										while ((line = reader.ReadLine()) != null)
 										{
-											var queryLogLine = new QueryLogLine(line);
+											QueryLogLine queryLogLine = new(line);
 											AddLogLine(queryLogLine);
 										}
 

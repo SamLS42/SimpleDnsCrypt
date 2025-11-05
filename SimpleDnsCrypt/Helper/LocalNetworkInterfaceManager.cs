@@ -112,7 +112,7 @@ namespace SimpleDnsCrypt.Helper
 
 				if (registryKeyIpv6 != null && registryKeyIpv6.ToString().Length > 0)
 				{
-					var entries = ((string)registryKeyIpv6).Split(new[] { "," }, StringSplitOptions.None);
+					var entries = ((string)registryKeyIpv6).Split([","], StringSplitOptions.None);
 					serverAddresses.AddRange(entries.Select(address => new DnsServer
 					{
 						Address = address,
@@ -122,7 +122,7 @@ namespace SimpleDnsCrypt.Helper
 
 				if (registryKeyIpv4 != null && registryKeyIpv4.ToString().Length > 0)
 				{
-					var entries = ((string)registryKeyIpv4).Split(new[] { "," }, StringSplitOptions.None);
+					var entries = ((string)registryKeyIpv4).Split([","], StringSplitOptions.None);
 					serverAddresses.AddRange(entries.Select(address => new DnsServer
 					{
 						Address = address,
@@ -144,7 +144,7 @@ namespace SimpleDnsCrypt.Helper
 		/// <returns></returns>
 		public static List<DnsServer> ConvertToDnsList(List<string> unconvertedServers)
 		{
-			return (from unconvertedServer in unconvertedServers
+			return [.. (from unconvertedServer in unconvertedServers
 					let lastIndex = unconvertedServer.LastIndexOf(":", StringComparison.Ordinal)
 					select unconvertedServer.Substring(0, lastIndex)
 				into addressOnly
@@ -152,7 +152,7 @@ namespace SimpleDnsCrypt.Helper
 					{
 						Address = addressOnly.Replace("[", "").Replace("]", ""),
 						Type = addressOnly.Contains(":") ? NetworkInterfaceComponent.IPv6 : NetworkInterfaceComponent.IPv4
-					}).ToList();
+					})];
 		}
 
 		public static bool UnsetNameservers(LocalNetworkInterface localNetworkInterface)

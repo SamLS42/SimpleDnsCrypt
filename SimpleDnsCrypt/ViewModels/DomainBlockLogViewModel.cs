@@ -1,37 +1,26 @@
 ﻿using Caliburn.Micro;
-using SimpleDnsCrypt.Config;
-using SimpleDnsCrypt.Helper;
-using SimpleDnsCrypt.Models;
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using DnsCrypt.Blacklist;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using SimpleDnsCrypt.Config;
+using SimpleDnsCrypt.Helper;
+using SimpleDnsCrypt.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.IO;
+using Application = System.Windows.Application;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
 	[Export(typeof(DomainBlockLogViewModel))]
-	public class DomainBlockLogViewModel : Screen
+	[method: ImportingConstructor]
+	public class DomainBlockLogViewModel() : Screen
 	{
 		private static readonly ILog Log = LogManagerHelper.Factory();
 
-		private ObservableCollection<DomainBlockLogLine> _domainBlockLogLines;
-		private string _domainBlockLogFile;
-		private bool _isDomainBlockLogLogging;
-		private DomainBlockLogLine _selectedDomainBlockLogLine;
-
-		[ImportingConstructor]
-		public DomainBlockLogViewModel()
-		{
-			_isDomainBlockLogLogging = false;
-			_domainBlockLogLines = new ObservableCollection<DomainBlockLogLine>();
-		}
+		private ObservableCollection<DomainBlockLogLine> _domainBlockLogLines = [];
+		private bool _isDomainBlockLogLogging = false;
 
 		private void AddLogLine(DomainBlockLogLine domainBlockLogLine)
 		{
@@ -59,21 +48,21 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public string DomainBlockLogFile
 		{
-			get => _domainBlockLogFile;
+			get;
 			set
 			{
-				if (value.Equals(_domainBlockLogFile)) return;
-				_domainBlockLogFile = value;
+				if (value.Equals(field)) return;
+				field = value;
 				NotifyOfPropertyChange(() => DomainBlockLogFile);
 			}
 		}
 
 		public DomainBlockLogLine SelectedDomainBlockLogLine
 		{
-			get => _selectedDomainBlockLogLine;
+			get;
 			set
 			{
-				_selectedDomainBlockLogLine = value;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedDomainBlockLogLine);
 			}
 		}
@@ -93,11 +82,11 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			try
 			{
-				if (_selectedDomainBlockLogLine == null) return;
+				if (SelectedDomainBlockLogLine == null) return;
 				if (MainViewModel.Instance.DomainBlacklistViewModel == null) return;
-				var dialogSettings = new MetroDialogSettings
+				MetroDialogSettings dialogSettings = new()
 				{
-					DefaultText = _selectedDomainBlockLogLine.Message.ToLower(),
+					DefaultText = SelectedDomainBlockLogLine.Message.ToLower(),
 					AffirmativeButtonText = LocalizationEx.GetUiString("add", Thread.CurrentThread.CurrentCulture),
 					NegativeButtonText = LocalizationEx.GetUiString("cancel", Thread.CurrentThread.CurrentCulture),
 					ColorScheme = MetroDialogColorScheme.Theme
@@ -111,7 +100,7 @@ namespace SimpleDnsCrypt.ViewModels
 				if (string.IsNullOrEmpty(dialogResult)) return;
 				var newCustomRule = dialogResult.ToLower().Trim();
 				var parsed = DomainBlacklist.ParseBlacklist(newCustomRule, true);
-				var enumerable = parsed as string[] ?? parsed.ToArray();
+				var enumerable = parsed as string[] ?? [.. parsed];
 				if (enumerable.Length != 1) return;
 				MainViewModel.Instance.DomainBlacklistViewModel.DomainWhitelistRules.Add(enumerable[0]);
 				MainViewModel.Instance.DomainBlacklistViewModel.SaveWhitelistRulesToFile();
@@ -189,17 +178,17 @@ namespace SimpleDnsCrypt.ViewModels
 					DomainBlockLogFile = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder,
 						dnscryptProxyConfiguration.blocked_names.log_file);
 
-					if (!string.IsNullOrEmpty(_domainBlockLogFile))
+					if (!string.IsNullOrEmpty(DomainBlockLogFile))
 					{
-						if (!File.Exists(_domainBlockLogFile))
+						if (!File.Exists(DomainBlockLogFile))
 						{
-							File.Create(_domainBlockLogFile).Dispose();
+							File.Create(DomainBlockLogFile).Dispose();
 							await Task.Delay(50);
 						}
 
 						await Task.Run(() =>
 						{
-							using (var reader = new StreamReader(new FileStream(_domainBlockLogFile,
+							using (StreamReader reader = new(new FileStream(DomainBlockLogFile,
 								FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
 							{
 								//start at the end of the file
@@ -219,7 +208,7 @@ namespace SimpleDnsCrypt.ViewModels
 									string line;
 									while ((line = reader.ReadLine()) != null)
 									{
-										var blockLogLine = new DomainBlockLogLine(line);
+										DomainBlockLogLine blockLogLine = new(line);
 										AddLogLine(blockLogLine);
 									}
 

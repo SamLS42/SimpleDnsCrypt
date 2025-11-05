@@ -1,35 +1,26 @@
-﻿using Caliburn.Micro;
-using SimpleDnsCrypt.Config;
+﻿using SimpleDnsCrypt.Config;
+using SimpleDnsCrypt.Helper;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using SimpleDnsCrypt.Helper;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
 	[Export(typeof(ListenAddressesViewModel))]
-	public class ListenAddressesViewModel : Screen
+	[method: ImportingConstructor]
+	public class ListenAddressesViewModel() : Screen
 	{
-		private string _windowTitle;
-		private ObservableCollection<string> _listenAddresses;
-		private string _selectedListenAddress;
-		private string _addressInput;
-
-
-		[ImportingConstructor]
-		public ListenAddressesViewModel()
-		{
-			_listenAddresses = new ObservableCollection<string>();
-		}
+		private ObservableCollection<string> _listenAddresses = [];
 
 		/// <summary>
 		///     The title of the window.
 		/// </summary>
 		public string WindowTitle
 		{
-			get => _windowTitle;
+			get;
 			set
 			{
-				_windowTitle = value;
+				field = value;
 				NotifyOfPropertyChange(() => WindowTitle);
 			}
 		}
@@ -46,28 +37,28 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public string SelectedListenAddress
 		{
-			get => _selectedListenAddress;
+			get;
 			set
 			{
-				_selectedListenAddress = value;
+				field = value;
 				NotifyOfPropertyChange(() => SelectedListenAddress);
 			}
 		}
 
 		public string AddressInput
 		{
-			get => _addressInput;
+			get;
 			set
 			{
-				_addressInput = value;
+				field = value;
 				NotifyOfPropertyChange(() => AddressInput);
 			}
 		}
 
 		public void AddAddress()
 		{
-			if (string.IsNullOrEmpty(_addressInput)) return;
-			var validatedAddress = ValidationHelper.ValidateIpEndpoint(_addressInput);
+			if (string.IsNullOrEmpty(AddressInput)) return;
+			string validatedAddress = ValidationHelper.ValidateIpEndpoint(AddressInput);
 			if (string.IsNullOrEmpty(validatedAddress)) return;
 			if (ListenAddresses.Contains(validatedAddress)) return;
 			ListenAddresses.Add(validatedAddress);
@@ -76,9 +67,9 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public void RemoveAddress()
 		{
-			if (string.IsNullOrEmpty(_selectedListenAddress)) return;
+			if (string.IsNullOrEmpty(SelectedListenAddress)) return;
 			if (_listenAddresses.Count == 1) return;
-			_listenAddresses.Remove(_selectedListenAddress);
+			_listenAddresses.Remove(SelectedListenAddress);
 		}
 
 		public void RestoreDefault()

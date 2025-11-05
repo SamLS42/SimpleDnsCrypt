@@ -20,19 +20,19 @@ namespace SimpleDnsCrypt.Models
 				if (parts.Length != 4) return;
 				if (parts[0].StartsWith("time:"))
 				{
-					Time = UnixTimeStampToDateTime(Convert.ToDouble(parts[0].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1]));
+					Time = UnixTimeStampToDateTime(Convert.ToDouble(parts[0].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1]));
 				}
 				if (parts[1].StartsWith("host:"))
 				{
-					Host = parts[1].Split(new[] { ':' }, 2)[1];
+					Host = parts[1].Split([':'], 2)[1];
 				}
 				if (parts[2].StartsWith("qname:"))
 				{
-					QName = parts[2].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
+					QName = parts[2].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim();
 				}
 				if (parts[3].StartsWith("message:"))
 				{
-					Message = parts[3].Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
+					Message = parts[3].Split([":"], StringSplitOptions.RemoveEmptyEntries)[1].Trim();
 				}
 			}
 			catch (Exception)

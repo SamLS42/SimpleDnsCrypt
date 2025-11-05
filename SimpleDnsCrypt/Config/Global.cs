@@ -96,26 +96,26 @@
 		///     List of the default fall back resolvers.
 		/// </summary>
 		public static readonly string[] DefaultFallbackResolvers =
-		{
+		[
 			"9.9.9.9:53",
 			"8.8.8.8:53"
-		};
+		];
 
 		/// <summary>
 		///     List of files must exist.
 		/// </summary>
 		public static readonly string[] DnsCryptProxyFiles =
-		{
+		[
 			"dnscrypt-proxy.exe",
 			"dnscrypt-proxy.toml",
 			"LICENSE"
-		};
+		];
 
 		/// <summary>
 		///     List of interfaces, marked as hidden.
 		/// </summary>
 		public static readonly string[] NetworkInterfaceBlacklist =
-		{
+		[
 			"Microsoft Virtual",
 			"Hamachi Network",
 			"VMware Virtual",
@@ -130,6 +130,6 @@
 			"Microsoft hosted",
 			"Virtueller Microsoft-Adapter",
 			"TAP"
-		};
+		];
 	}
 }

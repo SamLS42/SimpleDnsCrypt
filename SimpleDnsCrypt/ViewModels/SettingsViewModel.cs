@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using SimpleDnsCrypt.Models;
 using System.ComponentModel.Composition;
+using Screen = Caliburn.Micro.Screen;
 
 namespace SimpleDnsCrypt.ViewModels
 {
@@ -9,7 +10,6 @@ namespace SimpleDnsCrypt.ViewModels
 	{
 		private readonly IWindowManager _windowManager;
 		private readonly IEventAggregator _events;
-		private string _windowTitle;
 		private bool _isAdvancedSettingsTabVisible;
 		private bool _isStartInTrayEnabled;
 		private bool _isTrayModeEnabled;
@@ -55,10 +55,10 @@ namespace SimpleDnsCrypt.ViewModels
 		/// </summary>
 		public string WindowTitle
 		{
-			get => _windowTitle;
+			get;
 			set
 			{
-				_windowTitle = value;
+				field = value;
 				NotifyOfPropertyChange(() => WindowTitle);
 			}
 		}
