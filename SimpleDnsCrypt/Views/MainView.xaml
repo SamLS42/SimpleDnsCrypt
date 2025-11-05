@@ -41,13 +41,12 @@
             <converters:RouteStateToColorConverter x:Key="RouteStateToColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="#198AB328">
+    <Grid>
         <Border
             Grid.Row="0"
             Grid.Column="0"
             Margin="10"
             Padding="10"
-            Background="#198AB328"
             BorderThickness="1">
             <Border.BorderBrush>
                 <DrawingBrush
@@ -73,7 +72,6 @@
             <TabControl
                 cal:Message.Attach="[Event SelectionChanged] = [Action TabControl_SelectionChanged($eventArgs)]"
                 controls:TabControlHelper.Transition="Right"
-                Background="Transparent"
                 SelectedIndex="{Binding SelectedTabIndex}">
                 <TabItem
                     Height="39"
@@ -88,7 +86,6 @@
                                     MinHeight="75"
                                     Margin="0,0,0,0"
                                     Padding="10,10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DockPanel.Dock="Top"
                                     IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
@@ -212,7 +209,6 @@
                                     MinHeight="75"
                                     Margin="0,14,0,0"
                                     Padding="10,10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DockPanel.Dock="Top">
                                     <Border.BorderBrush>
@@ -338,7 +334,6 @@
                                 <Border
                                     Margin="0,14,0,0"
                                     Padding="10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DockPanel.Dock="Bottom"
                                     IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
@@ -470,7 +465,6 @@
                                 <Border
                                     Margin="0,14,0,0"
                                     Padding="10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DockPanel.Dock="Top"
                                     IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
@@ -536,7 +530,6 @@
                                 <Border
                                     Margin="0,14,0,0"
                                     Padding="10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DockPanel.Dock="Bottom"
                                     IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
@@ -689,10 +682,7 @@
                                                     </ItemsControl.ItemsPanel>
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Border
-                                                                Padding="1"
-                                                                Background="White"
-                                                                BorderThickness="0.2">
+                                                            <Border Padding="1" BorderThickness="0.2">
                                                                 <Grid
                                                                     cal:Message.Attach="[Event MouseLeftButtonDown] = [Action ResolverClicked($dataContext)]"
                                                                     Background="{Binding IsInServerList, Converter={StaticResource ServerListBackgroundConverter}}"
@@ -722,7 +712,6 @@
                                                                         VerticalAlignment="Top"
                                                                         HorizontalContentAlignment="Center"
                                                                         VerticalContentAlignment="Center"
-                                                                        Background="White"
                                                                         BorderBrush="{Binding RouteState, Converter={StaticResource RouteStateToColorConverter}}"
                                                                         Cursor="Hand"
                                                                         FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -787,7 +776,6 @@
                                 <Border
                                     Margin="0,14,0,0"
                                     Padding="10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DockPanel.Dock="Top"
                                     IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
@@ -1203,7 +1191,6 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Top"
                                                 Background="{StaticResource MahApps.Brushes.AccentBase}"
-                                                BorderBrush="#FF575757"
                                                 IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
                                                 Maximum="65000"
                                                 Minimum="0"
@@ -1295,7 +1282,6 @@
                                 <Border
                                     Margin="0,10,0,0"
                                     Padding="10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DataContext="{Binding QueryLogViewModel}"
                                     DockPanel.Dock="Top">
@@ -1366,7 +1352,6 @@
                                                 Margin="10"
                                                 VerticalContentAlignment="Stretch"
                                                 AutoScroll="True"
-                                                Background="#198AB328"
                                                 BorderBrush="#198AB328"
                                                 FontSize="12"
                                                 ItemsSource="{Binding QueryLogLines, Mode=OneWay}"
@@ -1467,7 +1452,6 @@
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
                                                     cal:Message.Attach="ClearQueryLog"
-                                                    Background="White"
                                                     BorderBrush="{DynamicResource AccentColorBrush}"
                                                     Cursor="Hand"
                                                     FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1491,7 +1475,6 @@
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
                                                     cal:Message.Attach="BlockQueryLogEntry"
-                                                    Background="White"
                                                     BorderBrush="{DynamicResource AccentColorBrush}"
                                                     Cursor="Hand"
                                                     FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1521,7 +1504,6 @@
                                                 HorizontalContentAlignment="Stretch"
                                                 VerticalContentAlignment="Center"
                                                 Background="{StaticResource MahApps.Brushes.AccentBase}"
-                                                BorderBrush="#FF575757"
                                                 IsReadOnly="True"
                                                 Opacity="0.4"
                                                 Text="{Binding QueryLogFile}" />
@@ -1536,7 +1518,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="ChangeQueryLogFilePath"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1572,7 +1553,6 @@
                             <Border
                                 Margin="0,10,0,0"
                                 Padding="10"
-                                Background="#198AB328"
                                 BorderThickness="1"
                                 DataContext="{Binding CloakAndForwardViewModel}"
                                 DockPanel.Dock="Top">
@@ -1664,7 +1644,6 @@
                                             Margin="0,0,0,0"
                                             VerticalContentAlignment="Center"
                                             Background="{StaticResource MahApps.Brushes.AccentBase}"
-                                            BorderBrush="#FF575757"
                                             IsReadOnly="True"
                                             Opacity="0.4"
                                             Text="{Binding CloakingRulesFile}" />
@@ -1677,7 +1656,6 @@
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             cal:Message.Attach="ChangeCloakingRulesFile"
-                                            Background="White"
                                             BorderBrush="{DynamicResource AccentColorBrush}"
                                             Cursor="Hand"
                                             FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1749,7 +1727,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="AddCloakingRule"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1773,7 +1750,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="RemoveCloakingRule"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1797,7 +1773,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="ImportCloakingRules"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1821,7 +1796,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="ExportCloakingRules"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1892,7 +1866,6 @@
                                             Margin="0,0,0,0"
                                             VerticalContentAlignment="Center"
                                             Background="{StaticResource MahApps.Brushes.AccentBase}"
-                                            BorderBrush="#FF575757"
                                             IsReadOnly="True"
                                             Opacity="0.4"
                                             Text="{Binding ForwardingRulesFile}" />
@@ -1905,7 +1878,6 @@
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             cal:Message.Attach="ChangeForwardingRulesFile"
-                                            Background="White"
                                             BorderBrush="{DynamicResource AccentColorBrush}"
                                             Cursor="Hand"
                                             FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -1983,7 +1955,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="AddForwardingRule"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -2007,7 +1978,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="RemoveForwardingRule"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -2031,7 +2001,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="ImportForwardingRules"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -2055,7 +2024,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="ExportForwardingRules"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -2091,7 +2059,6 @@
                                 <Border
                                     Margin="0,10,0,0"
                                     Padding="10"
-                                    Background="#198AB328"
                                     BorderThickness="1"
                                     DataContext="{Binding DomainBlockLogViewModel}"
                                     DockPanel.Dock="Top">
@@ -2161,7 +2128,6 @@
                                             <ListView
                                                 Margin="10"
                                                 VerticalContentAlignment="Stretch"
-                                                Background="#198AB328"
                                                 BorderBrush="#198AB328"
                                                 FontSize="12"
                                                 ItemsSource="{Binding DomainBlockLogLines, Mode=OneWay}"
@@ -2247,7 +2213,6 @@
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
                                                     cal:Message.Attach="ClearDomainBlockLog"
-                                                    Background="White"
                                                     BorderBrush="{DynamicResource AccentColorBrush}"
                                                     Cursor="Hand"
                                                     FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -2271,7 +2236,6 @@
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
                                                     cal:Message.Attach="UnblockBlockLogEntry"
-                                                    Background="White"
                                                     BorderBrush="{DynamicResource AccentColorBrush}"
                                                     Cursor="Hand"
                                                     FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -2301,7 +2265,6 @@
                                                 HorizontalContentAlignment="Stretch"
                                                 VerticalContentAlignment="Center"
                                                 Background="{StaticResource MahApps.Brushes.AccentBase}"
-                                                BorderBrush="#FF575757"
                                                 IsReadOnly="True"
                                                 Opacity="0.4"
                                                 Text="{Binding DomainBlockLogFile}" />
@@ -2316,7 +2279,6 @@
                                                 HorizontalContentAlignment="Center"
                                                 VerticalContentAlignment="Center"
                                                 cal:Message.Attach="ChangeBlockLogFilePath"
-                                                Background="White"
                                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                                 Cursor="Hand"
                                                 FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
@@ -2352,7 +2314,6 @@
                             <Border
                                 Margin="0,10,0,0"
                                 Padding="10"
-                                Background="#198AB328"
                                 BorderThickness="1"
                                 DataContext="{Binding AddressBlacklistViewModel}"
                                 DockPanel.Dock="Top">

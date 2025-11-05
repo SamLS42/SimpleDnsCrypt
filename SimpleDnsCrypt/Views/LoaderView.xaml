@@ -4,8 +4,8 @@
              cal:Bind.AtDesignTime="True"
              xmlns:cal="http://www.caliburnproject.org">
 
-    <Grid Background="#198AB328">
-        <Border BorderThickness="1" Grid.Row="0" Grid.Column="0" Background="#198AB328" Margin="10"
+    <Grid >
+        <Border BorderThickness="1" Grid.Row="0" Grid.Column="0"  Margin="10"
                 Padding="10">
             <Border.BorderBrush>
                 <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
