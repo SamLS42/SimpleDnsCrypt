@@ -20,7 +20,7 @@
                 <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="#FF8ab329">
+                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -36,12 +36,12 @@
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Height="20"
                                                 Width="20" Kind="Ethernet" Opacity="0.7"
-                                                Foreground="#FF8ab329"
+                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center" />
                     <TextBlock Text="{lex:Loc Key=address_settings_listen_addresses}"
                                TextWrapping="Wrap" VerticalAlignment="Center"
-                               Foreground="#FF8ab329" FontSize="20"
+                               Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="20"
                                Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold">
                     </TextBlock>
                 </StackPanel>

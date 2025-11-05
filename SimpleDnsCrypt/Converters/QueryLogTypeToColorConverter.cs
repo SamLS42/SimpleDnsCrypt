@@ -13,29 +13,29 @@ namespace SimpleDnsCrypt.Converters
 			switch (logLineType)
 			{
 				case QueryLogLineType.A:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.Unknown:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.NS:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.CNAME:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.SOA:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.WKS:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.PTR:
 					return "#FF2a3b68";
 				case QueryLogLineType.MX:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.TXT:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.AAAA:
 					return "#FFB32929";
 				case QueryLogLineType.SRV:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				case QueryLogLineType.ANY:
-					return "#FF8ab329";
+					return "{StaticResource MahApps.Brushes.AccentBase}";
 				default:
 					return "#FFB32929";
 			}

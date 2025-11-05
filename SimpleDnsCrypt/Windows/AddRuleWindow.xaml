@@ -20,7 +20,7 @@
                 <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="#FF8ab329">
+                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -36,23 +36,23 @@
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Height="20" x:Name="RuleHeaderIcon"
                                                 Width="20" Opacity="0.7"
-                                                Foreground="#FF8ab329"
+                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center" />
                     <TextBlock x:Name="RuleHeader"
                                TextWrapping="Wrap" VerticalAlignment="Center"
-                               Foreground="#FF8ab329" FontSize="20"
+                               Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="20"
                                Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold">
                     </TextBlock>
                 </StackPanel>
                 <TextBlock x:Name="RuleKeyDescription"
                            TextWrapping="Wrap" VerticalAlignment="Center"
-                           Foreground="#FF575757" Margin="0,10,0,3">
+                            Margin="0,10,0,3">
                 </TextBlock>
                 <TextBox Margin="0,5,0,0" x:Name="RuleKey"></TextBox>
                 <TextBlock x:Name="RuleValueDescription"
                            TextWrapping="Wrap" VerticalAlignment="Center"
-                           Foreground="#FF575757" Margin="0,10,0,3">
+                            Margin="0,10,0,3">
                 </TextBlock>
                 <TextBox Margin="0,5,0,0" x:Name="RuleValue"></TextBox>
                 <UniformGrid Margin="0,25,0,0" Columns="2">

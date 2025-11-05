@@ -15,6 +15,6 @@
     ShowMinButton="False"
     ShowTitleBar="True"
     TitleCharacterCasing="Normal"
-    TitleForeground="White"
+    TitleForeground="{StaticResource MahApps.Brushes.ThemeForeground}"
     Topmost="True"
     WindowStartupLocation="CenterScreen" />

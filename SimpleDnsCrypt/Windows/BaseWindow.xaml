@@ -22,7 +22,7 @@
     ShowMinButton="True"
     SizeToContent="WidthAndHeight"
     TitleCharacterCasing="Normal"
-    TitleForeground="White"
+    TitleForeground="{StaticResource MahApps.Brushes.ThemeForeground}"
     Topmost="False"
     WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
@@ -32,15 +32,11 @@
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <controls:MetroProgressBar
-                Width="100"
-                Height="20"
-                Margin="0,0,20,0"
-                VerticalAlignment="Center"
-                Foreground="White"
-                IsIndeterminate="True"
-                Orientation="Horizontal"
-                Visibility="{Binding IsWorkingOnService, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <controls:WindowCommands.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </controls:WindowCommands.ItemsPanel>
             <Button
                 x:Name="OpenLogDirectory"
                 cal:Message.Attach="OpenLogDirectory"

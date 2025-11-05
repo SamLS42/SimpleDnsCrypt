@@ -18,7 +18,7 @@
                 <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="#FF8ab329">
+                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -34,33 +34,33 @@
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Height="20"
                                                 Width="20" Kind="AccountNetwork" Opacity="0.7"
-                                                Foreground="#FF8ab329"
+                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center" />
                     <TextBlock Text="{lex:Loc Key=proxy_proxies}"
                                TextWrapping="Wrap" VerticalAlignment="Center"
-                               Foreground="#FF8ab329" FontSize="20"
+                               Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="20"
                                Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold">
                     </TextBlock>
                 </StackPanel>
                 <TextBlock Text="{lex:Loc Key=proxy_http_header}"
                            TextWrapping="Wrap" VerticalAlignment="Center"
-                           Foreground="#FF8ab329" FontSize="14"
+                           Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="14"
                            Opacity="0.7" Margin="5,8,0,3" FontWeight="Bold">
                 </TextBlock>
                 <TextBlock Text="{lex:Loc Key=proxy_http_sub}"
                            TextWrapping="Wrap" VerticalAlignment="Center"
-                           Foreground="#FF575757" Margin="5,0,0,3">
+                            Margin="5,0,0,3">
                 </TextBlock>
                 <TextBox Margin="0,5,0,0" mah:TextBoxHelper.Watermark="http://127.0.0.1:8888" Text="{Binding HttpProxyInput}" mah:TextBoxHelper.ClearTextButton="True"></TextBox>
                 <TextBlock Text="{lex:Loc Key=proxy_socks_header}"
                            TextWrapping="Wrap" VerticalAlignment="Center"
-                           Foreground="#FF8ab329" FontSize="14"
+                           Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="14"
                            Opacity="0.7" Margin="5,8,0,3" FontWeight="Bold">
                 </TextBlock>
                 <TextBlock Text="{lex:Loc Key=proxy_socks_sub}"
                            TextWrapping="Wrap" VerticalAlignment="Center"
-                           Foreground="#FF575757" Margin="5,0,0,3">
+                            Margin="5,0,0,3">
                 </TextBlock>
                 <TextBox Margin="0,5,0,0" mah:TextBoxHelper.Watermark="socks5://127.0.0.1:9050" Text="{Binding SocksProxyInput}" mah:TextBoxHelper.ClearTextButton="True"></TextBox>
             </StackPanel>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
 
 namespace SimpleDnsCrypt.Converters
@@ -8,12 +7,12 @@ namespace SimpleDnsCrypt.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if ((bool) value)
+			if ((bool)value)
 			{
-				return "#FF8ab329";
+				return "{DynamicResource MahApps.Brushes.Accent}";
 			}
 
-			return "#FFFF8C00";
+			return "Red";
 		}
 
 		public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)

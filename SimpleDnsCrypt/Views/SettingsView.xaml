@@ -34,7 +34,7 @@
                     ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="#FF8ab329">
+                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -53,7 +53,7 @@
                         Height="20"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Foreground="#FF8ab329"
+                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
                         Kind="Settings"
                         Opacity="0.7" />
                     <TextBlock
@@ -61,7 +61,7 @@
                         VerticalAlignment="Center"
                         FontSize="20"
                         FontWeight="Bold"
-                        Foreground="#FF8ab329"
+                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
                         Opacity="0.7"
                         Text="{lex:Loc Key=settings}"
                         TextWrapping="Wrap" />
@@ -74,65 +74,65 @@
                         Margin="5"
                         Content="{lex:Loc Key=settings_advanced_settings}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsAdvancedSettingsTabVisible}" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_query_log}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsQueryLogTabVisible}" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_cloak_and_forward}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsCloakAndForwardTabVisible}" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_domain_block}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsDomainBlockLogTabVisible}"
                         IsEnabled="True" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_domain_blacklist}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsDomainBlacklistTabVisible}"
                         IsEnabled="True" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_address_block}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsAddressBlockLogTabVisible}"
                         IsEnabled="False" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_address_blacklist}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsAddressBlacklistTabVisible}"
                         IsEnabled="False" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_tray_mode}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsTrayModeEnabled}" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_backup_and_restore_config}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding BackupAndRestoreConfigOnUpdate}" />
                     <CheckBox
                         Margin="5"
                         Content="{lex:Loc Key=settings_start_in_tray}"
                         Cursor="Hand"
-                        Foreground="#FF575757"
+                        
                         IsChecked="{Binding IsStartInTrayEnabled}"
                         IsEnabled="{Binding IsTrayModeEnabled}"
                         Visibility="{Binding IsTrayModeEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
@@ -141,18 +141,18 @@
                             Margin="5"
                             Content="{lex:Loc Key=settings_update_auto}"
                             Cursor="Hand"
-                            Foreground="#FF575757"
+                            
                             IsChecked="{Binding IsAutoUpdateEnabled}" />
                         <CheckBox
                             Margin="5"
                             Content="{lex:Loc Key=settings_update_silent}"
                             Cursor="Hand"
-                            Foreground="#FF575757"
+                            
                             IsChecked="{Binding IsAutoUpdateSilentEnabled}" />
                         <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
                             <TextBlock
                                 VerticalAlignment="Center"
-                                Foreground="#FF575757"
+                                
                                 Text="{lex:Loc Key=settings_update_channel}" />
                             <ComboBox
                                 Width="90"

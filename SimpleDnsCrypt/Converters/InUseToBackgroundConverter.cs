@@ -24,7 +24,7 @@ namespace SimpleDnsCrypt.Converters
 			if (localNetworkInterface != null && localNetworkInterface.UseDnsCrypt)
 			{
 				// green
-				return "#FF8ab329";
+				return "{StaticResource MahApps.Brushes.AccentBase}";
 			}
 
 			// gray

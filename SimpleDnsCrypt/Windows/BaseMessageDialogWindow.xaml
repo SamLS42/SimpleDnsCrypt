@@ -10,7 +10,7 @@
     ShowMaxRestoreButton="False"
     ShowMinButton="False"
     ShowTitleBar="False"
-    TitleForeground="White"
+    TitleForeground="{StaticResource MahApps.Brushes.ThemeForeground}"
     Topmost="True"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None">

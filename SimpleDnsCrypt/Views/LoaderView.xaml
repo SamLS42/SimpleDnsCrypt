@@ -11,7 +11,7 @@
                 <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="#FF8ab329">
+                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -32,7 +32,7 @@
                 </Grid.RowDefinitions>
                 <Image Grid.Row="0" Source="/SimpleDnsCrypt;component/Images/128x128.png" Height="128" Width="128"></Image>
                 <TextBlock TextAlignment="Center" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                           Foreground="#FF8ab329" FontSize="18" Opacity="0.7" FontWeight="Bold" Text="{Binding TitleText}"/>
+                           Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="18" Opacity="0.7" FontWeight="Bold" Text="{Binding TitleText}"/>
                 <ProgressBar Height="10"  Grid.Row="2" IsIndeterminate="True"></ProgressBar>
                 <TextBlock TextAlignment="Center" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" 
                             FontSize="14" Foreground="Gray" Text="{Binding ProgressText}"/>
