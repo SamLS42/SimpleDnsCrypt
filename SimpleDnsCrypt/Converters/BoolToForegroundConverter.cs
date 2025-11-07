@@ -9,7 +9,7 @@ namespace SimpleDnsCrypt.Converters
 		{
 			if ((bool)value)
 			{
-				return "{DynamicResource MahApps.Brushes.Accent}";
+				return "{DynamicResource AccentTextFillColorPrimaryBrush}";
 			}
 
 			return "Red";

@@ -651,14 +651,14 @@ namespace SimpleDnsCrypt.ViewModels
 			};
 			dynamic settings = new ExpandoObject();
 			settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			_windowManager.ShowDialog(win, null, settings);
+			await _windowManager.ShowDialogAsync(win, null, settings);
 		}
 
 		public async void Settings()
 		{
 			dynamic settings = new ExpandoObject();
 			settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			dynamic result = _windowManager.ShowDialog(SettingsViewModel, null, settings);
+			dynamic result = await _windowManager.ShowDialogAsync(SettingsViewModel, null, settings);
 			if (!result) Properties.Settings.Default.Save();
 		}
 
@@ -669,7 +669,7 @@ namespace SimpleDnsCrypt.ViewModels
 			ProxiesViewModel.WindowTitle = LocalizationEx.GetUiString("proxy_manage_proxies", Thread.CurrentThread.CurrentCulture);
 			ProxiesViewModel.HttpProxyInput = string.IsNullOrEmpty(DnscryptProxyConfiguration.http_proxy) ? "" : DnscryptProxyConfiguration.http_proxy;
 			ProxiesViewModel.SocksProxyInput = string.IsNullOrEmpty(DnscryptProxyConfiguration.proxy) ? "" : DnscryptProxyConfiguration.proxy;
-			dynamic result = _windowManager.ShowDialog(ProxiesViewModel, null, settings);
+			dynamic result = await _windowManager.ShowDialogAsync(ProxiesViewModel, null, settings);
 			if (result) return;
 			bool saveAdvancedSettings = false;
 
@@ -714,7 +714,7 @@ namespace SimpleDnsCrypt.ViewModels
 			List<string> oldAddressed = [.. DnscryptProxyConfiguration.listen_addresses];
 			FallbackResolversViewModel.FallbackResolvers = DnscryptProxyConfiguration.fallback_resolvers;
 			FallbackResolversViewModel.WindowTitle = LocalizationEx.GetUiString("advanced_settings_fallback_resolvers", Thread.CurrentThread.CurrentCulture);
-			dynamic result = _windowManager.ShowDialog(FallbackResolversViewModel, null, settings);
+			dynamic result = await _windowManager.ShowDialogAsync(FallbackResolversViewModel, null, settings);
 			if (!result)
 			{
 				if (FallbackResolversViewModel.FallbackResolvers.Count == 0) return;
@@ -734,7 +734,7 @@ namespace SimpleDnsCrypt.ViewModels
 			List<string> oldAddressed = [.. DnscryptProxyConfiguration.listen_addresses];
 			ListenAddressesViewModel.ListenAddresses = DnscryptProxyConfiguration.listen_addresses;
 			ListenAddressesViewModel.WindowTitle = LocalizationEx.GetUiString("address_settings_listen_addresses", Thread.CurrentThread.CurrentCulture);
-			dynamic result = _windowManager.ShowDialog(ListenAddressesViewModel, null, settings);
+			dynamic result = await _windowManager.ShowDialogAsync(ListenAddressesViewModel, null, settings);
 			if (!result)
 			{
 				if (ListenAddressesViewModel.ListenAddresses.Count == 0) return;
@@ -1049,7 +1049,7 @@ namespace SimpleDnsCrypt.ViewModels
 				}
 				RouteViewModel.Relays = _relays;
 				RouteViewModel.Resolver = availableResolver.DisplayName;
-				dynamic result = _windowManager.ShowDialog(RouteViewModel, null, settings);
+				dynamic result = await _windowManager.ShowDialogAsync(RouteViewModel, null, settings);
 				if (result) return;
 
 				if (!RouteViewModel.Route.Any())

@@ -1,25 +1,36 @@
-﻿<UserControl x:Class="SimpleDnsCrypt.Views.RouteView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:dd="urn:gong-wpf-dragdrop"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:cal="http://www.caliburnproject.org"
-             mc:Ignorable="d"
-             Height="Auto" Width="650"
-             lex:LocalizeDictionary.DesignCulture="en"
-             lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
-             lex:ResxLocalizationProvider.DefaultDictionary="Translation">
-    <Grid >
-        <Border BorderThickness="1" Grid.Row="0" Grid.Column="0"  Margin="10" Padding="10">
+﻿<UserControl
+    x:Class="SimpleDnsCrypt.Views.RouteView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cal="http://www.caliburnproject.org"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="urn:gong-wpf-dragdrop"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="650"
+    Height="Auto"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
+    lex:ResxLocalizationProvider.DefaultDictionary="Translation"
+    mc:Ignorable="d">
+    <Grid>
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="10"
+            Padding="10"
+            BorderThickness="1">
             <Border.BorderBrush>
-                <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
+                <DrawingBrush
+                    Opacity="0.4"
+                    TileMode="Tile"
+                    Viewport="0,0,8,8"
+                    ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                            <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -33,28 +44,52 @@
             </Border.BorderBrush>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial Height="20"
-                                                Width="20" Kind="Shuffle" Opacity="0.7"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center" />
-                    <TextBlock Text="{lex:Loc Key=route_window_title}"
-                               TextWrapping="Wrap" VerticalAlignment="Center"
-                               Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="20"
-                               Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold">
-                    </TextBlock>
+                    <iconPacks:PackIconMaterial
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                        Kind="Shuffle"
+                        Opacity="0.7" />
+                    <TextBlock
+                        Margin="5,0,0,3"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                        Opacity="0.7"
+                        Text="{lex:Loc Key=route_window_title}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
-                <TextBlock Text="{Binding Resolver}" FontSize="18" Opacity="0.7" Margin="5,0,0,3"  FontWeight="Bold"></TextBlock>
-                <TextBlock Text="{lex:Loc Key=route_via}"
-                               TextWrapping="Wrap" VerticalAlignment="Center"
-                               Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="20"
-                               Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold"/>
-                <Border BorderThickness="1"  Padding="10" Margin="0,10,0,0">
+                <TextBlock
+                    Margin="5,0,0,3"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Opacity="0.7"
+                    Text="{Binding Resolver}" />
+                <TextBlock
+                    Margin="5,0,0,3"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                    Opacity="0.7"
+                    Text="{lex:Loc Key=route_via}"
+                    TextWrapping="Wrap" />
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="10"
+                    BorderThickness="1">
                     <Border.BorderBrush>
-                        <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
+                        <DrawingBrush
+                            Opacity="0.4"
+                            TileMode="Tile"
+                            Viewport="0,0,8,8"
+                            ViewportUnits="Absolute">
                             <DrawingBrush.Drawing>
                                 <DrawingGroup>
-                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                         <GeometryDrawing.Geometry>
                                             <GeometryGroup>
                                                 <RectangleGeometry Rect="0,0,50,50" />
@@ -66,58 +101,68 @@
                             </DrawingBrush.Drawing>
                         </DrawingBrush>
                     </Border.BorderBrush>
-                    <ListView Height="200" 
-                              MinHeight="200"
-                              dd:DragDrop.DropHandler="{Binding}" 
-                              dd:DragDrop.IsDragSource="False"
-                              dd:DragDrop.IsDropTarget="True"
-                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                              dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
-                              ItemsSource="{Binding Route}"
-                              BorderBrush="#198AB328"
-                              ScrollViewer.CanContentScroll="True"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                               FontSize="12" SelectionMode="Single"
-                              >
+                    <ListView
+                        Height="200"
+                        MinHeight="200"
+                        dd:DragDrop.DropHandler="{Binding}"
+                        dd:DragDrop.IsDragSource="False"
+                        dd:DragDrop.IsDropTarget="True"
+                        dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                        dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                        BorderBrush="#198AB328"
+                        FontSize="12"
+                        ItemsSource="{Binding Route}"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        SelectionMode="Single">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="0.2"  Padding="1">
+                                <Border Padding="1" BorderThickness="0.2">
                                     <Grid Cursor="Hand">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
+                                            <RowDefinition />
+                                            <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="30" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" 
-                                                Margin="5,2" FontWeight="Bold"
-                                                Text="{Binding Name}" HorizontalAlignment="Left" />
-                                        <TextBlock Grid.Row="1" Grid.Column="0" 
-                                                Margin="5,2" TextTrimming="WordEllipsis"
-                                                Text="{Binding Description}" HorizontalAlignment="Left" />
-                                        <Button Grid.Row="0" 
-                                                Grid.RowSpan="2" 
-                                                Grid.Column="1"
-                                                
-                                                Width="20"
-                                                Height="20"
-                                                Cursor="Hand"
-                                                HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                BorderBrush="#CCC1170F"
-                                                FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                                                Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                                                Margin="0,2,5,2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="5,2"
+                                            HorizontalAlignment="Left"
+                                            FontWeight="Bold"
+                                            Text="{Binding Name}" />
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="5,2"
+                                            HorizontalAlignment="Left"
+                                            Text="{Binding Description}"
+                                            TextTrimming="WordEllipsis" />
+                                        <Button
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Width="20"
+                                            Height="20"
+                                            Margin="0,2,5,2"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            BorderBrush="#CCC1170F"
+                                            Cursor="Hand"
+                                            FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
+                                            Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                                             <iconPacks:PackIconMaterial
-                                                Kind="Delete"
                                                 Width="10"
                                                 Height="10"
-                                                Foreground="#CCC1170F"
                                                 HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center" >
-                                            </iconPacks:PackIconMaterial>
+                                                VerticalContentAlignment="Center"
+                                                Foreground="#CCC1170F"
+                                                Kind="Delete" />
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">
                                                     <cal:ActionMessage MethodName="Remove">
@@ -133,14 +178,26 @@
                     </ListView>
                 </Border>
 
-                <TextBlock Text="{lex:Loc Key=route_drag_from_relays}" FontSize="14" Opacity="0.7" Margin="5,6,0,0"  FontWeight="Bold"></TextBlock>
+                <TextBlock
+                    Margin="5,6,0,0"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Opacity="0.7"
+                    Text="{lex:Loc Key=route_drag_from_relays}" />
 
-                <Border BorderThickness="1"  Padding="10,5,10,10" Margin="0,10,0,0">
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="10,5,10,10"
+                    BorderThickness="1">
                     <Border.BorderBrush>
-                        <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
+                        <DrawingBrush
+                            Opacity="0.4"
+                            TileMode="Tile"
+                            Viewport="0,0,8,8"
+                            ViewportUnits="Absolute">
                             <DrawingBrush.Drawing>
                                 <DrawingGroup>
-                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                         <GeometryDrawing.Geometry>
                                             <GeometryGroup>
                                                 <RectangleGeometry Rect="0,0,50,50" />
@@ -152,30 +209,37 @@
                             </DrawingBrush.Drawing>
                         </DrawingBrush>
                     </Border.BorderBrush>
-                    <ListView Height="200"
-                              dd:DragDrop.IsDragSource="True"
-                              dd:DragDrop.IsDropTarget="False"
-                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                              ItemsSource="{Binding Relays}" 
-                              BorderBrush="#198AB328" 
-                              ScrollViewer.CanContentScroll="True"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                               FontSize="12" SelectionMode="Single"
-                              >
+                    <ListView
+                        Height="200"
+                        dd:DragDrop.IsDragSource="True"
+                        dd:DragDrop.IsDropTarget="False"
+                        dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                        BorderBrush="#198AB328"
+                        FontSize="12"
+                        ItemsSource="{Binding Relays}"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        SelectionMode="Single">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="0.2"  Padding="1">
+                                <Border Padding="1" BorderThickness="0.2">
                                     <Grid Cursor="Hand">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
+                                            <RowDefinition />
+                                            <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" 
-                                                Margin="5,2" FontWeight="Bold"
-                                                Text="{Binding Name}" HorizontalAlignment="Left" />
-                                        <TextBlock Grid.Row="1" 
-                                                Margin="5,2" TextTrimming="WordEllipsis"
-                                                Text="{Binding Description}" HorizontalAlignment="Left" />
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Margin="5,2"
+                                            HorizontalAlignment="Left"
+                                            FontWeight="Bold"
+                                            Text="{Binding Name}" />
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Margin="5,2"
+                                            HorizontalAlignment="Left"
+                                            Text="{Binding Description}"
+                                            TextTrimming="WordEllipsis" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>

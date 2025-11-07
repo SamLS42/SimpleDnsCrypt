@@ -1,8 +1,7 @@
-﻿using System;
+﻿using SimpleDnsCrypt.Models;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Windows.Data;
-using SimpleDnsCrypt.Models;
 
 namespace SimpleDnsCrypt.Converters
 {
@@ -13,22 +12,22 @@ namespace SimpleDnsCrypt.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var localNetworkInterface = (LocalNetworkInterface)value;
+			LocalNetworkInterface? localNetworkInterface = (LocalNetworkInterface)value;
 
 			if (localNetworkInterface != null && localNetworkInterface.OperationalStatus != OperationalStatus.Up)
 			{
 				// red
-				return "#CCC1170F";
+				return "Red";
 			}
 
 			if (localNetworkInterface != null && localNetworkInterface.UseDnsCrypt)
 			{
 				// green
-				return "{StaticResource MahApps.Brushes.AccentBase}";
+				return "Green";
 			}
 
 			// gray
-			return "#FFA0A0A0";
+			return "Gray";
 		}
 
 		public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)

@@ -13,15 +13,15 @@ namespace SimpleDnsCrypt.Converters
 			switch (logLineReturnCode)
 			{
 				case QueryLogReturnCode.PASS:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
+					return "{DynamicResource AccentTextFillColorPrimaryBrush}";
 				case QueryLogReturnCode.FORWARD:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
+					return "{DynamicResource AccentTextFillColorPrimaryBrush}";
 				case QueryLogReturnCode.DROP:
 					return "#FFB32929";
 				case QueryLogReturnCode.REJECT:
 					return "#FFB32929";
 				case QueryLogReturnCode.SYNTH:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
+					return "{DynamicResource AccentTextFillColorPrimaryBrush}";
 				case QueryLogReturnCode.PARSE_ERROR:
 					return "#FFB32929";
 				case QueryLogReturnCode.NXDOMAIN:

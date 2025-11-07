@@ -1,6 +1,8 @@
-﻿namespace SimpleDnsCrypt.Windows
+﻿using System.Windows;
+
+namespace SimpleDnsCrypt.Windows
 {
-	public partial class BaseMessageDialogWindow 
+	public partial class BaseMessageDialogWindow : Window
 	{
 		public BaseMessageDialogWindow()
 		{

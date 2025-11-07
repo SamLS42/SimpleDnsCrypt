@@ -28,7 +28,7 @@ namespace SimpleDnsCrypt.Extensions
 			try
 			{
 				MetroMessageBoxViewModel model = new(message, title, buttons, messageBoxType);
-				Execute.OnUIThread(() => @this.ShowDialog(model));
+				Execute.OnUIThread(() => @this.ShowDialogAsync(model));
 				retval = model.Result;
 			}
 			finally

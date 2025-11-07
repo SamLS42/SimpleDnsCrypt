@@ -213,22 +213,22 @@ namespace SimpleDnsCrypt.ViewModels
 
 				if (Properties.Settings.Default.TrayMode)
 				{
-					Execute.OnUIThread(() => _windowManager.ShowWindow(_systemTrayViewModel));
+					Execute.OnUIThread(() => _windowManager.ShowWindowAsync(_systemTrayViewModel));
 					if (Properties.Settings.Default.StartInTray)
 					{
 						Execute.OnUIThread(() => _systemTrayViewModel.HideWindow());
 					}
 					else
 					{
-						Execute.OnUIThread(() => _windowManager.ShowWindow(_mainViewModel));
+						Execute.OnUIThread(() => _windowManager.ShowWindowAsync(_mainViewModel));
 					}
 				}
 				else
 				{
-					Execute.OnUIThread(() => _windowManager.ShowWindow(_mainViewModel));
+					Execute.OnUIThread(() => _windowManager.ShowWindowAsync(_mainViewModel));
 				}
 
-				TryClose(true);
+				await TryCloseAsync(true);
 			}
 			catch (Exception exception)
 			{

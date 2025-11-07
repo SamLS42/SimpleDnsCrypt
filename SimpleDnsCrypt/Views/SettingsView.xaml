@@ -34,7 +34,7 @@
                     ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                            <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -53,7 +53,7 @@
                         Height="20"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                         Kind="Settings"
                         Opacity="0.7" />
                     <TextBlock
@@ -61,7 +61,7 @@
                         VerticalAlignment="Center"
                         FontSize="20"
                         FontWeight="Bold"
-                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                         Opacity="0.7"
                         Text="{lex:Loc Key=settings}"
                         TextWrapping="Wrap" />

@@ -1,33 +1,25 @@
 ﻿using Caliburn.Micro;
-using System.Collections.Generic;
 using System.Net.NetworkInformation;
 
 namespace SimpleDnsCrypt.Models
 {
 	public class LocalNetworkInterface : PropertyChangedBase
 	{
-		private string _name;
-		private NetworkInterfaceType _type;
 		private OperationalStatus _operationalStatus;
-		private string _description;
-		private List<DnsServer> _dns;
-		private bool _ipv6Support;
-		private bool _ipv4Support;
-		private bool _useDnsCrypt;
 		private bool _isChangeable;
 
 		public LocalNetworkInterface()
 		{
-			Dns = new List<DnsServer>();
+			Dns = [];
 			_isChangeable = true;
 		}
 
 		public string Name
 		{
-			get => _name;
+			get;
 			set
 			{
-				_name = value;
+				field = value;
 				NotifyOfPropertyChange(() => Name);
 			}
 		}
@@ -45,52 +37,62 @@ namespace SimpleDnsCrypt.Models
 			}
 		}
 
-		public string Description
+		public bool IsUp
 		{
-			get => _description;
+			get => _operationalStatus == OperationalStatus.Up;
 			set
 			{
-				_description = value;
+				_operationalStatus = value ? OperationalStatus.Up : OperationalStatus.Down;
+				NotifyOfPropertyChange(() => IsUp);
+			}
+		}
+
+		public string Description
+		{
+			get;
+			set
+			{
+				field = value;
 				NotifyOfPropertyChange(() => Description);
 			}
 		}
 
 		public NetworkInterfaceType Type
 		{
-			get => _type;
+			get;
 			set
 			{
-				_type = value;
+				field = value;
 				NotifyOfPropertyChange(() => Type);
 			}
 		}
 
 		public List<DnsServer> Dns
 		{
-			get => _dns;
+			get;
 			set
 			{
-				_dns = value;
+				field = value;
 				NotifyOfPropertyChange(() => Dns);
 			}
 		}
 
 		public bool Ipv6Support
 		{
-			get => _ipv6Support;
+			get;
 			set
 			{
-				_ipv6Support = value;
+				field = value;
 				NotifyOfPropertyChange(() => Ipv6Support);
 			}
 		}
 
 		public bool Ipv4Support
 		{
-			get => _ipv4Support;
+			get;
 			set
 			{
-				_ipv4Support = value;
+				field = value;
 				NotifyOfPropertyChange(() => Ipv4Support);
 			}
 		}
@@ -107,10 +109,10 @@ namespace SimpleDnsCrypt.Models
 
 		public bool UseDnsCrypt
 		{
-			get => _useDnsCrypt;
+			get;
 			set
 			{
-				_useDnsCrypt = value;
+				field = value;
 				NotifyOfPropertyChange(() => UseDnsCrypt);
 			}
 		}

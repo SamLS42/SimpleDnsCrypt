@@ -1,5 +1,4 @@
 ﻿using SimpleDnsCrypt.Models;
-using System;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -9,36 +8,23 @@ namespace SimpleDnsCrypt.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var logLineType = (QueryLogLineType) value;
-			switch (logLineType)
+			QueryLogLineType logLineType = (QueryLogLineType)value;
+			return logLineType switch
 			{
-				case QueryLogLineType.A:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.Unknown:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.NS:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.CNAME:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.SOA:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.WKS:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.PTR:
-					return "#FF2a3b68";
-				case QueryLogLineType.MX:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.TXT:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.AAAA:
-					return "#FFB32929";
-				case QueryLogLineType.SRV:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				case QueryLogLineType.ANY:
-					return "{StaticResource MahApps.Brushes.AccentBase}";
-				default:
-					return "#FFB32929";
-			}
+				QueryLogLineType.A => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.Unknown => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.NS => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.CNAME => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.SOA => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.WKS => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.PTR => "#FF2a3b68",
+				QueryLogLineType.MX => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.TXT => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.AAAA => "#FFB32929",
+				QueryLogLineType.SRV => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				QueryLogLineType.ANY => "{DynamicResource AccentTextFillColorPrimaryBrush}",
+				_ => "#FFB32929",
+			};
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

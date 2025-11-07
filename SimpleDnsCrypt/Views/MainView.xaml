@@ -6,41 +6,15 @@
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:converters="clr-namespace:SimpleDnsCrypt.Converters"
     xmlns:customControls="clr-namespace:SimpleDnsCrypt.Controls"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:myControls="clr-namespace:SimpleDnsCrypt.Views"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:LocalizeDictionary.OutputMissingKeys="False"
     lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
-    lex:ResxLocalizationProvider.DefaultDictionary="Translation">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <converters:InterfaceTypeToIconConverter
-                x:Key="InterfaceTypeToIconConverter"
-                EthernetIcon="EthernetCable"
-                EthernetIconOffline="EthernetCableOff"
-                WifiIcon="Wifi"
-                WifiIconOffline="WifiOff" />
-            <converters:InUseToBackgroundConverter x:Key="InUseToBackgroundConverter" />
-            <converters:TextLengthToFontSizeConverter x:Key="TextLengthToFontSizeConverter" />
-            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
-            <converters:ReverseBoolToEnabledConverter x:Key="ReverseBoolToEnabledConverter" />
-            <converters:QueryLogTypeToColorConverter x:Key="QueryLogTypeToColorConverter" />
-            <converters:QueryLogReturnCodeToColorConverter x:Key="QueryLogReturnCodeToColorConverter" />
-            <converters:LocalDateConverter x:Key="LocalDateConverter" />
-            <converters:IntegerBoolToVisibilityConverter x:Key="IntegerBoolToVisibilityConverter" />
-            <converters:ServerListBackgroundConverter x:Key="ServerListBackgroundConverter" />
-            <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
-            <converters:BoolToForegroundConverter x:Key="BoolToForegroundConverter" />
-            <converters:IntegerToBoolConverter x:Key="IntegerToBoolConverter" />
-            <converters:IntegerToVisibilityConverter x:Key="IntegerToVisibilityConverter" />
-            <converters:HeightConverter x:Key="HeightConverter" />
-            <converters:UninstallToEnableConverter x:Key="UninstallToEnableConverter" />
-            <converters:ProtocolToVisibilityConverter x:Key="ProtocolToVisibilityConverter" />
-            <converters:RouteStateToColorConverter x:Key="RouteStateToColorConverter" />
-        </ResourceDictionary>
-    </UserControl.Resources>
+    lex:ResxLocalizationProvider.DefaultDictionary="Translation"
+    Background="{StaticResource LayerFillColorDefaultBrush}">
     <Grid>
         <Border
             Grid.Row="0"
@@ -48,27 +22,6 @@
             Margin="10"
             Padding="10"
             BorderThickness="1">
-            <Border.BorderBrush>
-                <DrawingBrush
-                    Opacity="0.4"
-                    TileMode="Tile"
-                    Viewport="0,0,8,8"
-                    ViewportUnits="Absolute">
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="0,0,50,50" />
-                                        <RectangleGeometry Rect="50,50,50,50" />
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Border.BorderBrush>
-
             <TabControl
                 cal:Message.Attach="[Event SelectionChanged] = [Action TabControl_SelectionChanged($eventArgs)]"
                 controls:TabControlHelper.Transition="Right"
@@ -79,379 +32,7 @@
                     VerticalAlignment="Top"
                     Header="{lex:Loc Key=tabitem_mainmenu}"
                     Tag="mainTab">
-                    <TabItem.Content>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DockPanel Margin="0,10,0,0">
-                                <Border
-                                    MinHeight="75"
-                                    Margin="0,0,0,0"
-                                    Padding="10,10"
-                                    BorderThickness="1"
-                                    DockPanel.Dock="Top"
-                                    IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
-                                    <Border.BorderBrush>
-                                        <DrawingBrush
-                                            Opacity="0.4"
-                                            TileMode="Tile"
-                                            Viewport="0,0,8,8"
-                                            ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Border.BorderBrush>
-                                    <StackPanel Orientation="Vertical">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Kind="Wan"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=default_settings_configuration}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <UniformGrid Columns="2">
-                                            <StackPanel Orientation="Vertical">
-                                                <CheckBox
-                                                    Margin="5"
-                                                    Content="{lex:Loc Key=default_settings_configuration_ipv4}"
-                                                    Cursor="Hand"
-                                                    IsChecked="{Binding DnscryptProxyConfiguration.ipv4_servers}"
-                                                    ToolTip="{lex:Loc Key=default_settings_configuration_ipv4_tooltip}" />
-                                                <CheckBox
-                                                    Margin="5"
-                                                    Content="{lex:Loc Key=default_settings_configuration_ipv6}"
-                                                    Cursor="Hand"
-                                                    IsChecked="{Binding DnscryptProxyConfiguration.ipv6_servers}"
-                                                    ToolTip="{lex:Loc Key=default_settings_configuration_ipv6_tooltip}" />
-                                                <CheckBox
-                                                    Margin="5"
-                                                    Content="{lex:Loc Key=default_settings_configuration_dnssec}"
-                                                    Cursor="Hand"
-                                                    IsChecked="{Binding DnscryptProxyConfiguration.require_dnssec}"
-                                                    ToolTip="{lex:Loc Key=default_settings_configuration_dnssec_tooltip}" />
-                                                <CheckBox
-                                                    Margin="5"
-                                                    Content="{lex:Loc Key=default_settings_configuration_nolog}"
-                                                    Cursor="Hand"
-                                                    IsChecked="{Binding DnscryptProxyConfiguration.require_nolog}"
-                                                    ToolTip="{lex:Loc Key=default_settings_configuration_nolog_tooltip}" />
-                                                <CheckBox
-                                                    Margin="5"
-                                                    Content="{lex:Loc Key=default_settings_configuration_nofilter}"
-                                                    Cursor="Hand"
-                                                    IsChecked="{Binding DnscryptProxyConfiguration.require_nofilter}"
-                                                    ToolTip="{lex:Loc Key=default_settings_configuration_nofilter_tooltip}" />
-                                            </StackPanel>
-                                            <StackPanel Orientation="Vertical">
-                                                <CheckBox
-                                                    Margin="5"
-                                                    Content="{lex:Loc Key=default_settings_configuration_dnscrypt}"
-                                                    Cursor="Hand"
-                                                    IsChecked="{Binding DnscryptProxyConfiguration.dnscrypt_servers}"
-                                                    ToolTip="{lex:Loc Key=default_settings_configuration_dnscrypt_tooltip}" />
-                                                <CheckBox
-                                                    Margin="5"
-                                                    Content="{lex:Loc Key=default_settings_configuration_doh}"
-                                                    Cursor="Hand"
-                                                    IsChecked="{Binding DnscryptProxyConfiguration.doh_servers}"
-                                                    ToolTip="{lex:Loc Key=default_settings_configuration_doh_tooltip}" />
-                                            </StackPanel>
-                                        </UniformGrid>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
-                                            <Button
-                                                x:Name="SaveDnsCryptConfiguration"
-                                                Grid.Row="1"
-                                                Width="Auto"
-                                                Height="32"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom"
-                                                Content="{lex:Loc Key=default_settings_apply_settings}"
-                                                Cursor="Hand"
-                                                Style="{DynamicResource CustomAccentedSquareButtonStyle}" />
-                                        </Grid>
-                                    </StackPanel>
-                                </Border>
-                                <Border
-                                    MinHeight="75"
-                                    Margin="0,14,0,0"
-                                    Padding="10,10"
-                                    BorderThickness="1"
-                                    DockPanel.Dock="Top">
-                                    <Border.BorderBrush>
-                                        <DrawingBrush
-                                            Opacity="0.4"
-                                            TileMode="Tile"
-                                            Viewport="0,0,8,8"
-                                            ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Border.BorderBrush>
-                                    <StackPanel Orientation="Vertical">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Kind="Flash"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=default_settings_service_header}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="250" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Label
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,5"
-                                                VerticalAlignment="Center"
-                                                Content="{lex:Loc Key=default_settings_service}" />
-                                            <controls:MetroProgressBar
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Width="250"
-                                                Margin="0"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentColorBrush}"
-                                                IsIndeterminate="True"
-                                                Visibility="{Binding IsWorkingOnService, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Cursor="Hand"
-                                                FlowDirection="RightToLeft"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                IsOn="{Binding IsResolverRunning}" />
-
-                                            <Label
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                Content="{lex:Loc Key=advanced_settings_uninstall_text}" />
-                                            <controls:MetroProgressBar
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Width="250"
-                                                Margin="50,14,50,15"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentColorBrush}"
-                                                IsIndeterminate="True"
-                                                Visibility="{Binding IsUninstallingService, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            <Button
-                                                x:Name="UninstallService"
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Content="{lex:Loc Key=advanced_settings_uninstall_button}"
-                                                Cursor="Hand"
-                                                Style="{DynamicResource CustomAccentedSquareButtonStyle}">
-                                                <Button.IsEnabled>
-                                                    <MultiBinding Converter="{StaticResource UninstallToEnableConverter}">
-                                                        <Binding Path="IsUninstallingService" />
-                                                        <Binding Path="IsServiceInstalled" />
-                                                    </MultiBinding>
-                                                </Button.IsEnabled>
-                                            </Button>
-
-                                        </Grid>
-                                    </StackPanel>
-                                </Border>
-                                <Border
-                                    Margin="0,14,0,0"
-                                    Padding="10"
-                                    BorderThickness="1"
-                                    DockPanel.Dock="Bottom"
-                                    IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
-                                    <Border.BorderBrush>
-                                        <DrawingBrush
-                                            Opacity="0.4"
-                                            TileMode="Tile"
-                                            Viewport="0,0,8,8"
-                                            ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Border.BorderBrush>
-                                    <StackPanel Orientation="Vertical">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Kind="Lan"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=default_settings_network_cards}"
-                                                TextWrapping="Wrap" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Right"
-                                                Cursor="Hand"
-                                                IsOn="{Binding ShowHiddenCards}"
-                                                OffContent="{lex:Loc Key=default_settings_show_hidden_cards}"
-                                                OnContent="{lex:Loc Key=default_settings_show_hidden_cards}" />
-                                        </Grid>
-                                        <ItemsControl ItemsSource="{Binding LocalNetworkInterfaces}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Columns="4" />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <controls:Tile
-                                                        Title="{Binding Name}"
-                                                        Width="Auto"
-                                                        Height="100"
-                                                        HorizontalAlignment="Left"
-                                                        cal:Message.Attach="[Event Click] = [Action NetworkCardClicked($dataContext)]"
-                                                        Background="{Binding Converter={StaticResource InUseToBackgroundConverter}}"
-                                                        Cursor="Hand"
-                                                        Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
-                                                        TitleFontSize="{Binding Name, Converter={StaticResource TextLengthToFontSizeConverter}}"
-                                                        ToolTip="{Binding Description}">
-                                                        <Grid Margin="15,0,0,0">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="150" />
-                                                                <ColumnDefinition Width="20" />
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="*" />
-                                                            </Grid.RowDefinitions>
-                                                            <iconPacks:PackIconMaterial
-                                                                Grid.Row="0"
-                                                                Grid.Column="0"
-                                                                Width="48"
-                                                                Height="48"
-                                                                Margin="15,0,0,0"
-                                                                HorizontalAlignment="Center"
-                                                                VerticalAlignment="Center"
-                                                                Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
-                                                                Kind="{Binding Converter={StaticResource InterfaceTypeToIconConverter}}" />
-                                                            <iconPacks:PackIconMaterial
-                                                                Grid.Row="0"
-                                                                Grid.Column="1"
-                                                                Width="16"
-                                                                Height="16"
-                                                                Margin="0,-20,7,0"
-                                                                HorizontalAlignment="Right"
-                                                                VerticalAlignment="Top"
-                                                                Foreground="{StaticResource MahApps.Brushes.ThemeForeground}"
-                                                                Kind="Check"
-                                                                Visibility="{Binding UseDnsCrypt, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                        </Grid>
-                                                    </controls:Tile>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </Border>
-                            </DockPanel>
-                        </ScrollViewer>
-                    </TabItem.Content>
+                    <customControls:MainMenu />
                 </TabItem>
                 <TabItem
                     Height="39"
@@ -459,309 +40,7 @@
                     VerticalAlignment="Top"
                     Header="{lex:Loc Key=tabitem_resolvers}"
                     Tag="resolverTab">
-                    <TabItem.Content>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DockPanel Margin="0,10,0,0">
-                                <Border
-                                    Margin="0,14,0,0"
-                                    Padding="10"
-                                    BorderThickness="1"
-                                    DockPanel.Dock="Top"
-                                    IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
-                                    <Border.BorderBrush>
-                                        <DrawingBrush
-                                            Opacity="0.4"
-                                            TileMode="Tile"
-                                            Viewport="0,0,8,8"
-                                            ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Border.BorderBrush>
-                                    <StackPanel Orientation="Vertical">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Kind="AutoFix"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=resolvers_dnscrypt_mode_header}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <TextBlock Margin="0,5,0,0" Text="{lex:Loc Key=resolvers_dnscrypt_mode_description}" />
-                                        <controls:ToggleSwitch
-                                            Margin="0,5,0,0"
-                                            Cursor="Hand"
-                                            Header="{lex:Loc Key=resolvers_dnscrypt_automatic_mode}"
-                                            IsOn="{Binding IsDnsCryptAutomaticModeEnabled}"
-                                            OffContent="{lex:Loc Key=disabled}"
-                                            OnContent="{lex:Loc Key=enabled}" />
-                                    </StackPanel>
-                                </Border>
-                                <Border
-                                    Margin="0,14,0,0"
-                                    Padding="10"
-                                    BorderThickness="1"
-                                    DockPanel.Dock="Bottom"
-                                    IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
-                                    <Border.BorderBrush>
-                                        <DrawingBrush
-                                            Opacity="0.4"
-                                            TileMode="Tile"
-                                            Viewport="0,0,8,8"
-                                            ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Border.BorderBrush>
-                                    <StackPanel Orientation="Vertical">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                Kind="Dns"
-                                                Opacity="0.7" />
-                                            <StackPanel
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                Orientation="Horizontal">
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    FontSize="20"
-                                                    FontWeight="Bold"
-                                                    Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                    Opacity="0.7"
-                                                    Text="{lex:Loc Key=resolvers_available_resolvers_header}"
-                                                    TextWrapping="Wrap" />
-                                                <TextBlock
-                                                    Margin="5,0,0,0"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="20"
-                                                    FontWeight="Bold"
-                                                    Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                    Opacity="0.7"
-                                                    Text="{Binding Resolvers.Count, StringFormat={}({0})}"
-                                                    TextWrapping="Wrap" />
-                                            </StackPanel>
-                                            <Button
-                                                x:Name="SaveLocalServers"
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Width="Auto"
-                                                HorizontalAlignment="Right"
-                                                Content="{lex:Loc Key=default_settings_apply_settings}"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding Resolvers.Count, Converter={StaticResource IntegerToBoolConverter}}"
-                                                Style="{DynamicResource CustomAccentedSquareButtonStyle}" />
-                                        </Grid>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                Margin="5,5,0,2"
-                                                VerticalAlignment="Center"
-                                                Text="{lex:Loc Key=default_settings_configuration_dnssec}" />
-                                            <TextBlock
-                                                Margin="5,5,0,2"
-                                                VerticalAlignment="Center"
-                                                FontWeight="Bold"
-                                                Text="{Binding DnscryptProxyConfiguration.require_dnssec, Converter={StaticResource BoolToTextConverter}}">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding DnscryptProxyConfiguration.require_dnssec}" Value="True">
-                                                                <Setter Property="Foreground" Value="{StaticResource MahApps.Brushes.AccentBase}" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding DnscryptProxyConfiguration.require_dnssec}" Value="False">
-                                                                <Setter Property="Foreground" Value="{StaticResource MahApps.Brushes.SystemControlErrorTextForeground}" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                            <TextBlock Margin="5,5,0,2" VerticalAlignment="Center">
-                                                |
-                                            </TextBlock>
-                                            <TextBlock
-                                                Margin="5,5,0,2"
-                                                VerticalAlignment="Center"
-                                                Text="{lex:Loc Key=default_settings_configuration_nolog}" />
-                                            <TextBlock
-                                                Margin="5,5,0,2"
-                                                VerticalAlignment="Center"
-                                                FontWeight="Bold"
-                                                Foreground="{Binding DnscryptProxyConfiguration.require_nolog, Converter={StaticResource BoolToForegroundConverter}}"
-                                                Text="{Binding DnscryptProxyConfiguration.require_nolog, Converter={StaticResource BoolToTextConverter}}" />
-                                            <TextBlock Margin="5,5,0,2" VerticalAlignment="Center">
-                                                |
-                                            </TextBlock>
-                                            <TextBlock
-                                                Margin="5,5,0,2"
-                                                VerticalAlignment="Center"
-                                                Text="{lex:Loc Key=default_settings_configuration_nofilter}" />
-                                            <TextBlock
-                                                Margin="5,5,0,2"
-                                                VerticalAlignment="Center"
-                                                FontWeight="Bold"
-                                                Text="{Binding DnscryptProxyConfiguration.require_nofilter, Converter={StaticResource BoolToTextConverter}}">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding DnscryptProxyConfiguration.require_nofilter}" Value="True">
-                                                                <Setter Property="Foreground" Value="{StaticResource MahApps.Brushes.AccentBase}" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding DnscryptProxyConfiguration.require_nofilter}" Value="False">
-                                                                <Setter Property="Foreground" Value="{StaticResource MahApps.Brushes.SystemControlErrorTextForeground}" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </StackPanel>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource HeightConverter}, ConverterParameter='Resolvers'}" />
-                                            </Grid.RowDefinitions>
-                                            <ScrollViewer Margin="0,5,0,0" VerticalScrollBarVisibility="Auto">
-                                                <ItemsControl
-                                                    Margin="0"
-                                                    IsEnabled="True"
-                                                    ItemsSource="{Binding Resolvers}">
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <UniformGrid Columns="3" />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Border Padding="1" BorderThickness="0.2">
-                                                                <Grid
-                                                                    cal:Message.Attach="[Event MouseLeftButtonDown] = [Action ResolverClicked($dataContext)]"
-                                                                    Background="{Binding IsInServerList, Converter={StaticResource ServerListBackgroundConverter}}"
-                                                                    Cursor="Hand"
-                                                                    ToolTip="{Binding ToolTip}">
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition />
-                                                                        <RowDefinition />
-                                                                    </Grid.RowDefinitions>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="30" />
-                                                                        <ColumnDefinition Width="*" />
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <TextBlock
-                                                                        Grid.Row="0"
-                                                                        Grid.Column="1"
-                                                                        Margin="5,2"
-                                                                        HorizontalAlignment="Right"
-                                                                        Text="{Binding DisplayName}" />
-                                                                    <Button
-                                                                        Grid.Row="0"
-                                                                        Grid.Column="0"
-                                                                        Width="20"
-                                                                        Height="20"
-                                                                        Margin="5,2,0,2"
-                                                                        HorizontalAlignment="Left"
-                                                                        VerticalAlignment="Top"
-                                                                        HorizontalContentAlignment="Center"
-                                                                        VerticalContentAlignment="Center"
-                                                                        BorderBrush="{Binding RouteState, Converter={StaticResource RouteStateToColorConverter}}"
-                                                                        Cursor="Hand"
-                                                                        FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                                                                        Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                                                                        Visibility="{Binding Protocol, Converter={StaticResource ProtocolToVisibilityConverter}}">
-                                                                        <iconPacks:PackIconMaterial
-                                                                            Width="10"
-                                                                            Height="10"
-                                                                            HorizontalContentAlignment="Center"
-                                                                            VerticalContentAlignment="Center"
-                                                                            Kind="Shuffle">
-                                                                            <iconPacks:PackIconMaterial.Foreground>
-                                                                                <SolidColorBrush Color="{Binding RouteState, Converter={StaticResource RouteStateToColorConverter}}" />
-                                                                            </iconPacks:PackIconMaterial.Foreground>
-                                                                        </iconPacks:PackIconMaterial>
-                                                                        <Button.ToolTip>
-                                                                            <Label Content="{Binding RouteStateText}" FontWeight="DemiBold" />
-                                                                        </Button.ToolTip>
-                                                                        <i:Interaction.Triggers>
-                                                                            <i:EventTrigger EventName="Click">
-                                                                                <cal:ActionMessage MethodName="HandleManageRoutes">
-                                                                                    <cal:Parameter Value="{Binding}" />
-                                                                                </cal:ActionMessage>
-                                                                            </i:EventTrigger>
-                                                                        </i:Interaction.Triggers>
-                                                                    </Button>
-                                                                    <TextBlock
-                                                                        Grid.Row="1"
-                                                                        Grid.ColumnSpan="2"
-                                                                        Margin="5,2"
-                                                                        FontSize="10"
-                                                                        Text="{Binding Description}"
-                                                                        TextTrimming="WordEllipsis" />
-                                                                </Grid>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </ScrollViewer>
-                                            <TextBlock
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Text="No resolvers have been loaded yet"
-                                                Visibility="{Binding Resolvers.Count, Converter={StaticResource IntegerToVisibilityConverter}}" />
-                                        </Grid>
-                                    </StackPanel>
-                                </Border>
-                            </DockPanel>
-                        </ScrollViewer>
-                    </TabItem.Content>
+                    <customControls:Resolvers />
                 </TabItem>
                 <TabItem
                     Height="39"
@@ -787,7 +66,7 @@
                                             ViewportUnits="Absolute">
                                             <DrawingBrush.Drawing>
                                                 <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                                         <GeometryDrawing.Geometry>
                                                             <GeometryGroup>
                                                                 <RectangleGeometry Rect="0,0,50,50" />
@@ -814,7 +93,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Ethernet"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -824,7 +103,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=address_settings_listen_addresses}"
                                                 TextWrapping="Wrap" />
@@ -856,7 +135,7 @@
                                                 Content="{lex:Loc Key=address_settings_manage_listen_addresses}"
                                                 Cursor="Hand"
                                                 IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                Style="{DynamicResource CustomAccentedSquareButtonStyle}" />
+                                                Style="{DynamicResource AccentButtonStyle}" />
                                         </Grid>
                                         <!--  Listen Addresses end  -->
                                         <!--  DNS Cache begin  -->
@@ -873,7 +152,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="BookOpenPageVariant"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -883,7 +162,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=advanced_settings_dnscache}"
                                                 TextWrapping="Wrap" />
@@ -928,7 +207,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Numeric6BoxMultipleOutline"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -938,7 +217,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=advanced_settings_blockipv6}"
                                                 TextWrapping="Wrap" />
@@ -983,7 +262,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Network"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -993,7 +272,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=advanced_settings_forcetcp}"
                                                 TextWrapping="Wrap" />
@@ -1038,7 +317,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="ArrowAll"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -1048,7 +327,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=advanced_settings_globalresolver}"
                                                 TextWrapping="Wrap" />
@@ -1093,7 +372,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="BackupRestore"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -1103,7 +382,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=advanced_settings_fallback_resolvers}"
                                                 TextWrapping="Wrap" />
@@ -1135,7 +414,7 @@
                                                 Content="{lex:Loc Key=advanced_settings_manage_fallback_resolvers}"
                                                 Cursor="Hand"
                                                 IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                Style="{DynamicResource CustomAccentedSquareButtonStyle}" />
+                                                Style="{DynamicResource AccentButtonStyle}" />
                                         </Grid>
                                         <!--  Fallback Resolver end  -->
                                         <!--  Netprobe Timeout begin  -->
@@ -1152,7 +431,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Timelapse"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -1162,7 +441,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=advanced_settings_netprobe_timeout}"
                                                 TextWrapping="Wrap" />
@@ -1190,7 +469,7 @@
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Top"
-                                                Background="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Background="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
                                                 Maximum="65000"
                                                 Minimum="0"
@@ -1213,7 +492,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Text"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -1223,7 +502,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="Proxy Logging"
                                                 TextWrapping="Wrap" />
@@ -1261,7 +540,7 @@
                                             HorizontalAlignment="Right"
                                             Content="{lex:Loc Key=default_settings_apply_settings}"
                                             Cursor="Hand"
-                                            Style="{DynamicResource CustomAccentedSquareButtonStyle}" />
+                                            Style="{DynamicResource AccentButtonStyle}" />
                                     </StackPanel>
                                 </Border>
 
@@ -1293,7 +572,7 @@
                                             ViewportUnits="Absolute">
                                             <DrawingBrush.Drawing>
                                                 <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                                         <GeometryDrawing.Geometry>
                                                             <GeometryGroup>
                                                                 <RectangleGeometry Rect="0,0,50,50" />
@@ -1324,7 +603,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Eye"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -1334,7 +613,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=querylog}"
                                                 TextWrapping="Wrap" />
@@ -1503,7 +782,7 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalContentAlignment="Stretch"
                                                 VerticalContentAlignment="Center"
-                                                Background="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Background="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 IsReadOnly="True"
                                                 Opacity="0.4"
                                                 Text="{Binding QueryLogFile}" />
@@ -1564,7 +843,7 @@
                                         ViewportUnits="Absolute">
                                         <DrawingBrush.Drawing>
                                             <DrawingGroup>
-                                                <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                                                <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                                     <GeometryDrawing.Geometry>
                                                         <GeometryGroup>
                                                             <RectangleGeometry Rect="0,0,50,50" />
@@ -1599,7 +878,7 @@
                                         Height="20"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         Kind="AccountConvert"
                                         Opacity="0.7" />
                                     <TextBlock
@@ -1609,7 +888,7 @@
                                         VerticalAlignment="Center"
                                         FontSize="20"
                                         FontWeight="Bold"
-                                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         Opacity="0.7"
                                         Text="{lex:Loc Key=cloaking}"
                                         TextWrapping="Wrap" />
@@ -1643,7 +922,7 @@
                                             MinWidth="560"
                                             Margin="0,0,0,0"
                                             VerticalContentAlignment="Center"
-                                            Background="{StaticResource MahApps.Brushes.AccentBase}"
+                                            Background="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                             IsReadOnly="True"
                                             Opacity="0.4"
                                             Text="{Binding CloakingRulesFile}" />
@@ -1821,7 +1100,7 @@
                                         Margin="0,7,0,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         Kind="Radar"
                                         Opacity="0.7" />
                                     <TextBlock
@@ -1831,7 +1110,7 @@
                                         VerticalAlignment="Center"
                                         FontSize="20"
                                         FontWeight="Bold"
-                                        Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         Opacity="0.7"
                                         Text="{lex:Loc Key=forwarding}"
                                         TextWrapping="Wrap" />
@@ -1865,9 +1144,7 @@
                                             MinWidth="560"
                                             Margin="0,0,0,0"
                                             VerticalContentAlignment="Center"
-                                            Background="{StaticResource MahApps.Brushes.AccentBase}"
                                             IsReadOnly="True"
-                                            Opacity="0.4"
                                             Text="{Binding ForwardingRulesFile}" />
                                         <Button
                                             x:Name="ChangeForwardingRulesFile"
@@ -2070,7 +1347,7 @@
                                             ViewportUnits="Absolute">
                                             <DrawingBrush.Drawing>
                                                 <DrawingGroup>
-                                                    <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                                         <GeometryDrawing.Geometry>
                                                             <GeometryGroup>
                                                                 <RectangleGeometry Rect="0,0,50,50" />
@@ -2101,7 +1378,7 @@
                                                 Height="20"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Eye"
                                                 Opacity="0.7" />
                                             <TextBlock
@@ -2111,7 +1388,7 @@
                                                 VerticalAlignment="Center"
                                                 FontSize="20"
                                                 FontWeight="Bold"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Opacity="0.7"
                                                 Text="{lex:Loc Key=domainblocklog}"
                                                 TextWrapping="Wrap" />
@@ -2264,7 +1541,7 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalContentAlignment="Stretch"
                                                 VerticalContentAlignment="Center"
-                                                Background="{StaticResource MahApps.Brushes.AccentBase}"
+                                                Background="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 IsReadOnly="True"
                                                 Opacity="0.4"
                                                 Text="{Binding DomainBlockLogFile}" />
@@ -2325,7 +1602,7 @@
                                         ViewportUnits="Absolute">
                                         <DrawingBrush.Drawing>
                                             <DrawingGroup>
-                                                <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                                                <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                                     <GeometryDrawing.Geometry>
                                                         <GeometryGroup>
                                                             <RectangleGeometry Rect="0,0,50,50" />

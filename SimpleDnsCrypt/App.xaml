@@ -2,19 +2,43 @@
     x:Class="SimpleDnsCrypt.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:SimpleDnsCrypt">
+    xmlns:converters="clr-namespace:SimpleDnsCrypt.Converters"
+    xmlns:local="clr-namespace:SimpleDnsCrypt"
+    ThemeMode="System">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="Bootstrapper" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/vs/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/themes/dark.green.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.tabcontrol.xaml" />
                 <ResourceDictionary Source="/Resources/ResourceDictionaries/ResourceLibrary.xaml" />
+
+                <ResourceDictionary>
+                    <converters:InterfaceTypeToIconConverter
+                        x:Key="InterfaceTypeToIconConverter"
+                        EthernetIcon="EthernetCable"
+                        EthernetIconOffline="EthernetCableOff"
+                        WifiIcon="Wifi"
+                        WifiIconOffline="WifiOff" />
+                    <converters:InUseToBackgroundConverter x:Key="InUseToBackgroundConverter" />
+                    <converters:TextLengthToFontSizeConverter x:Key="TextLengthToFontSizeConverter" />
+                    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                    <converters:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
+                    <converters:ReverseBoolToEnabledConverter x:Key="ReverseBoolToEnabledConverter" />
+                    <converters:QueryLogTypeToColorConverter x:Key="QueryLogTypeToColorConverter" />
+                    <converters:QueryLogReturnCodeToColorConverter x:Key="QueryLogReturnCodeToColorConverter" />
+                    <converters:LocalDateConverter x:Key="LocalDateConverter" />
+                    <converters:IntegerBoolToVisibilityConverter x:Key="IntegerBoolToVisibilityConverter" />
+                    <converters:ServerListBackgroundConverter x:Key="ServerListBackgroundConverter" />
+                    <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
+                    <converters:BoolToForegroundConverter x:Key="BoolToForegroundConverter" />
+                    <converters:IntegerToBoolConverter x:Key="IntegerToBoolConverter" />
+                    <converters:IntegerToVisibilityConverter x:Key="IntegerToVisibilityConverter" />
+                    <converters:HeightConverter x:Key="HeightConverter" />
+                    <converters:UninstallToEnableConverter x:Key="UninstallToEnableConverter" />
+                    <converters:ProtocolToVisibilityConverter x:Key="ProtocolToVisibilityConverter" />
+                    <converters:RouteStateToColorConverter x:Key="RouteStateToColorConverter" />
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

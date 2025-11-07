@@ -10,17 +10,18 @@ namespace SimpleDnsCrypt.ViewModels
 		private readonly MainViewModel _mainViewModel = mainViewModel;
 		private readonly IEventAggregator _events = events;
 
-		protected override void OnActivate()
+		protected override Task OnActivatedAsync(CancellationToken cancellationToken)
 		{
 			NotifyOfPropertyChange(() => CanShowWindow);
 			NotifyOfPropertyChange(() => CanHideWindow);
+			return base.OnActivatedAsync(cancellationToken);
 		}
 
 		public void ShowWindow()
 		{
 			if (!_mainViewModel.IsActive)
 			{
-				_windowManager.ShowWindow(_mainViewModel);
+				_windowManager.ShowWindowAsync(_mainViewModel);
 			}
 			NotifyOfPropertyChange(() => CanShowWindow);
 			NotifyOfPropertyChange(() => CanHideWindow);
@@ -30,7 +31,7 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public void HideWindow()
 		{
-			_mainViewModel.TryClose();
+			_mainViewModel.TryCloseAsync();
 
 			NotifyOfPropertyChange(() => CanShowWindow);
 			NotifyOfPropertyChange(() => CanHideWindow);

@@ -1,26 +1,36 @@
-﻿<simpleChildWindow:ChildWindow x:Class="SimpleDnsCrypt.Windows.AddRuleWindow"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
-      xmlns:lex="http://wpflocalizeextension.codeplex.com"
-      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      ChildWindowWidth="400"
-      lex:LocalizeDictionary.DesignCulture="en"
-      lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
-      lex:ResxLocalizationProvider.DefaultDictionary="Translation"
-      Title="AddRuleWindow">
-    <Grid >
-        <Border BorderThickness="1" Grid.Row="0" Grid.Column="0"  Margin="10"
-                Padding="10">
+﻿<simpleChildWindow:ChildWindow
+    x:Class="SimpleDnsCrypt.Windows.AddRuleWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
+    Title="AddRuleWindow"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
+    lex:ResxLocalizationProvider.DefaultDictionary="Translation"
+    ChildWindowWidth="400"
+    mc:Ignorable="d">
+    <Grid>
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="10"
+            Padding="10"
+            BorderThickness="1">
             <Border.BorderBrush>
-                <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
+                <DrawingBrush
+                    Opacity="0.4"
+                    TileMode="Tile"
+                    Viewport="0,0,8,8"
+                    ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                            <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -34,42 +44,53 @@
             </Border.BorderBrush>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial Height="20" x:Name="RuleHeaderIcon"
-                                                Width="20" Opacity="0.7"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center" />
-                    <TextBlock x:Name="RuleHeader"
-                               TextWrapping="Wrap" VerticalAlignment="Center"
-                               Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="20"
-                               Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold">
-                    </TextBlock>
+                    <iconPacks:PackIconMaterial
+                        x:Name="RuleHeaderIcon"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                        Opacity="0.7" />
+                    <TextBlock
+                        x:Name="RuleHeader"
+                        Margin="5,0,0,3"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                        Opacity="0.7"
+                        TextWrapping="Wrap" />
                 </StackPanel>
-                <TextBlock x:Name="RuleKeyDescription"
-                           TextWrapping="Wrap" VerticalAlignment="Center"
-                            Margin="0,10,0,3">
-                </TextBlock>
-                <TextBox Margin="0,5,0,0" x:Name="RuleKey"></TextBox>
-                <TextBlock x:Name="RuleValueDescription"
-                           TextWrapping="Wrap" VerticalAlignment="Center"
-                            Margin="0,10,0,3">
-                </TextBlock>
-                <TextBox Margin="0,5,0,0" x:Name="RuleValue"></TextBox>
+                <TextBlock
+                    x:Name="RuleKeyDescription"
+                    Margin="0,10,0,3"
+                    VerticalAlignment="Center"
+                    TextWrapping="Wrap" />
+                <TextBox x:Name="RuleKey" Margin="0,5,0,0" />
+                <TextBlock
+                    x:Name="RuleValueDescription"
+                    Margin="0,10,0,3"
+                    VerticalAlignment="Center"
+                    TextWrapping="Wrap" />
+                <TextBox x:Name="RuleValue" Margin="0,5,0,0" />
                 <UniformGrid Margin="0,25,0,0" Columns="2">
-                    <Button x:Name="AddRule"
-                            Style="{DynamicResource CustomAccentedSquareButtonStyle}"
-                            HorizontalAlignment="Left"
-                            Click="AddButtonClick"
-                            IsDefault="True" Width="150"
-                            Cursor="Hand">
-                    </Button>
-                    <Button x:Name="Abort"
-                            Style="{DynamicResource CustomAccentedSquareButtonStyle}"
-                            HorizontalAlignment="Right"
-                            Click="AbortButtonClick"
-                            IsDefault="False" Width="150"
-                            Cursor="Hand">
-                    </Button>
+                    <Button
+                        x:Name="AddRule"
+                        Width="150"
+                        HorizontalAlignment="Left"
+                        Click="AddButtonClick"
+                        Cursor="Hand"
+                        IsDefault="True"
+                        Style="{DynamicResource AccentButtonStyle}" />
+                    <Button
+                        x:Name="Abort"
+                        Width="150"
+                        HorizontalAlignment="Right"
+                        Click="AbortButtonClick"
+                        Cursor="Hand"
+                        IsDefault="False"
+                        Style="{DynamicResource AccentButtonStyle}" />
                 </UniformGrid>
             </StackPanel>
         </Border>

@@ -72,6 +72,16 @@ namespace SimpleDnsCrypt.ViewModels
 			}
 		}
 
+		public bool IsWorking
+		{
+			get;
+			set
+			{
+				field = value;
+				NotifyOfPropertyChange(() => IsWorking);
+			}
+		}
+
 		#region Forwarding
 
 		private async Task ReadForwardingRulesFromFile(string readFromPath = "")

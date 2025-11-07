@@ -13,7 +13,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Baseclass.Contrib.Nuget.Output" Version="2.4.3" />
-		<PackageReference Include="Caliburn.Micro" Version="3.2.0" />
+		<PackageReference Include="Caliburn.Micro" Version="5.0.258" />
 		<PackageReference Include="Costura.Fody" Version="4.1.0" />
 		<PackageReference Include="DnsCrypt.Blacklist" Version="0.1.1" />
 		<PackageReference Include="DnsCrypt.Stamps" Version="0.2.2" />
@@ -22,9 +22,8 @@
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
 		<PackageReference Include="helper-net" Version="0.2.0" />
 		<PackageReference Include="libsodium-net" Version="0.10.0" />
-		<PackageReference Include="MahApps.Metro" Version="3.0.0-rc0529" />
 		<PackageReference Include="MahApps.Metro.IconPacks.Material" Version="3.7.0" />
-		<PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="1.5.0" />
+		<PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.2.1" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.14.0" />
 		<PackageReference Include="minisign-net" Version="0.1.2" />
 		<PackageReference Include="Nett" Version="0.15.0" />

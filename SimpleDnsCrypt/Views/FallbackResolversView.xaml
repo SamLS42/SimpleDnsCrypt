@@ -1,26 +1,36 @@
-﻿<UserControl x:Class="SimpleDnsCrypt.Views.FallbackResolversView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             xmlns:converters="clr-namespace:SimpleDnsCrypt.Converters"
-             xmlns:cal="http://www.caliburnproject.org"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d"
-             Height="Auto" Width="250"
-             lex:LocalizeDictionary.DesignCulture="en"
-             lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
-             lex:ResxLocalizationProvider.DefaultDictionary="Translation">
-    <Grid >
-        <Border BorderThickness="1" Grid.Row="0" Grid.Column="0"  Margin="10"
-                Padding="10">
+﻿<UserControl
+    x:Class="SimpleDnsCrypt.Views.FallbackResolversView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cal="http://www.caliburnproject.org"
+    xmlns:converters="clr-namespace:SimpleDnsCrypt.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="250"
+    Height="Auto"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
+    lex:ResxLocalizationProvider.DefaultDictionary="Translation"
+    mc:Ignorable="d">
+    <Grid>
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="10"
+            Padding="10"
+            BorderThickness="1">
             <Border.BorderBrush>
-                <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile" Opacity="0.4">
+                <DrawingBrush
+                    Opacity="0.4"
+                    TileMode="Tile"
+                    Viewport="0,0,8,8"
+                    ViewportUnits="Absolute">
                     <DrawingBrush.Drawing>
                         <DrawingGroup>
-                            <GeometryDrawing Brush="{StaticResource MahApps.Brushes.AccentBase}">
+                            <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
                                 <GeometryDrawing.Geometry>
                                     <GeometryGroup>
                                         <RectangleGeometry Rect="0,0,50,50" />
@@ -34,95 +44,102 @@
             </Border.BorderBrush>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial Height="20"
-                                                Width="20" Kind="Ethernet" Opacity="0.7"
-                                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center" />
-                    <TextBlock Text="{lex:Loc Key=advanced_settings_fallback_resolvers}"
-                               TextWrapping="Wrap" VerticalAlignment="Center"
-                               Foreground="{StaticResource MahApps.Brushes.AccentBase}" FontSize="20"
-                               Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold">
-                    </TextBlock>
+                    <iconPacks:PackIconMaterial
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                        Kind="Ethernet"
+                        Opacity="0.7" />
+                    <TextBlock
+                        Margin="5,0,0,3"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                        Opacity="0.7"
+                        Text="{lex:Loc Key=advanced_settings_fallback_resolvers}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <ListBox ItemsSource="{Binding FallbackResolvers}" SelectionMode="Single" SelectedItem="{Binding SelectedFallbackResolver}"/>
-                    <TextBox Margin="0,5,0,0" mah:TextBoxHelper.Watermark="9.9.9.9:53" Text="{Binding AddressInput}"></TextBox>
+                    <ListBox
+                        ItemsSource="{Binding FallbackResolvers}"
+                        SelectedItem="{Binding SelectedFallbackResolver}"
+                        SelectionMode="Single" />
+                    <TextBox
+                        Margin="0,5,0,0"
+                        mah:TextBoxHelper.Watermark="9.9.9.9:53"
+                        Text="{Binding AddressInput}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                    <Button x:Name="AddAddress"
-                                                        cal:Message.Attach="AddAddress"
-                                                        
-                                                        Width="30"
-                                                        Height="30"
-                                                        Cursor="Hand"
-                                                        HorizontalContentAlignment="Center"
-                                                        VerticalContentAlignment="Center"
-                                                        BorderBrush="{DynamicResource AccentColorBrush}"
-                                                        FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                                                        Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                                                        Margin="5,0,5,0">
+                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <Button
+                        x:Name="AddAddress"
+                        Width="30"
+                        Height="30"
+                        Margin="5,0,5,0"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        cal:Message.Attach="AddAddress"
+                        BorderBrush="{DynamicResource AccentColorBrush}"
+                        Cursor="Hand"
+                        FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
+                        Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                         <iconPacks:PackIconMaterial
-                                                        Kind="Plus"
-                                                        Width="15"
-                                                        Height="15"
-                                                        HorizontalContentAlignment="Center"
-                                                        VerticalContentAlignment="Center"
-                                                        Foreground="{DynamicResource AccentColorBrush}" />
-                        <Button.ToolTip>
-                            <Label
-                                                            Content="{lex:Loc Key=address_settings_add}"
-                                                            FontWeight="DemiBold" />
-                        </Button.ToolTip>
-                    </Button>
-                    <Button x:Name="RemoveAddress"
-                            cal:Message.Attach="RemoveAddress"
-                            
-                            Width="30"
-                            Height="30"
-                            Cursor="Hand"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            BorderBrush="{DynamicResource AccentColorBrush}"
-                            FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                            Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                            Margin="5,0,5,0">
-                        <iconPacks:PackIconMaterial
-                            Kind="Minus"
                             Width="15"
                             Height="15"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
-                            Foreground="{DynamicResource AccentColorBrush}" />
+                            Foreground="{DynamicResource AccentColorBrush}"
+                            Kind="Plus" />
                         <Button.ToolTip>
-                            <Label
-                                Content="{lex:Loc Key=address_settings_remove}"
-                                FontWeight="DemiBold" />
+                            <Label Content="{lex:Loc Key=address_settings_add}" FontWeight="DemiBold" />
                         </Button.ToolTip>
                     </Button>
-                    <Button x:Name="RestoreDefault" 
-                            cal:Message.Attach="RestoreDefault"
-                            
-                            Width="30"
-                            Height="30"
-                            Cursor="Hand"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            BorderBrush="{DynamicResource AccentColorBrush}"
-                            FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                            Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                            Margin="5,0,5,0">
+                    <Button
+                        x:Name="RemoveAddress"
+                        Width="30"
+                        Height="30"
+                        Margin="5,0,5,0"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        cal:Message.Attach="RemoveAddress"
+                        BorderBrush="{DynamicResource AccentColorBrush}"
+                        Cursor="Hand"
+                        FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
+                        Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
                         <iconPacks:PackIconMaterial
-                            Kind="Restore"
                             Width="15"
                             Height="15"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
-                            Foreground="{DynamicResource AccentColorBrush}" />
+                            Foreground="{DynamicResource AccentColorBrush}"
+                            Kind="Minus" />
                         <Button.ToolTip>
-                            <Label
-                                Content="{lex:Loc Key=address_settings_restore}"
-                                FontWeight="DemiBold" />
+                            <Label Content="{lex:Loc Key=address_settings_remove}" FontWeight="DemiBold" />
+                        </Button.ToolTip>
+                    </Button>
+                    <Button
+                        x:Name="RestoreDefault"
+                        Width="30"
+                        Height="30"
+                        Margin="5,0,5,0"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        cal:Message.Attach="RestoreDefault"
+                        BorderBrush="{DynamicResource AccentColorBrush}"
+                        Cursor="Hand"
+                        FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
+                        Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
+                        <iconPacks:PackIconMaterial
+                            Width="15"
+                            Height="15"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Foreground="{DynamicResource AccentColorBrush}"
+                            Kind="Restore" />
+                        <Button.ToolTip>
+                            <Label Content="{lex:Loc Key=address_settings_restore}" FontWeight="DemiBold" />
                         </Button.ToolTip>
                     </Button>
                 </StackPanel>
