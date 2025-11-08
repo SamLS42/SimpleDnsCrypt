@@ -10,12 +10,86 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:myControls="clr-namespace:SimpleDnsCrypt.Views"
+    xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:LocalizeDictionary.OutputMissingKeys="False"
     lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
     lex:ResxLocalizationProvider.DefaultDictionary="Translation"
     Background="{StaticResource LayerFillColorDefaultBrush}">
-    <Grid>
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Width="16"
+                Height="16"
+                Margin="8,8,8,8"
+                VerticalAlignment="Center"
+                Source="../Images/simplednscrypt.ico" />
+
+            <TextBlock
+                Grid.Column="1"
+                Margin="0,0,8,0"
+                VerticalAlignment="Center"
+                FontWeight="SemiBold"
+                Text="{Binding WindowTitle}" />
+
+            <StackPanel
+                Grid.Column="2"
+                shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                Orientation="Horizontal">
+                <Button
+                    x:Name="OpenLogDirectory"
+                    cal:Message.Attach="OpenLogDirectory"
+                    Cursor="Hand"
+                    ToolTip="{lex:Loc Key=open_log_directory}">
+                    <iconPacks:PackIconMaterial Kind="ClipboardText" />
+                </Button>
+                <Button
+                    x:Name="About"
+                    cal:Message.Attach="About"
+                    Cursor="Hand"
+                    ToolTip="{lex:Loc Key=about}">
+                    <iconPacks:PackIconMaterial Kind="Emoticon" />
+                </Button>
+                <Button
+                    x:Name="Settings"
+                    cal:Message.Attach="Settings"
+                    Cursor="Hand"
+                    ToolTip="{lex:Loc Key=settings}">
+                    <iconPacks:PackIconMaterial Kind="Settings" />
+                </Button>
+                <Button
+                    x:Name="Proxies"
+                    cal:Message.Attach="Proxies"
+                    Cursor="Hand"
+                    ToolTip="{lex:Loc Key=proxy_manage_proxies}">
+                    <iconPacks:PackIconMaterial Kind="AccountNetwork" />
+                </Button>
+                <ComboBox
+                    Margin="5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Cursor="Hand"
+                    DisplayMemberPath="Name"
+                    IsEnabled="True"
+                    ItemsSource="{Binding Languages}"
+                    Opacity="0.4"
+                    SelectedIndex="-1"
+                    SelectedItem="{Binding SelectedLanguage}" />
+                <Button Background="Transparent" BorderBrush="Transparent">
+                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE921;" />
+                </Button>
+                <Button Background="Transparent" BorderBrush="Transparent">
+                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE8BB;" />
+                </Button>
+            </StackPanel>
+        </Grid>
         <Border
             Grid.Row="0"
             Grid.Column="0"
@@ -58,270 +132,7 @@
                     Header="{lex:Loc Key=tabitem_querylog}"
                     Tag="queryLogTab"
                     Visibility="{Binding SettingsViewModel.IsQueryLogTabVisible, Converter={StaticResource BoolToVisibilityCollapsedConverter}}">
-                    <TabItem.Content>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DockPanel Margin="0,10,0,0">
-                                <Border
-                                    Margin="0,10,0,0"
-                                    Padding="10"
-                                    BorderThickness="1"
-                                    DataContext="{Binding QueryLogViewModel}"
-                                    DockPanel.Dock="Top">
-                                    <Border.BorderBrush>
-                                        <DrawingBrush
-                                            Opacity="0.4"
-                                            TileMode="Tile"
-                                            Viewport="0,0,8,8"
-                                            ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Border.BorderBrush>
-                                    <Grid Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource HeightConverter}, ConverterParameter='QueryLog'}">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Grid Grid.Row="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="Eye"
-                                                 />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                
-                                                Text="{lex:Loc Key=querylog}"
-                                                TextWrapping="Wrap" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Margin="0,0,10,0"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Cursor="Hand"
-                                                IsOn="{Binding IsQueryLogLogging}" />
-                                        </Grid>
-                                        <Grid Grid.Row="1">
-                                            <customControls:LoggingListView
-                                                Margin="10"
-                                                VerticalContentAlignment="Stretch"
-                                                AutoScroll="True"
-                                                BorderBrush="#198AB328"
-                                                FontSize="12"
-                                                ItemsSource="{Binding QueryLogLines, Mode=OneWay}"
-                                                ScrollViewer.CanContentScroll="True"
-                                                ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                                SelectedItem="{Binding SelectedQueryLogLine}"
-                                                SelectionMode="Single"
-                                                VirtualizingStackPanel.VirtualizationMode="Recycling">
-                                                <customControls:LoggingListView.ItemContainerStyle>
-                                                    <Style TargetType="{x:Type ListViewItem}">
-                                                        <Setter Property="Background" Value="#198AB328" />
-                                                    </Style>
-                                                </customControls:LoggingListView.ItemContainerStyle>
-                                                <customControls:LoggingListView.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid Margin="0,2">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="130" />
-                                                                <ColumnDefinition Width="40" />
-                                                                <ColumnDefinition Width="90" />
-                                                                <ColumnDefinition Width="80" />
-                                                                <ColumnDefinition Width="160" />
-                                                                <ColumnDefinition Width="40" />
-                                                                <ColumnDefinition Width="50" />
-                                                                <ColumnDefinition Width="*" />
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock Grid.Column="0" Text="{Binding Date, Converter={StaticResource LocalDateConverter}}" />
-                                                            <TextBlock
-                                                                Grid.Column="1"
-                                                                Foreground="{Binding Type, Converter={StaticResource QueryLogTypeToColorConverter}}"
-                                                                Text="{Binding Type}" />
-                                                            <TextBlock
-                                                                Grid.Column="2"
-                                                                Foreground="{Binding ReturnCode, Converter={StaticResource QueryLogReturnCodeToColorConverter}}"
-                                                                Text="{Binding ReturnCode}" />
-                                                            <TextBlock Grid.Column="3" Text="{Binding Address}" />
-                                                            <TextBlock Grid.Column="4" Text="{Binding Remote}" />
-                                                            <TextBlock Grid.Column="5" Text="{Binding CachedText}" />
-                                                            <TextBlock Grid.Column="6" Text="{Binding DurationText}" />
-                                                            <TextBlock Grid.Column="7" Text="{Binding Server}" />
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </customControls:LoggingListView.ItemTemplate>
-                                            </customControls:LoggingListView>
-
-                                            <StackPanel
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Orientation="Vertical">
-                                                <StackPanel.Visibility>
-                                                    <MultiBinding Converter="{StaticResource IntegerBoolToVisibilityConverter}">
-                                                        <Binding Path="QueryLogLines.Count" />
-                                                        <Binding Path="IsQueryLogLogging" />
-                                                    </MultiBinding>
-                                                </StackPanel.Visibility>
-                                                <controls:ProgressRing
-                                                    Width="24"
-                                                    Height="24"
-                                                    Foreground="{DynamicResource AccentColorBrush}" />
-                                                <TextBlock Margin="0,10,0,0" Text="{lex:Loc Key=querylog_waiting_for_data}" />
-                                            </StackPanel>
-                                        </Grid>
-                                        <Grid Grid.Row="2" Margin="10,8,0,0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="100" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="40" />
-                                            </Grid.RowDefinitions>
-
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                FontSize="12"
-                                                Text="{lex:Loc Key=querylog_entry_count}" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                VerticalAlignment="Center"
-                                                FontSize="12"
-                                                FontWeight="Bold"
-                                                Text="{Binding QueryLogLines.Count}" />
-
-                                            <StackPanel
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Right"
-                                                Orientation="Horizontal">
-                                                <Button
-                                                    x:Name="ClearQueryLog"
-                                                    Width="30"
-                                                    Height="30"
-                                                    Margin="5,0,0,0"
-                                                    HorizontalContentAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    cal:Message.Attach="ClearQueryLog"
-                                                    BorderBrush="{DynamicResource AccentColorBrush}"
-                                                    Cursor="Hand"
-                                                    FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                                                    Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                                                    <iconPacks:PackIconMaterial
-                                                        Width="15"
-                                                        Height="15"
-                                                        HorizontalContentAlignment="Center"
-                                                        VerticalContentAlignment="Center"
-                                                        Foreground="{DynamicResource AccentColorBrush}"
-                                                        Kind="NotificationClearAll" />
-                                                    <Button.ToolTip>
-                                                        <Label Content="{lex:Loc Key=querylog_button_clear}" FontWeight="DemiBold" />
-                                                    </Button.ToolTip>
-                                                </Button>
-                                                <Button
-                                                    x:Name="BlockQueryLogEntry"
-                                                    Width="30"
-                                                    Height="30"
-                                                    Margin="5,0,5,0"
-                                                    HorizontalContentAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    cal:Message.Attach="BlockQueryLogEntry"
-                                                    BorderBrush="{DynamicResource AccentColorBrush}"
-                                                    Cursor="Hand"
-                                                    FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                                                    Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                                                    <iconPacks:PackIconMaterial
-                                                        Width="15"
-                                                        Height="15"
-                                                        HorizontalContentAlignment="Center"
-                                                        VerticalContentAlignment="Center"
-                                                        Foreground="{DynamicResource AccentColorBrush}"
-                                                        Kind="BlockHelper" />
-                                                    <Button.ToolTip>
-                                                        <Label Content="{lex:Loc Key=querylog_button_block}" FontWeight="DemiBold" />
-                                                    </Button.ToolTip>
-                                                </Button>
-                                            </StackPanel>
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                FontSize="12"
-                                                Text="{lex:Loc Key=querylog_source_file}" />
-                                            <TextBox
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                VerticalAlignment="Center"
-                                                HorizontalContentAlignment="Stretch"
-                                                VerticalContentAlignment="Center"
-                                                Background="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                IsReadOnly="True"
-                                                Opacity="0.4"
-                                                Text="{Binding QueryLogFile}" />
-                                            <Button
-                                                x:Name="ChangeQueryLogFilePath"
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Width="30"
-                                                Height="30"
-                                                Margin="5,0,5,0"
-                                                HorizontalAlignment="Right"
-                                                HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                cal:Message.Attach="ChangeQueryLogFilePath"
-                                                BorderBrush="{DynamicResource AccentColorBrush}"
-                                                Cursor="Hand"
-                                                FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                                                IsEnabled="{Binding IsQueryLogLogging, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                                                <iconPacks:PackIconMaterial
-                                                    Width="15"
-                                                    Height="15"
-                                                    HorizontalContentAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    Foreground="{DynamicResource AccentColorBrush}"
-                                                    Kind="DotsHorizontal" />
-                                                <Button.ToolTip>
-                                                    <Label Content="{lex:Loc Key=button_select_path}" FontWeight="DemiBold" />
-                                                </Button.ToolTip>
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                </Border>
-                            </DockPanel>
-                        </ScrollViewer>
-                    </TabItem.Content>
+                    <customControls:QueryLog />
                 </TabItem>
                 <TabItem
                     Height="39"
@@ -382,8 +193,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                        Kind="AccountConvert"
-                                         />
+                                        Kind="AccountConvert" />
                                     <TextBlock
                                         Grid.Row="0"
                                         Grid.Column="1"
@@ -392,7 +202,6 @@
                                         FontSize="20"
                                         FontWeight="Bold"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                        
                                         Text="{lex:Loc Key=cloaking}"
                                         TextWrapping="Wrap" />
                                     <controls:ToggleSwitch
@@ -604,8 +413,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                        Kind="Radar"
-                                         />
+                                        Kind="Radar" />
                                     <TextBlock
                                         Grid.Row="4"
                                         Grid.Column="1"
@@ -614,7 +422,6 @@
                                         FontSize="20"
                                         FontWeight="Bold"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                        
                                         Text="{lex:Loc Key=forwarding}"
                                         TextWrapping="Wrap" />
                                     <controls:ToggleSwitch
@@ -882,8 +689,7 @@
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
                                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="Eye"
-                                                 />
+                                                Kind="Eye" />
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.Column="1"
@@ -892,7 +698,6 @@
                                                 FontSize="20"
                                                 FontWeight="Bold"
                                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                
                                                 Text="{lex:Loc Key=domainblocklog}"
                                                 TextWrapping="Wrap" />
                                             <controls:ToggleSwitch
@@ -1124,5 +929,5 @@
                 </TabItem>
             </TabControl>
         </Border>
-    </Grid>
+    </StackPanel>
 </UserControl>
