@@ -14,6 +14,7 @@
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
     lex:ResxLocalizationProvider.DefaultDictionary="Translation"
+    Background="{StaticResource LayerFillColorDefaultBrush}"
     mc:Ignorable="d">
     <Grid>
         <Border
@@ -22,26 +23,6 @@
             Margin="10"
             Padding="10"
             BorderThickness="1">
-            <Border.BorderBrush>
-                <DrawingBrush
-                    Opacity="0.4"
-                    TileMode="Tile"
-                    Viewport="0,0,8,8"
-                    ViewportUnits="Absolute">
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="0,0,50,50" />
-                                        <RectangleGeometry Rect="50,50,50,50" />
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Border.BorderBrush>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial
@@ -49,16 +30,11 @@
                         Height="20"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                        Kind="Shuffle"
-                        Opacity="0.7" />
+                        Kind="Shuffle" />
                     <TextBlock
                         Margin="5,0,0,3"
                         VerticalAlignment="Center"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                        Opacity="0.7"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
                         Text="{lex:Loc Key=route_window_title}"
                         TextWrapping="Wrap" />
                 </StackPanel>
@@ -66,41 +42,19 @@
                     Margin="5,0,0,3"
                     FontSize="18"
                     FontWeight="Bold"
-                    Opacity="0.7"
+                    
                     Text="{Binding Resolver}" />
                 <TextBlock
                     Margin="5,0,0,3"
                     VerticalAlignment="Center"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                    Opacity="0.7"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
                     Text="{lex:Loc Key=route_via}"
                     TextWrapping="Wrap" />
                 <Border
                     Margin="0,10,0,0"
                     Padding="10"
+                    Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
                     BorderThickness="1">
-                    <Border.BorderBrush>
-                        <DrawingBrush
-                            Opacity="0.4"
-                            TileMode="Tile"
-                            Viewport="0,0,8,8"
-                            ViewportUnits="Absolute">
-                            <DrawingBrush.Drawing>
-                                <DrawingGroup>
-                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
-                                        <GeometryDrawing.Geometry>
-                                            <GeometryGroup>
-                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                <RectangleGeometry Rect="50,50,50,50" />
-                                            </GeometryGroup>
-                                        </GeometryDrawing.Geometry>
-                                    </GeometryDrawing>
-                                </DrawingGroup>
-                            </DrawingBrush.Drawing>
-                        </DrawingBrush>
-                    </Border.BorderBrush>
                     <ListView
                         Height="200"
                         MinHeight="200"
@@ -109,7 +63,6 @@
                         dd:DragDrop.IsDropTarget="True"
                         dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                        BorderBrush="#198AB328"
                         FontSize="12"
                         ItemsSource="{Binding Route}"
                         ScrollViewer.CanContentScroll="True"
@@ -125,7 +78,7 @@
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock
                                             Grid.Row="0"
@@ -145,24 +98,9 @@
                                             Grid.Row="0"
                                             Grid.RowSpan="2"
                                             Grid.Column="1"
-                                            Width="20"
-                                            Height="20"
-                                            Margin="0,2,5,2"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            HorizontalContentAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            BorderBrush="#CCC1170F"
-                                            Cursor="Hand"
-                                            FocusVisualStyle="{DynamicResource MahApps.Metro.Styles.MetroCircleFocusVisual}"
-                                            Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}">
-                                            <iconPacks:PackIconMaterial
-                                                Width="10"
-                                                Height="10"
-                                                HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Foreground="#CCC1170F"
-                                                Kind="Delete" />
+                                            Padding="8"
+                                            Cursor="Hand">
+                                            <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE74D;" />
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Click">
                                                     <cal:ActionMessage MethodName="Remove">
@@ -182,39 +120,19 @@
                     Margin="5,6,0,0"
                     FontSize="14"
                     FontWeight="Bold"
-                    Opacity="0.7"
+                    
                     Text="{lex:Loc Key=route_drag_from_relays}" />
 
                 <Border
                     Margin="0,10,0,0"
                     Padding="10,5,10,10"
+                    Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
                     BorderThickness="1">
-                    <Border.BorderBrush>
-                        <DrawingBrush
-                            Opacity="0.4"
-                            TileMode="Tile"
-                            Viewport="0,0,8,8"
-                            ViewportUnits="Absolute">
-                            <DrawingBrush.Drawing>
-                                <DrawingGroup>
-                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
-                                        <GeometryDrawing.Geometry>
-                                            <GeometryGroup>
-                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                <RectangleGeometry Rect="50,50,50,50" />
-                                            </GeometryGroup>
-                                        </GeometryDrawing.Geometry>
-                                    </GeometryDrawing>
-                                </DrawingGroup>
-                            </DrawingBrush.Drawing>
-                        </DrawingBrush>
-                    </Border.BorderBrush>
                     <ListView
                         Height="200"
                         dd:DragDrop.IsDragSource="True"
                         dd:DragDrop.IsDropTarget="False"
                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
-                        BorderBrush="#198AB328"
                         FontSize="12"
                         ItemsSource="{Binding Relays}"
                         ScrollViewer.CanContentScroll="True"

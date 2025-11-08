@@ -5,9 +5,25 @@
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     Title="{Binding WindowTitle}"
     Width="800"
-    Height="300"
+    Height="500"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
     Topmost="True"
-    WindowStartupLocation="CenterScreen"
-    WindowStyle="None" />
+    WindowStartupLocation="CenterOwner"
+    WindowStyle="ToolWindow">
+    <!--  Add a basic title bar and content presenter  -->
+    <!--<Grid>
+        <DockPanel LastChildFill="True">
+            <TextBlock DockPanel.Dock="Top"
+                       Text="{Binding WindowTitle}"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Padding="10"
+                       Background="#FFEEEEEE"
+                       Foreground="#222"
+                       VerticalAlignment="Center" />
+            <ContentPresenter />
+        </DockPanel>
+    </Grid>-->
+</Window>

@@ -33,20 +33,20 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Height="20"
-                                                Width="20" Kind="AccountNetwork" Opacity="0.7"
+                                                Width="20" Kind="AccountNetwork" 
                                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center" />
                     <TextBlock Text="{lex:Loc Key=proxy_proxies}"
                                TextWrapping="Wrap" VerticalAlignment="Center"
                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" FontSize="20"
-                               Opacity="0.7" Margin="5,0,0,3" FontWeight="Bold">
+                                Margin="5,0,0,3" FontWeight="Bold">
                     </TextBlock>
                 </StackPanel>
                 <TextBlock Text="{lex:Loc Key=proxy_http_header}"
                            TextWrapping="Wrap" VerticalAlignment="Center"
                            Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" FontSize="14"
-                           Opacity="0.7" Margin="5,8,0,3" FontWeight="Bold">
+                            Margin="5,8,0,3" FontWeight="Bold">
                 </TextBlock>
                 <TextBlock Text="{lex:Loc Key=proxy_http_sub}"
                            TextWrapping="Wrap" VerticalAlignment="Center"
@@ -56,7 +56,7 @@
                 <TextBlock Text="{lex:Loc Key=proxy_socks_header}"
                            TextWrapping="Wrap" VerticalAlignment="Center"
                            Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" FontSize="14"
-                           Opacity="0.7" Margin="5,8,0,3" FontWeight="Bold">
+                            Margin="5,8,0,3" FontWeight="Bold">
                 </TextBlock>
                 <TextBlock Text="{lex:Loc Key=proxy_socks_sub}"
                            TextWrapping="Wrap" VerticalAlignment="Center"

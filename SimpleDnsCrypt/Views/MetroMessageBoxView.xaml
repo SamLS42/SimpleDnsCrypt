@@ -12,6 +12,8 @@
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
     lex:ResxLocalizationProvider.DefaultDictionary="Translation"
+    Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
+    BorderBrush="{StaticResource ControlElevationBorderBrush}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,9 +25,7 @@
     <Border
         Width="600"
         Padding="10"
-        HorizontalAlignment="Center"
-        BorderBrush="{Binding MessageBoxType, Converter={StaticResource MessageBoxTypeToColor}}"
-        Style="{DynamicResource ModalDialogStyleBorder}">
+        HorizontalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -33,13 +33,12 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label Content="{Binding Path=Title}" Style="{DynamicResource HeaderLabelStyle}" />
+            <Label Content="{Binding Path=Title}" />
 
             <TextBlock
                 Grid.Row="1"
                 Margin="6,6,0,0"
                 helper:NavigationService.Text="{Binding Path=Message}"
-                Style="{DynamicResource ModalTextStyle}"
                 TextWrapping="Wrap" />
 
             <StackPanel
@@ -51,7 +50,6 @@
                     Width="70"
                     Margin="10,0,0,0"
                     cal:Message.Attach="Yes"
-                    Background="{Binding MessageBoxType, Converter={StaticResource MessageBoxTypeToColor}}"
                     Content="{lex:Loc Key=yes}"
                     Cursor="Hand"
                     Style="{DynamicResource AccentButtonStyle}"
@@ -60,7 +58,6 @@
                     Width="70"
                     Margin="10,0,0,0"
                     cal:Message.Attach="No"
-                    Background="{Binding MessageBoxType, Converter={StaticResource MessageBoxTypeToColor}}"
                     Content="{lex:Loc Key=no}"
                     Cursor="Hand"
                     Style="{DynamicResource AccentButtonStyle}"
@@ -69,7 +66,6 @@
                     Width="70"
                     Margin="10,0,0,0"
                     cal:Message.Attach="Ok"
-                    Background="{Binding MessageBoxType, Converter={StaticResource MessageBoxTypeToColor}}"
                     Content="{lex:Loc Key=ok}"
                     Cursor="Hand"
                     Style="{DynamicResource AccentButtonStyle}"
@@ -78,7 +74,6 @@
                     Width="70"
                     Margin="10,0,0,0"
                     cal:Message.Attach="Cancel"
-                    Background="{Binding MessageBoxType, Converter={StaticResource MessageBoxTypeToColor}}"
                     Content="{lex:Loc Key=cancel}"
                     Cursor="Hand"
                     IsCancel="True"

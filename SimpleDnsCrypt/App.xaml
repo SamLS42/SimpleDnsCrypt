@@ -16,10 +16,10 @@
                 <ResourceDictionary>
                     <converters:InterfaceTypeToIconConverter
                         x:Key="InterfaceTypeToIconConverter"
-                        EthernetIcon="EthernetCable"
-                        EthernetIconOffline="EthernetCableOff"
-                        WifiIcon="Wifi"
-                        WifiIconOffline="WifiOff" />
+                        EthernetIcon="&#xE839;"
+                        EthernetIconOffline="&#xEB55;"
+                        WifiIcon="&#xE701;"
+                        WifiIconOffline="&#xEB5E;" />
                     <converters:InUseToBackgroundConverter x:Key="InUseToBackgroundConverter" />
                     <converters:TextLengthToFontSizeConverter x:Key="TextLengthToFontSizeConverter" />
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />

@@ -3,9 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cal="http://www.caliburnproject.org"
-    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:local="clr-namespace:SimpleDnsCrypt.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -29,15 +27,11 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterial
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Width="20"
-                            Height="20"
-                            HorizontalAlignment="Left"
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Kind="Wan"
-                            Opacity="0.7" />
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Text="&#xE713;" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
@@ -128,15 +122,11 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterial
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Width="20"
-                            Height="20"
-                            HorizontalAlignment="Left"
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Kind="Flash"
-                            Opacity="0.7" />
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Text="&#xE945;" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
@@ -229,15 +219,11 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <iconPacks:PackIconMaterial
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Width="20"
-                            Height="20"
-                            HorizontalAlignment="Left"
+                        <TextBlock
                             VerticalAlignment="Center"
-                            Kind="Lan"
-                            Opacity="0.7" />
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Text="&#xEDA3;" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
@@ -257,22 +243,32 @@
                     <ItemsControl ItemsSource="{Binding LocalNetworkInterfaces}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Columns="4" />
+                                <WrapPanel />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <controls:Tile
-                                    Title="{Binding Name}"
-                                    Width="Auto"
-                                    Height="100"
-                                    HorizontalAlignment="Left"
+                                <Button
+                                    Margin="4"
                                     cal:Message.Attach="[Event Click] = [Action NetworkCardClicked($dataContext)]"
-                                    Cursor="Hand"
-                                    TitleFontSize="{Binding Name, Converter={StaticResource TextLengthToFontSizeConverter}}"
-                                    ToolTip="{Binding Description}">
-                                    <controls:Tile.Style>
-                                        <Style TargetType="controls:Tile">
+                                    BorderThickness="0">
+                                    <Grid Width="120" Height="120">
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                            Style="{StaticResource TitleTextBlockStyle}"
+                                            Text="{Binding Converter={StaticResource InterfaceTypeToIconConverter}}"
+                                            ToolTipService.ToolTip="{Binding Description}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Bottom"
+                                            Text="{Binding Name}"
+                                            TextTrimming="WordEllipsis"
+                                            ToolTipService.ToolTip="{Binding Name}" />
+                                    </Grid>
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
                                             <Setter Property="Background" Value="{StaticResource SystemFillColorNeutralBackgroundBrush}" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsUp}" Value="False">
@@ -287,36 +283,8 @@
                                                 </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </controls:Tile.Style>
-                                    <Grid Margin="15,0,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="20" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-                                        <iconPacks:PackIconMaterial
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Width="48"
-                                            Height="48"
-                                            Margin="15,0,0,0"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Kind="{Binding Converter={StaticResource InterfaceTypeToIconConverter}}" />
-                                        <iconPacks:PackIconMaterial
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            Width="16"
-                                            Height="16"
-                                            Margin="0,-20,7,0"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
-                                            Kind="Check"
-                                            Visibility="{Binding UseDnsCrypt, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    </Grid>
-                                </controls:Tile>
+                                    </Button.Style>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

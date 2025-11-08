@@ -25,6 +25,7 @@
         <ProgressBar Grid.Row="2" IsIndeterminate="True" />
         <TextBlock
             Grid.Row="3"
+            Margin="0,0,0,20"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Text="{Binding ProgressText}"

@@ -49,504 +49,7 @@
                     Header="{lex:Loc Key=tabitem_advanced_settings}"
                     Tag="advancedSettingsTab"
                     Visibility="{Binding SettingsViewModel.IsAdvancedSettingsTabVisible, Converter={StaticResource BoolToVisibilityCollapsedConverter}}">
-                    <TabItem.Content>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DockPanel Margin="0,10,0,0">
-                                <Border
-                                    Margin="0,14,0,0"
-                                    Padding="10"
-                                    BorderThickness="1"
-                                    DockPanel.Dock="Top"
-                                    IsEnabled="{Binding IsSavingConfiguration, Converter={StaticResource ReverseBoolToEnabledConverter}}">
-                                    <Border.BorderBrush>
-                                        <DrawingBrush
-                                            Opacity="0.4"
-                                            TileMode="Tile"
-                                            Viewport="0,0,8,8"
-                                            ViewportUnits="Absolute">
-                                            <DrawingBrush.Drawing>
-                                                <DrawingGroup>
-                                                    <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
-                                                        <GeometryDrawing.Geometry>
-                                                            <GeometryGroup>
-                                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                                <RectangleGeometry Rect="50,50,50,50" />
-                                                            </GeometryGroup>
-                                                        </GeometryDrawing.Geometry>
-                                                    </GeometryDrawing>
-                                                </DrawingGroup>
-                                            </DrawingBrush.Drawing>
-                                        </DrawingBrush>
-                                    </Border.BorderBrush>
-                                    <StackPanel Orientation="Vertical">
-                                        <!--  Listen Addresses begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="Ethernet"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=address_settings_listen_addresses}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="550" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="35" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="{lex:Loc Key=address_settings_description}"
-                                                TextWrapping="Wrap" />
-                                            <Button
-                                                x:Name="ListenAddresses"
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Width="Auto"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Content="{lex:Loc Key=address_settings_manage_listen_addresses}"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                Style="{DynamicResource AccentButtonStyle}" />
-                                        </Grid>
-                                        <!--  Listen Addresses end  -->
-                                        <!--  DNS Cache begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="BookOpenPageVariant"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=advanced_settings_dnscache}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="35" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="{lex:Loc Key=advanced_settings_dnscache_content}"
-                                                TextWrapping="Wrap" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                IsOn="{Binding DnscryptProxyConfiguration.cache}" />
-                                        </Grid>
-                                        <!--  DNS Cache end  -->
-                                        <!--  Block IPv6 begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="Numeric6BoxMultipleOutline"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=advanced_settings_blockipv6}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="35" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="{lex:Loc Key=advanced_settings_blockipv6_content}"
-                                                TextWrapping="Wrap" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                IsOn="{Binding DnscryptProxyConfiguration.block_ipv6}" />
-                                        </Grid>
-                                        <!--  Block IPv6 end  -->
-                                        <!--  Force TCP begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="Network"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=advanced_settings_forcetcp}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="35" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="{lex:Loc Key=advanced_settings_forcetcp_content}"
-                                                TextWrapping="Wrap" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                IsOn="{Binding DnscryptProxyConfiguration.force_tcp}" />
-                                        </Grid>
-                                        <!--  Force TCP end  -->
-                                        <!--  Global Resolver begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="ArrowAll"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=advanced_settings_globalresolver}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="35" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="{lex:Loc Key=advanced_settings_globalresolver_content}"
-                                                TextWrapping="Wrap" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                IsOn="{Binding IsOperatingAsGlobalResolver}" />
-                                        </Grid>
-                                        <!--  Global Resolver end  -->
-                                        <!--  Fallback Resolver begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="BackupRestore"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=advanced_settings_fallback_resolvers}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="550" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="{lex:Loc Key=advanced_settings_fallback_resolvers_content}"
-                                                TextWrapping="Wrap" />
-                                            <Button
-                                                x:Name="ManageFallbackResolvers"
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Width="Auto"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Content="{lex:Loc Key=advanced_settings_manage_fallback_resolvers}"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                Style="{DynamicResource AccentButtonStyle}" />
-                                        </Grid>
-                                        <!--  Fallback Resolver end  -->
-                                        <!--  Netprobe Timeout begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="Timelapse"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="{lex:Loc Key=advanced_settings_netprobe_timeout}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="32.556" />
-                                                <ColumnDefinition Width="517.444" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Grid.ColumnSpan="2"
-                                                Margin="0,0,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="{lex:Loc Key=advanced_settings_netprobe_timeout_content}"
-                                                TextWrapping="Wrap" />
-                                            <controls:NumericUpDown
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Background="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                Maximum="65000"
-                                                Minimum="0"
-                                                Opacity="0.8"
-                                                TextAlignment="Right"
-                                                Value="{Binding DnscryptProxyConfiguration.netprobe_timeout}" />
-                                        </Grid>
-                                        <!--  Netprobe Timeout end  -->
-                                        <!--  Logging begin  -->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <iconPacks:PackIconMaterial
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Kind="Text"
-                                                Opacity="0.7" />
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="5,0,0,3"
-                                                VerticalAlignment="Center"
-                                                FontSize="20"
-                                                FontWeight="Bold"
-                                                Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
-                                                Text="Proxy Logging"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="35" />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,0,0,5"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Bottom"
-                                                Text="Log to dnscrypt-proxy.log (log_level: 0)"
-                                                TextWrapping="Wrap" />
-                                            <controls:ToggleSwitch
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Cursor="Hand"
-                                                IsEnabled="{Binding IsWorkingOnService, Converter={StaticResource ReverseBoolToEnabledConverter}}"
-                                                IsOn="{Binding DnscryptProxyConfiguration.log}" />
-                                        </Grid>
-                                        <!--  Logging end  -->
-                                        <Button
-                                            x:Name="SaveAdvancedSettings"
-                                            Width="Auto"
-                                            Margin="0,15,5,5"
-                                            HorizontalAlignment="Right"
-                                            Content="{lex:Loc Key=default_settings_apply_settings}"
-                                            Cursor="Hand"
-                                            Style="{DynamicResource AccentButtonStyle}" />
-                                    </StackPanel>
-                                </Border>
-
-                            </DockPanel>
-                        </ScrollViewer>
-                    </TabItem.Content>
+                    <customControls:AdvancedSettings />
                 </TabItem>
                 <TabItem
                     Height="39"
@@ -605,7 +108,7 @@
                                                 VerticalAlignment="Center"
                                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Eye"
-                                                Opacity="0.7" />
+                                                 />
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.Column="1"
@@ -614,7 +117,7 @@
                                                 FontSize="20"
                                                 FontWeight="Bold"
                                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
+                                                
                                                 Text="{lex:Loc Key=querylog}"
                                                 TextWrapping="Wrap" />
                                             <controls:ToggleSwitch
@@ -880,7 +383,7 @@
                                         VerticalAlignment="Center"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         Kind="AccountConvert"
-                                        Opacity="0.7" />
+                                         />
                                     <TextBlock
                                         Grid.Row="0"
                                         Grid.Column="1"
@@ -889,7 +392,7 @@
                                         FontSize="20"
                                         FontWeight="Bold"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                        Opacity="0.7"
+                                        
                                         Text="{lex:Loc Key=cloaking}"
                                         TextWrapping="Wrap" />
                                     <controls:ToggleSwitch
@@ -1102,7 +605,7 @@
                                         VerticalAlignment="Center"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                         Kind="Radar"
-                                        Opacity="0.7" />
+                                         />
                                     <TextBlock
                                         Grid.Row="4"
                                         Grid.Column="1"
@@ -1111,7 +614,7 @@
                                         FontSize="20"
                                         FontWeight="Bold"
                                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                        Opacity="0.7"
+                                        
                                         Text="{lex:Loc Key=forwarding}"
                                         TextWrapping="Wrap" />
                                     <controls:ToggleSwitch
@@ -1380,7 +883,7 @@
                                                 VerticalAlignment="Center"
                                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                                 Kind="Eye"
-                                                Opacity="0.7" />
+                                                 />
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.Column="1"
@@ -1389,7 +892,7 @@
                                                 FontSize="20"
                                                 FontWeight="Bold"
                                                 Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                                Opacity="0.7"
+                                                
                                                 Text="{lex:Loc Key=domainblocklog}"
                                                 TextWrapping="Wrap" />
                                             <controls:ToggleSwitch

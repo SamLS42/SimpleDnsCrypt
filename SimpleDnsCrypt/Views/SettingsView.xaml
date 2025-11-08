@@ -55,14 +55,14 @@
                         VerticalAlignment="Center"
                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                         Kind="Settings"
-                        Opacity="0.7" />
+                         />
                     <TextBlock
                         Margin="5,0,0,3"
                         VerticalAlignment="Center"
                         FontSize="20"
                         FontWeight="Bold"
                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                        Opacity="0.7"
+                        
                         Text="{lex:Loc Key=settings}"
                         TextWrapping="Wrap" />
                 </StackPanel>

@@ -76,7 +76,7 @@
                             FontSize="18"
                             FontWeight="Bold"
                             Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                            Opacity="0.7"
+                            
                             Text="{lex:Loc Key=about_software}"
                             TextWrapping="Wrap" />
                         <ListBox
@@ -99,7 +99,7 @@
                         FontSize="18"
                         FontWeight="Bold"
                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                        Opacity="0.7"
+                        
                         Text="{lex:Loc Key=about_license}"
                         TextWrapping="Wrap" />
                     <StackPanel
@@ -126,7 +126,7 @@
                                     Cursor="Hand"
                                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                     Kind="GithubCircle"
-                                    Opacity="0.7" />
+                                     />
                                 <Button
                                     cal:Message.Attach="[Action HyperlinkRequestNavigate('code')]"
                                     Focusable="False"
@@ -150,7 +150,7 @@
                                     Cursor="Hand"
                                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                                     Kind="Link"
-                                    Opacity="0.7" />
+                                     />
                                 <Button
                                     cal:Message.Attach="[Action HyperlinkRequestNavigate('regular')]"
                                     Focusable="False"
