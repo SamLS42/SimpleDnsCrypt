@@ -98,6 +98,6 @@
 	<PropertyGroup>
 		<!--<PostBuildEvent>copy "$(ProjectDir)DNS$(Platform)\*" "$(ProjectDir)$(OutDir)\dnscrypt-proxy\"</PostBuildEvent>-->
 		<UseWindowsForms>False</UseWindowsForms>
-		<SupportedOSPlatformVersion>10.0.19041.1</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion>10.0.20348.1</SupportedOSPlatformVersion>
 	</PropertyGroup>
 </Project>
