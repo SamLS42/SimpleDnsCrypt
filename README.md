@@ -30,15 +30,6 @@ If you can add or correct a language, feel free to do so:
 
 [https://poeditor.com/join/project/3frSzJtSqc](https://poeditor.com/join/project/3frSzJtSqc "poeditor.com")
 
-## UI Comparison
-
-### Old UI (Before Update)
-
-![Old UI](img/old_ui.png)
-
-### New UI (After Update with Fluent Theme)
-
-![New UI](img/new_ui.png)
 
 ## Screenshots
 
