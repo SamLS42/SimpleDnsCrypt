@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
-using minisign;
-using minisign.Models;
+using Minisign;
+using Minisign.Models;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Helper;
 using SimpleDnsCrypt.Models;
@@ -322,10 +322,11 @@ namespace SimpleDnsCrypt.ViewModels
 					string[] s = signature.Split('\n');
 					string trimmedComment = s[2].Replace("trusted comment: ", "").Trim();
 					byte[] trustedCommentBinary = Encoding.UTF8.GetBytes(trimmedComment);
-					MinisignSignature loadedSignature = Minisign.LoadSignature(Convert.FromBase64String(s[1]), trustedCommentBinary,
+
+					MinisignSignature loadedSignature = Core.LoadSignature(Convert.FromBase64String(s[1]), trustedCommentBinary,
 						Convert.FromBase64String(s[3]));
-					MinisignPublicKey publicKey = Minisign.LoadPublicKeyFromString(Global.ApplicationUpdatePublicKey);
-					bool valid = Minisign.ValidateSignature(installer, loadedSignature, publicKey);
+					MinisignPublicKey publicKey = Core.LoadPublicKeyFromString(Global.ApplicationUpdatePublicKey);
+					bool valid = Core.ValidateSignature(installer, loadedSignature, publicKey);
 
 					if (valid)
 					{

@@ -67,7 +67,10 @@
                         cal:Message.Attach="Settings"
                         Cursor="Hand"
                         ToolTip="{lex:Loc Key=settings}">
-                        <iconPacks:PackIconMaterial Kind="Settings" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Text="&#xE713;" />
                     </Button>
                     <Button
                         x:Name="Proxies"

@@ -1,11 +1,9 @@
 ﻿using Caliburn.Micro;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Models;
-using System;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
-using System.Threading.Tasks;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
@@ -24,22 +22,22 @@ namespace SimpleDnsCrypt.Helper
 		/// <returns></returns>
 		public static async Task<RemoteUpdate> CheckForRemoteUpdateAsync(UpdateType minUpdateType = UpdateType.Stable)
 		{
-			var remoteUpdate = new RemoteUpdate();
+			RemoteUpdate? remoteUpdate = new();
 			try
 			{
-				var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+				System.Version? currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
 				remoteUpdate.CanUpdate = false;
-				var remoteUpdateFile = Environment.Is64BitProcess ? Global.ApplicationUpdateUri64 : Global.ApplicationUpdateUri;
-				var remoteUpdateData = await DownloadRemoteUpdateFileAsync(remoteUpdateFile).ConfigureAwait(false);
+				string remoteUpdateFile = Environment.Is64BitProcess ? Global.ApplicationUpdateUri64 : Global.ApplicationUpdateUri;
+				byte[] remoteUpdateData = await DownloadRemoteUpdateFileAsync(remoteUpdateFile).ConfigureAwait(false);
 
 				if (remoteUpdateData != null)
 				{
-					using (var remoteUpdateDataStream = new MemoryStream(remoteUpdateData))
+					using (MemoryStream remoteUpdateDataStream = new(remoteUpdateData))
 					{
-						using (var remoteUpdateDataStreamReader = new StreamReader(remoteUpdateDataStream))
+						using (StreamReader remoteUpdateDataStreamReader = new(remoteUpdateDataStream))
 						{
-							var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
+							IDeserializer deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
 							remoteUpdate = deserializer.Deserialize<RemoteUpdate>(remoteUpdateDataStreamReader);
 						}
 					}
@@ -47,7 +45,7 @@ namespace SimpleDnsCrypt.Helper
 
 				if (remoteUpdate != null)
 				{
-					var status = remoteUpdate.Update.Version.CompareTo(currentVersion);
+					int status = remoteUpdate.Update.Version.CompareTo(currentVersion);
 					// The local version is newer as the remote version
 					if (status < 0)
 					{
@@ -83,28 +81,28 @@ namespace SimpleDnsCrypt.Helper
 
 		private static async Task<byte[]> DownloadRemoteUpdateFileAsync(string remoteUpdateFile)
 		{
-			using (var client = new HttpClient())
+			using (HttpClient client = new())
 			{
-				var getDataTask = client.GetByteArrayAsync(remoteUpdateFile);
+				Task<byte[]> getDataTask = client.GetByteArrayAsync(remoteUpdateFile);
 				return await getDataTask.ConfigureAwait(false);
 			}
 		}
 
 		public static async Task<byte[]> DownloadRemoteInstallerAsync(Uri uri)
 		{
-			using (var client = new HttpClient())
+			using (HttpClient client = new())
 			{
-				var getDataTask = client.GetByteArrayAsync(uri);
+				Task<byte[]> getDataTask = client.GetByteArrayAsync(uri);
 				return await getDataTask.ConfigureAwait(false);
 			}
 		}
 
 		public static async Task<string> DownloadRemoteSignatureAsync(Uri uri)
 		{
-			using (var client = new HttpClient())
+			using (HttpClient client = new())
 			{
-				var getDataTask = client.GetStringAsync(uri);
-				var resolverList = await getDataTask.ConfigureAwait(false);
+				Task<string> getDataTask = client.GetStringAsync(uri);
+				string resolverList = await getDataTask.ConfigureAwait(false);
 				return resolverList;
 			}
 		}
@@ -117,16 +115,16 @@ namespace SimpleDnsCrypt.Helper
 			return type == typeof(Uri);
 		}
 
-		public object ReadYaml(IParser parser, Type type)
+		public object? ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
 		{
-			var value = ((Scalar)parser.Current).Value;
+			string value = ((Scalar)parser.Current).Value;
 			parser.MoveNext();
 			return new Uri(value);
 		}
 
-		public void WriteYaml(IEmitter emitter, object value, Type type)
+		public void WriteYaml(IEmitter emitter, object? value, Type type, ObjectSerializer serializer)
 		{
-			var uri = (Uri)value;
+			Uri? uri = (Uri)value;
 			emitter.Emit(new Scalar(null, null, uri.ToString(), ScalarStyle.Any, true, false));
 		}
 	}

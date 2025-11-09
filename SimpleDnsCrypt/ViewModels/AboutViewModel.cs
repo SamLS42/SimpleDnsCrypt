@@ -151,21 +151,6 @@ namespace SimpleDnsCrypt.ViewModels
 					},
 					new License
 					{
-						LicenseHeaderText = "Newtonsoft.Json",
-						LicenseText = await LoadLicense("Newtonsoft.Json.txt").ConfigureAwait(false),
-						LicenseRegularLink = new LicenseLink
-						{
-							LinkText = "www.newtonsoft.com",
-							LinkUri = new Uri("https://www.newtonsoft.com/json")
-						},
-						LicenseCodeLink = new LicenseLink
-						{
-							LinkText = LocalizationEx.GetUiString("about_view_on_github", Thread.CurrentThread.CurrentCulture),
-							LinkUri = new Uri("https://github.com/JamesNK/Newtonsoft.Json")
-						}
-					},
-					new License
-					{
 						LicenseHeaderText = "WPFLocalizationExtension",
 						LicenseText = await LoadLicense("WPFLocalizationExtension.txt").ConfigureAwait(false),
 						LicenseCodeLink = new LicenseLink
@@ -202,26 +187,6 @@ namespace SimpleDnsCrypt.ViewModels
 						{
 							LinkText = LocalizationEx.GetUiString("about_view_on_github", Thread.CurrentThread.CurrentCulture),
 							LinkUri = new Uri("https://github.com/adamcaudill/libsodium-net")
-						}
-					},
-					new License
-					{
-						LicenseHeaderText = "Costura.Fody",
-						LicenseText = await LoadLicense("Costura.Fody.txt").ConfigureAwait(false),
-						LicenseCodeLink = new LicenseLink
-						{
-							LinkText = LocalizationEx.GetUiString("about_view_on_github", Thread.CurrentThread.CurrentCulture),
-							LinkUri = new Uri("https://github.com/Fody/Costura")
-						}
-					},
-					new License
-					{
-						LicenseHeaderText = "Fody",
-						LicenseText = await LoadLicense("Fody.txt").ConfigureAwait(false),
-						LicenseCodeLink = new LicenseLink
-						{
-							LinkText = LocalizationEx.GetUiString("about_view_on_github", Thread.CurrentThread.CurrentCulture),
-							LinkUri = new Uri("https://github.com/Fody/Fody")
 						}
 					},
 					new License
@@ -350,7 +315,7 @@ namespace SimpleDnsCrypt.ViewModels
 			try
 			{
 				Assembly assembly = Assembly.GetExecutingAssembly();
-				var resourceName = "SimpleDnsCrypt.Resources.Licenses." + licenseFileName;
+				string resourceName = "SimpleDnsCrypt.Resources.Licenses." + licenseFileName;
 				stream = assembly.GetManifestResourceStream(resourceName);
 				if (stream != null)
 					using (StreamReader reader = new(stream))

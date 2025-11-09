@@ -1,12 +1,12 @@
 ﻿using Caliburn.Micro;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using SimpleDnsCrypt.Config;
 using SimpleDnsCrypt.Models;
 using System.ComponentModel;
 using System.IO;
 using System.Security.AccessControl;
 using System.ServiceProcess;
+using System.Text.Json;
 
 namespace SimpleDnsCrypt.Helper
 {
@@ -152,7 +152,7 @@ namespace SimpleDnsCrypt.Helper
 		/// <returns></returns>
 		public static string GetVersion()
 		{
-			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
+			string dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
 			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-version");
 			return result.Success ? result.StandardOutput.Replace(Environment.NewLine, "") : string.Empty;
 		}
@@ -165,7 +165,7 @@ namespace SimpleDnsCrypt.Helper
 		{
 			try
 			{
-				var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
+				string dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
 				ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-check");
 				return result.Success;
 			}
@@ -183,13 +183,13 @@ namespace SimpleDnsCrypt.Helper
 		public static List<AvailableResolver> GetAvailableResolvers()
 		{
 			List<AvailableResolver> resolvers = [];
-			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
+			string dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
 			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-list -json");
 			if (!result.Success) return resolvers;
 			if (string.IsNullOrEmpty(result.StandardOutput)) return resolvers;
 			try
 			{
-				List<AvailableResolver> res = JsonConvert.DeserializeObject<List<AvailableResolver>>(result.StandardOutput);
+				List<AvailableResolver> res = JsonSerializer.Deserialize<List<AvailableResolver>>(result.StandardOutput);
 				if (res.Count > 0)
 				{
 					resolvers = res;
@@ -209,13 +209,13 @@ namespace SimpleDnsCrypt.Helper
 		public static List<AvailableResolver> GetAllResolversWithoutFilters()
 		{
 			List<AvailableResolver> resolvers = [];
-			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
+			string dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
 			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-list-all -json");
 			if (!result.Success) return resolvers;
 			if (string.IsNullOrEmpty(result.StandardOutput)) return resolvers;
 			try
 			{
-				List<AvailableResolver> res = JsonConvert.DeserializeObject<List<AvailableResolver>>(result.StandardOutput);
+				List<AvailableResolver> res = JsonSerializer.Deserialize<List<AvailableResolver>>(result.StandardOutput);
 				if (res.Count > 0)
 				{
 					resolvers = res;
@@ -234,7 +234,7 @@ namespace SimpleDnsCrypt.Helper
 		/// <returns></returns>
 		public static bool Install()
 		{
-			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
+			string dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
 			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-service install");
 			if (result.Success)
 			{
@@ -265,13 +265,13 @@ namespace SimpleDnsCrypt.Helper
 		/// <returns></returns>
 		public static bool Uninstall()
 		{
-			var dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
+			string dnsCryptProxyExecutablePath = Path.Combine(Directory.GetCurrentDirectory(), Global.DnsCryptProxyFolder, Global.DnsCryptProxyExecutableName);
 			ProcessResult result = ProcessHelper.ExecuteWithArguments(dnsCryptProxyExecutablePath, "-service uninstall");
 			try
 			{
 				RegistryKey? eventLogKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\EventLog\Application\dnscrypt-proxy",
 					RegistryRights.ReadKey);
-				var eventLogKeyValue = eventLogKey?.GetValue("CustomSource");
+				object? eventLogKeyValue = eventLogKey?.GetValue("CustomSource");
 				if (eventLogKeyValue != null)
 				{
 					Registry.LocalMachine.DeleteSubKey(@"SYSTEM\CurrentControlSet\Services\EventLog\Application\dnscrypt-proxy", false);

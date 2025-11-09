@@ -12,29 +12,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Baseclass.Contrib.Nuget.Output" Version="2.4.3" />
 		<PackageReference Include="Caliburn.Micro" Version="5.0.258" />
-		<PackageReference Include="Costura.Fody" Version="4.1.0" />
 		<PackageReference Include="DnsCrypt.Blacklist" Version="0.1.1" />
 		<PackageReference Include="DnsCrypt.Stamps" Version="0.2.2" />
-		<PackageReference Include="Fody" Version="6.1.1" />
-		<PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
+		<PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
+		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
 		<PackageReference Include="helper-net" Version="0.2.0" />
-		<PackageReference Include="libsodium-net" Version="0.10.0" />
-		<PackageReference Include="MahApps.Metro.IconPacks.Material" Version="3.7.0" />
+		<PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
 		<PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.2.1" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.14.0" />
-		<PackageReference Include="minisign-net" Version="0.1.2" />
+		<PackageReference Include="minisign-net" Version="0.2.0" />
 		<PackageReference Include="Nett" Version="0.15.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="NLog" Version="4.7.0" />
-		<PackageReference Include="ReactiveUI.WPF" Version="22.2.1" />
+		<PackageReference Include="NLog" Version="6.0.5" />
 		<PackageReference Include="System.ComponentModel.Composition" Version="10.0.0-rc.2.25502.107" />
 		<PackageReference Include="System.Management" Version="10.0.0-rc.2.25502.107" />
 		<PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.0-rc.2.25502.107" />
 		<PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
-		<PackageReference Include="YamlDotNet" Version="8.1.0" />
+		<PackageReference Include="YamlDotNet" Version="16.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,7 +38,6 @@
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
 		<None Include="App.config" />
-		<None Include="FodyWeavers.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -63,13 +56,10 @@
 		<EmbeddedResource Include="Resources\Licenses\NLog.txt" />
 		<EmbeddedResource Include="Resources\Licenses\Baseclass.Contrib.Nuget.Output.txt" />
 		<EmbeddedResource Include="Resources\Licenses\ControlzEx.txt" />
-		<EmbeddedResource Include="Resources\Licenses\Costura.Fody.txt" />
-		<EmbeddedResource Include="Resources\Licenses\Fody.txt" />
 		<EmbeddedResource Include="Resources\Licenses\helper-net.txt" />
 		<EmbeddedResource Include="Resources\Licenses\libsodium-net.txt" />
 		<EmbeddedResource Include="Resources\Licenses\minisign-net.txt" />
 		<EmbeddedResource Include="Resources\Licenses\YamlDotNet.txt" />
-		<EmbeddedResource Include="Resources\Licenses\Newtonsoft.Json.txt" />
 		<EmbeddedResource Include="Resources\Licenses\WPFLocalizationExtension.txt" />
 		<EmbeddedResource Include="Resources\Licenses\XAMLMarkupExtensions.txt" />
 		<EmbeddedResource Include="Resources\Licenses\Nett.txt" />
