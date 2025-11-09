@@ -29,7 +29,7 @@ namespace SimpleDnsCrypt.ViewModels
 		{
 			_windowManager = windowManager;
 			_events = events;
-			_events.Subscribe(this);
+			_events.SubscribeOnPublishedThread(this);
 			_isQueryLogLogging = false;
 			_queryLogLines = [];
 
@@ -89,7 +89,7 @@ namespace SimpleDnsCrypt.ViewModels
 
 		public void ClearQueryLog()
 		{
-			Execute.OnUIThread(() => { QueryLogLines.Clear(); });
+			Execute.OnUIThread(QueryLogLines.Clear);
 		}
 
 		public ObservableCollection<QueryLogLine> QueryLogLines
@@ -214,7 +214,7 @@ namespace SimpleDnsCrypt.ViewModels
 							}
 							else
 							{
-								await Task.Run(() => DnsCryptProxyManager.Install()).ConfigureAwait(false);
+								await Task.Run(DnsCryptProxyManager.Install).ConfigureAwait(false);
 								await Task.Delay(Global.ServiceInstallTime).ConfigureAwait(false);
 								if (DnsCryptProxyManager.IsDnsCryptProxyInstalled())
 								{
@@ -226,45 +226,43 @@ namespace SimpleDnsCrypt.ViewModels
 					}
 
 					if (!string.IsNullOrEmpty(_queryLogFile))
-						if (File.Exists(_queryLogFile))
+					{
+						if (!File.Exists(_queryLogFile))
 						{
-							await Task.Run(() =>
+							//create empty log file
+							using FileStream fs = File.Create(_queryLogFile);
+							fs.Close();
+						}
+						await Task.Run(() =>
+						{
+							using StreamReader reader = new(new FileStream(_queryLogFile,
+								FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+							//start at the end of the file
+							long lastMaxOffset = reader.BaseStream.Length;
+
+							while (_isQueryLogLogging)
 							{
-								using (StreamReader reader = new(new FileStream(_queryLogFile,
-									FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
+								Thread.Sleep(500);
+								//if the file size has not changed, idle
+								if (reader.BaseStream.Length == lastMaxOffset)
+									continue;
+
+								//seek to the last max offset
+								reader.BaseStream.Seek(lastMaxOffset, SeekOrigin.Begin);
+
+								//read out of the file until the EOF
+								string line;
+								while ((line = reader.ReadLine()) != null)
 								{
-									//start at the end of the file
-									long lastMaxOffset = reader.BaseStream.Length;
-
-									while (_isQueryLogLogging)
-									{
-										Thread.Sleep(500);
-										//if the file size has not changed, idle
-										if (reader.BaseStream.Length == lastMaxOffset)
-											continue;
-
-										//seek to the last max offset
-										reader.BaseStream.Seek(lastMaxOffset, SeekOrigin.Begin);
-
-										//read out of the file until the EOF
-										string line;
-										while ((line = reader.ReadLine()) != null)
-										{
-											QueryLogLine queryLogLine = new(line);
-											AddLogLine(queryLogLine);
-										}
-
-										//update the last max offset
-										lastMaxOffset = reader.BaseStream.Position;
-									}
+									QueryLogLine queryLogLine = new(line);
+									AddLogLine(queryLogLine);
 								}
-							}).ConfigureAwait(false);
-						}
-						else
-						{
-							Log.Warn($"Missing {_queryLogFile}");
-							_isQueryLogLogging = false;
-						}
+
+								//update the last max offset
+								lastMaxOffset = reader.BaseStream.Position;
+							}
+						}).ConfigureAwait(false);
+					}
 					else
 					{
 						_isQueryLogLogging = false;
@@ -284,7 +282,7 @@ namespace SimpleDnsCrypt.ViewModels
 							await Task.Delay(Global.ServiceRestartTime).ConfigureAwait(false);
 						}
 					}
-					Execute.OnUIThread(() => { QueryLogLines.Clear(); });
+					Execute.OnUIThread(QueryLogLines.Clear);
 				}
 			}
 			catch (Exception exception)

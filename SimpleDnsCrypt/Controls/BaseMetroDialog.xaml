@@ -21,8 +21,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-            Kind="FileMultiple"
-             />
+            Kind="FileMultiple" />
         <ProgressBar
             Grid.Row="0"
             Grid.Column="1"
@@ -31,7 +30,6 @@
             Margin="10,10,10,0"
             VerticalAlignment="Center"
             IsIndeterminate="True"
-            
             Orientation="Horizontal" />
         <iconPacks:PackIconMaterial
             Grid.Row="0"
@@ -42,7 +40,6 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-            Kind="Database"
-             />
+            Kind="Database" />
     </Grid>
 </controls:BaseMetroDialog>

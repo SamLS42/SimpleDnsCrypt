@@ -11,11 +11,10 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <DockPanel Margin="0,10,0,0">
+        <DockPanel>
             <Border
                 MinHeight="75"
-                Margin="0,0,0,0"
-                Padding="10,10"
+                Padding="8,8"
                 Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
                 BorderThickness="1"
                 DockPanel.Dock="Top"
@@ -110,8 +109,8 @@
             </Border>
             <Border
                 MinHeight="75"
-                Margin="0,14,0,0"
-                Padding="10,10"
+                Margin="0,8,0,0"
+                Padding="8,8"
                 Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
                 BorderThickness="1"
                 DockPanel.Dock="Top">
@@ -159,7 +158,6 @@
                             Margin="0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Foreground="{DynamicResource AccentColorBrush}"
                             IsIndeterminate="True"
                             Visibility="{Binding IsWorkingOnService, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <CheckBox
@@ -182,7 +180,6 @@
                             Margin="50,14,50,15"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Foreground="{DynamicResource AccentColorBrush}"
                             IsIndeterminate="True"
                             Visibility="{Binding IsUninstallingService, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <Button
@@ -206,8 +203,8 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,14,0,0"
-                Padding="10"
+                Margin="0,8,0,0"
+                Padding="8"
                 Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
                 BorderThickness="1"
                 DockPanel.Dock="Bottom"

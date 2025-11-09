@@ -19,69 +19,24 @@
             <converters:LicenseLinkToVisibilityConverter x:Key="LicenseLinkToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="{StaticResource LayerFillColorDefaultBrush}">
         <Border
             Grid.Row="0"
             Grid.Column="0"
-            Margin="10"
-            Padding="10"
+            Padding="8"
             BorderThickness="1">
-            <Border.BorderBrush>
-                <DrawingBrush
-                    Opacity="0.4"
-                    TileMode="Tile"
-                    Viewport="0,0,8,8"
-                    ViewportUnits="Absolute">
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="0,0,50,50" />
-                                        <RectangleGeometry Rect="50,50,50,50" />
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Border.BorderBrush>
             <DockPanel LastChildFill="True">
-                <Border
-                    Margin="0,5,0,5"
-                    BorderThickness="0,0,1,0"
-                    DockPanel.Dock="Left">
-                    <Border.BorderBrush>
-                        <DrawingBrush
-                            TileMode="Tile"
-                            Viewport="0,0,8,8"
-                            ViewportUnits="Absolute">
-                            <DrawingBrush.Drawing>
-                                <DrawingGroup>
-                                    <GeometryDrawing Brush="#FF939393">
-                                        <GeometryDrawing.Geometry>
-                                            <GeometryGroup>
-                                                <RectangleGeometry Rect="0,0,50,50" />
-                                                <RectangleGeometry Rect="50,50,50,50" />
-                                            </GeometryGroup>
-                                        </GeometryDrawing.Geometry>
-                                    </GeometryDrawing>
-                                </DrawingGroup>
-                            </DrawingBrush.Drawing>
-                        </DrawingBrush>
-                    </Border.BorderBrush>
-                    <StackPanel Margin="5,5,10,5" Orientation="Vertical">
+                <Border DockPanel.Dock="Left">
+                    <StackPanel Orientation="Vertical">
                         <TextBlock
                             VerticalAlignment="Center"
-                            FontSize="18"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
                             Text="{lex:Loc Key=about_software}"
                             TextWrapping="Wrap" />
-                        <ListBox
+                        <ListView
                             Width="220"
                             Height="480"
-                            Margin="0,5,0,0"
+                            Margin="0,4,0,0"
                             DisplayMemberPath="LicenseHeaderText"
                             ItemsSource="{Binding Licenses}"
                             SelectedIndex="-1"
@@ -89,14 +44,12 @@
                     </StackPanel>
                 </Border>
                 <StackPanel
-                    Margin="10"
+                    Margin="8,0,0,0"
                     DockPanel.Dock="Right"
                     Orientation="Vertical">
                     <TextBlock
                         VerticalAlignment="Center"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
                         Text="{lex:Loc Key=about_license}"
                         TextWrapping="Wrap" />
                     <StackPanel

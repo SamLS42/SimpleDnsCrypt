@@ -13,10 +13,9 @@
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <DockPanel Margin="0,10,0,0">
+        <DockPanel>
             <Border
-                Margin="0,14,0,0"
-                Padding="10"
+                Padding="8"
                 Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
                 BorderThickness="1"
                 DockPanel.Dock="Top"
@@ -36,7 +35,7 @@
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="1"
-                            Margin="5,0,0,3"
+                            Margin="4,0,0,4"
                             VerticalAlignment="Center"
                             Style="{StaticResource SubtitleTextBlockStyle}"
                             Text="{lex:Loc Key=resolvers_dnscrypt_mode_header}"
@@ -64,8 +63,8 @@
                 </StackPanel>
             </Border>
             <Border
-                Margin="0,14,0,0"
-                Padding="10"
+                Margin="0,8,0,0"
+                Padding="8"
                 Background="{StaticResource CardBackgroundFillColorDefaultBrush}"
                 BorderThickness="1"
                 DockPanel.Dock="Bottom"
@@ -185,7 +184,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource HeightConverter}, ConverterParameter='Resolvers'}" />
                         </Grid.RowDefinitions>
-                        <ScrollViewer Margin="4" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <ItemsControl IsEnabled="True" ItemsSource="{Binding Resolvers}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>

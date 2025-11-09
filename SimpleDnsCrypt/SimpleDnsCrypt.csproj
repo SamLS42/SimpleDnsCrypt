@@ -33,8 +33,7 @@
 		<PackageReference Include="System.ComponentModel.Composition" Version="10.0.0-rc.2.25502.107" />
 		<PackageReference Include="System.Management" Version="10.0.0-rc.2.25502.107" />
 		<PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.0-rc.2.25502.107" />
-		<PackageReference Include="WPFLocalizeExtension" Version="3.4.0-alpha0039" />
-		<PackageReference Include="XAMLMarkupExtensions" Version="1.6.0" />
+		<PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
 		<PackageReference Include="YamlDotNet" Version="8.1.0" />
 	</ItemGroup>
 

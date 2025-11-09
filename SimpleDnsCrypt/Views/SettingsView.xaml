@@ -18,51 +18,22 @@
             <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid >
+    <Grid Background="{StaticResource LayerFillColorDefaultBrush}">
         <Border
             Grid.Row="0"
             Grid.Column="0"
-            Margin="10"
-            Padding="10"
-            
-            BorderThickness="1">
-            <Border.BorderBrush>
-                <DrawingBrush
-                    Opacity="0.4"
-                    TileMode="Tile"
-                    Viewport="0,0,8,8"
-                    ViewportUnits="Absolute">
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <GeometryDrawing Brush="{DynamicResource AccentTextFillColorPrimaryBrush}">
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="0,0,50,50" />
-                                        <RectangleGeometry Rect="50,50,50,50" />
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Border.BorderBrush>
+            Padding="8">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Left"
+                    <TextBlock
                         VerticalAlignment="Center"
-                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                        Kind="Settings"
-                         />
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="&#xE713;" />
                     <TextBlock
                         Margin="5,0,0,3"
                         VerticalAlignment="Center"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                        
+                        Style="{StaticResource SubtitleTextBlockStyle}"
                         Text="{lex:Loc Key=settings}"
                         TextWrapping="Wrap" />
                 </StackPanel>
@@ -71,92 +42,77 @@
                         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                     </StackPanel.Resources>
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_advanced_settings}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsAdvancedSettingsTabVisible}" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_query_log}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsQueryLogTabVisible}" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_cloak_and_forward}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsCloakAndForwardTabVisible}" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_domain_block}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsDomainBlockLogTabVisible}"
                         IsEnabled="True" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_domain_blacklist}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsDomainBlacklistTabVisible}"
                         IsEnabled="True" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_address_block}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsAddressBlockLogTabVisible}"
                         IsEnabled="False" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_address_blacklist}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsAddressBlacklistTabVisible}"
                         IsEnabled="False" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_tray_mode}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsTrayModeEnabled}" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_backup_and_restore_config}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding BackupAndRestoreConfigOnUpdate}" />
                     <CheckBox
-                        Margin="5"
+                        Margin="4"
                         Content="{lex:Loc Key=settings_start_in_tray}"
                         Cursor="Hand"
-                        
                         IsChecked="{Binding IsStartInTrayEnabled}"
                         IsEnabled="{Binding IsTrayModeEnabled}"
                         Visibility="{Binding IsTrayModeEnabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <StackPanel Orientation="Vertical">
                         <CheckBox
-                            Margin="5"
+                            Margin="4"
                             Content="{lex:Loc Key=settings_update_auto}"
                             Cursor="Hand"
-                            
                             IsChecked="{Binding IsAutoUpdateEnabled}" />
                         <CheckBox
-                            Margin="5"
+                            Margin="4"
                             Content="{lex:Loc Key=settings_update_silent}"
                             Cursor="Hand"
-                            
                             IsChecked="{Binding IsAutoUpdateSilentEnabled}" />
                         <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                
-                                Text="{lex:Loc Key=settings_update_channel}" />
+                            <TextBlock VerticalAlignment="Center" Text="{lex:Loc Key=settings_update_channel}" />
                             <ComboBox
                                 Width="90"
-                                Margin="5,0,0,0"
+                                Margin="4,0,0,0"
                                 VerticalContentAlignment="Center"
                                 DisplayMemberPath="Description"
                                 IsEnabled="False"

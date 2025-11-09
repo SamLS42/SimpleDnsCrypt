@@ -16,82 +16,88 @@
     lex:ResxLocalizationProvider.DefaultAssembly="SimpleDnsCrypt"
     lex:ResxLocalizationProvider.DefaultDictionary="Translation"
     Background="{StaticResource LayerFillColorDefaultBrush}">
-    <StackPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Padding="8,8,8,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Image
-                Width="16"
-                Height="16"
-                Margin="8,8,8,8"
-                VerticalAlignment="Center"
-                Source="../Images/simplednscrypt.ico" />
-
-            <TextBlock
-                Grid.Column="1"
-                Margin="0,0,8,0"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Text="{Binding WindowTitle}" />
-
-            <StackPanel
-                Grid.Column="2"
-                shell:WindowChrome.IsHitTestVisibleInChrome="True"
-                Orientation="Horizontal">
-                <Button
-                    x:Name="OpenLogDirectory"
-                    cal:Message.Attach="OpenLogDirectory"
-                    Cursor="Hand"
-                    ToolTip="{lex:Loc Key=open_log_directory}">
-                    <iconPacks:PackIconMaterial Kind="ClipboardText" />
-                </Button>
-                <Button
-                    x:Name="About"
-                    cal:Message.Attach="About"
-                    Cursor="Hand"
-                    ToolTip="{lex:Loc Key=about}">
-                    <iconPacks:PackIconMaterial Kind="Emoticon" />
-                </Button>
-                <Button
-                    x:Name="Settings"
-                    cal:Message.Attach="Settings"
-                    Cursor="Hand"
-                    ToolTip="{lex:Loc Key=settings}">
-                    <iconPacks:PackIconMaterial Kind="Settings" />
-                </Button>
-                <Button
-                    x:Name="Proxies"
-                    cal:Message.Attach="Proxies"
-                    Cursor="Hand"
-                    ToolTip="{lex:Loc Key=proxy_manage_proxies}">
-                    <iconPacks:PackIconMaterial Kind="AccountNetwork" />
-                </Button>
-                <ComboBox
-                    Margin="5,0"
-                    HorizontalAlignment="Left"
+                <Image
+                    Width="16"
+                    Height="16"
+                    Margin="8,8,8,8"
                     VerticalAlignment="Center"
-                    Cursor="Hand"
-                    DisplayMemberPath="Name"
-                    IsEnabled="True"
-                    ItemsSource="{Binding Languages}"
-                    Opacity="0.4"
-                    SelectedIndex="-1"
-                    SelectedItem="{Binding SelectedLanguage}" />
-                <Button Background="Transparent" BorderBrush="Transparent">
-                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE921;" />
-                </Button>
-                <Button Background="Transparent" BorderBrush="Transparent">
-                    <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE8BB;" />
-                </Button>
-            </StackPanel>
-        </Grid>
+                    Source="../Images/simplednscrypt.ico" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="0,0,8,0"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold"
+                    Text="{Binding WindowTitle}" />
+
+                <StackPanel
+                    Grid.Column="2"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                    Orientation="Horizontal">
+                    <Button
+                        x:Name="OpenLogDirectory"
+                        cal:Message.Attach="OpenLogDirectory"
+                        Cursor="Hand"
+                        ToolTip="{lex:Loc Key=open_log_directory}">
+                        <iconPacks:PackIconMaterial Kind="ClipboardText" />
+                    </Button>
+                    <Button
+                        x:Name="About"
+                        cal:Message.Attach="About"
+                        Cursor="Hand"
+                        ToolTip="{lex:Loc Key=about}">
+                        <iconPacks:PackIconMaterial Kind="Emoticon" />
+                    </Button>
+                    <Button
+                        x:Name="Settings"
+                        cal:Message.Attach="Settings"
+                        Cursor="Hand"
+                        ToolTip="{lex:Loc Key=settings}">
+                        <iconPacks:PackIconMaterial Kind="Settings" />
+                    </Button>
+                    <Button
+                        x:Name="Proxies"
+                        cal:Message.Attach="Proxies"
+                        Cursor="Hand"
+                        ToolTip="{lex:Loc Key=proxy_manage_proxies}">
+                        <iconPacks:PackIconMaterial Kind="AccountNetwork" />
+                    </Button>
+                    <ComboBox
+                        Margin="5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Cursor="Hand"
+                        DisplayMemberPath="Name"
+                        IsEnabled="True"
+                        ItemsSource="{Binding Languages}"
+                        Opacity="0.4"
+                        SelectedIndex="-1"
+                        SelectedItem="{Binding SelectedLanguage}" />
+                    <Button Background="Transparent" BorderBrush="Transparent">
+                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE921;" />
+                    </Button>
+                    <Button Background="Transparent" BorderBrush="Transparent">
+                        <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE8BB;" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
         <Border
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="0"
             Margin="10"
             Padding="10"
@@ -929,5 +935,5 @@
                 </TabItem>
             </TabControl>
         </Border>
-    </StackPanel>
+    </Grid>
 </UserControl>
