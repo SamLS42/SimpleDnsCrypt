@@ -75,7 +75,7 @@
                                     Margin="0,2,0,0"
                                     Cursor="Hand"
                                     Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                    Kind="GithubCircle" />
+                                    Kind="Github" />
                                 <Button
                                     cal:Message.Attach="[Action HyperlinkRequestNavigate('code')]"
                                     Focusable="False"
