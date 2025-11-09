@@ -87,10 +87,20 @@
                         Opacity="0.4"
                         SelectedIndex="-1"
                         SelectedItem="{Binding SelectedLanguage}" />
-                    <Button Background="Transparent" BorderBrush="Transparent">
+                    <Button
+                        x:Name="Minimize"
+                        cal:Message.Attach="Minimize"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Cursor="Hand">
                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE921;" />
                     </Button>
-                    <Button Background="Transparent" BorderBrush="Transparent">
+                    <Button
+                        x:Name="CloseWindow"
+                        cal:Message.Attach="CloseWindow"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Cursor="Hand">
                         <TextBlock FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE8BB;" />
                     </Button>
                 </StackPanel>

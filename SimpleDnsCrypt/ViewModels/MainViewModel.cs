@@ -1344,6 +1344,26 @@ namespace SimpleDnsCrypt.ViewModels
 			DnscryptProxyConfiguration.fallback_resolvers = validatedFallbackResolvers;
 		}
 
+		/// <summary>
+		/// Minimize the main window.
+		/// </summary>
+		public void Minimize()
+		{
+			if (GetView() is UIElement view)
+			{
+				Window window = Window.GetWindow(view);
+				window?.WindowState = WindowState.Minimized;
+			}
+		}
+
+		/// <summary>
+		/// Close the main window.
+		/// </summary>
+		public void CloseWindow()
+		{
+			TryCloseAsync();
+		}
+
 		#region Tray
 
 		#endregion
