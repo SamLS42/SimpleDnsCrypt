@@ -17,13 +17,13 @@ namespace SimpleDnsCrypt.Converters
 				QueryLogLineType.CNAME => "{DynamicResource AccentTextFillColorPrimaryBrush}",
 				QueryLogLineType.SOA => "{DynamicResource AccentTextFillColorPrimaryBrush}",
 				QueryLogLineType.WKS => "{DynamicResource AccentTextFillColorPrimaryBrush}",
-				QueryLogLineType.PTR => "#FF2a3b68",
+				QueryLogLineType.PTR => "#FF2a3b68", //normal
 				QueryLogLineType.MX => "{DynamicResource AccentTextFillColorPrimaryBrush}",
 				QueryLogLineType.TXT => "{DynamicResource AccentTextFillColorPrimaryBrush}",
-				QueryLogLineType.AAAA => "#FFB32929",
+				QueryLogLineType.AAAA => "#FFB32929", //Error?
 				QueryLogLineType.SRV => "{DynamicResource AccentTextFillColorPrimaryBrush}",
 				QueryLogLineType.ANY => "{DynamicResource AccentTextFillColorPrimaryBrush}",
-				_ => "#FFB32929",
+				_ => "#FFB32929", //Error?
 			};
 		}
 
